@@ -915,6 +915,30 @@ module stdlib_linalg_blas
 #else 
                module procedure stdlib_snrm2
 #endif
+
+#ifdef STDLIB_EXTERNAL_BLAS
+               pure real(dp) function dznrm2( n, x, incx )
+                    import sp,dp,qp,ilp,lk 
+                    implicit none(type,external) 
+                    integer(ilp), intent(in) :: incx,n
+                    complex(dp), intent(in) :: x(*)
+               end function dznrm2
+#else 
+               module procedure stdlib_dznrm2
+#endif
+#:if WITH_QP
+               module procedure stdlib_qznrm2
+#:endif
+#ifdef STDLIB_EXTERNAL_BLAS
+               pure real(sp) function scnrm2( n, x, incx )
+                    import sp,dp,qp,ilp,lk 
+                    implicit none(type,external) 
+                    integer(ilp), intent(in) :: incx,n
+                    complex(sp), intent(in) :: x(*)
+               end function snrm2
+#else 
+               module procedure stdlib_scnrm2
+#endif
           end interface nrm2
 
 
