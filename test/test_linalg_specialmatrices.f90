@@ -3,7 +3,12 @@ module test_specialmatrices
     use stdlib_kinds, only: sp, dp, xdp, qp, int8, int16, int32, int64
     use stdlib_linalg, only: hermitian
     use stdlib_math, only: all_close
-    use stdlib_specialmatrices
+    use stdlib_specialmatrices, only: tridiagonal, &
+                                      tridiagonal_sp_type, &
+                                      tridiagonal_dp_type, & 
+                                      tridiagonal_xdp_type, & 
+                                      tridiagonal_qp_type, &
+                                      dense, spmv
 
     implicit none
 
@@ -26,7 +31,7 @@ contains
         block
             integer, parameter :: wp = sp
             integer, parameter :: n = 5
-            type(Tridiagonal_sp_type) :: A
+            type(tridiagonal_sp_type) :: A
             real(sp), allocatable :: Amat(:,:), dl(:), dv(:), du(:)
             real(sp), allocatable :: x(:)
             real(sp), allocatable :: y1(:), y2(:)
@@ -34,7 +39,7 @@ contains
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            A = Tridiagonal(dl, dv, du) ; Amat = dense(A)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! Random vectors.
             allocate(x(n), source = 0.0_wp)   ; call random_number(x)
@@ -55,7 +60,7 @@ contains
         block
             integer, parameter :: wp = dp
             integer, parameter :: n = 5
-            type(Tridiagonal_dp_type) :: A
+            type(tridiagonal_dp_type) :: A
             real(dp), allocatable :: Amat(:,:), dl(:), dv(:), du(:)
             real(dp), allocatable :: x(:)
             real(dp), allocatable :: y1(:), y2(:)
@@ -63,7 +68,7 @@ contains
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            A = Tridiagonal(dl, dv, du) ; Amat = dense(A)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! Random vectors.
             allocate(x(n), source = 0.0_wp)   ; call random_number(x)
