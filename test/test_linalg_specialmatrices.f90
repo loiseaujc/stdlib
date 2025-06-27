@@ -1,6 +1,6 @@
 module test_specialmatrices
     use testdrive, only : new_unittest, unittest_type, error_type, check, skip_test
-    use stdlib_kinds, only: sp, dp, xdp, qp, int8, int16, int32, int64
+    use stdlib_kinds
     use stdlib_linalg, only: hermitian
     use stdlib_math, only: all_close
     use stdlib_specialmatrices, only: tridiagonal, &
