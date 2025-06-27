@@ -9,12 +9,12 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     !--------------------------------
 
     pure module function initialize_tridiagonal_sp(dl, dv, du) result(A)
-        !! Construct a `Tridiagonal` matrix from the rank-1 arrays
+        !! Construct a `tridiagonal` matrix from the rank-1 arrays
         !! `dl`, `dv` and `du`.
         real(sp), intent(in) :: dl(:), dv(:), du(:)
-        !! Tridiagonal matrix elements.
-        type(Tridiagonal_sp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        !! tridiagonal matrix elements.
+        type(tridiagonal_sp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: n
@@ -31,13 +31,13 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     pure module function initialize_constant_tridiagonal_sp(dl, dv, du, n) result(A)
-        !! Construct a `Tridiagonal` matrix with constant elements.
+        !! Construct a `tridiagonal` matrix with constant elements.
         real(sp), intent(in) :: dl, dv, du
-        !! Tridiagonal matrix elements.
+        !! tridiagonal matrix elements.
         integer(ilp), intent(in) :: n
         !! Matrix dimension.
-        type(Tridiagonal_sp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        type(tridiagonal_sp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: i
@@ -50,12 +50,12 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         A%du = [(du, i = 1, n-1)]
     end function
     pure module function initialize_tridiagonal_dp(dl, dv, du) result(A)
-        !! Construct a `Tridiagonal` matrix from the rank-1 arrays
+        !! Construct a `tridiagonal` matrix from the rank-1 arrays
         !! `dl`, `dv` and `du`.
         real(dp), intent(in) :: dl(:), dv(:), du(:)
-        !! Tridiagonal matrix elements.
-        type(Tridiagonal_dp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        !! tridiagonal matrix elements.
+        type(tridiagonal_dp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: n
@@ -72,13 +72,13 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     pure module function initialize_constant_tridiagonal_dp(dl, dv, du, n) result(A)
-        !! Construct a `Tridiagonal` matrix with constant elements.
+        !! Construct a `tridiagonal` matrix with constant elements.
         real(dp), intent(in) :: dl, dv, du
-        !! Tridiagonal matrix elements.
+        !! tridiagonal matrix elements.
         integer(ilp), intent(in) :: n
         !! Matrix dimension.
-        type(Tridiagonal_dp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        type(tridiagonal_dp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: i
@@ -91,12 +91,12 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         A%du = [(du, i = 1, n-1)]
     end function
     pure module function initialize_tridiagonal_csp(dl, dv, du) result(A)
-        !! Construct a `Tridiagonal` matrix from the rank-1 arrays
+        !! Construct a `tridiagonal` matrix from the rank-1 arrays
         !! `dl`, `dv` and `du`.
         complex(sp), intent(in) :: dl(:), dv(:), du(:)
-        !! Tridiagonal matrix elements.
-        type(Tridiagonal_csp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        !! tridiagonal matrix elements.
+        type(tridiagonal_csp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: n
@@ -113,13 +113,13 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     pure module function initialize_constant_tridiagonal_csp(dl, dv, du, n) result(A)
-        !! Construct a `Tridiagonal` matrix with constant elements.
+        !! Construct a `tridiagonal` matrix with constant elements.
         complex(sp), intent(in) :: dl, dv, du
-        !! Tridiagonal matrix elements.
+        !! tridiagonal matrix elements.
         integer(ilp), intent(in) :: n
         !! Matrix dimension.
-        type(Tridiagonal_csp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        type(tridiagonal_csp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: i
@@ -132,12 +132,12 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         A%du = [(du, i = 1, n-1)]
     end function
     pure module function initialize_tridiagonal_cdp(dl, dv, du) result(A)
-        !! Construct a `Tridiagonal` matrix from the rank-1 arrays
+        !! Construct a `tridiagonal` matrix from the rank-1 arrays
         !! `dl`, `dv` and `du`.
         complex(dp), intent(in) :: dl(:), dv(:), du(:)
-        !! Tridiagonal matrix elements.
-        type(Tridiagonal_cdp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        !! tridiagonal matrix elements.
+        type(tridiagonal_cdp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: n
@@ -154,13 +154,13 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     pure module function initialize_constant_tridiagonal_cdp(dl, dv, du, n) result(A)
-        !! Construct a `Tridiagonal` matrix with constant elements.
+        !! Construct a `tridiagonal` matrix with constant elements.
         complex(dp), intent(in) :: dl, dv, du
-        !! Tridiagonal matrix elements.
+        !! tridiagonal matrix elements.
         integer(ilp), intent(in) :: n
         !! Matrix dimension.
-        type(Tridiagonal_cdp_type) :: A
-        !! Corresponding Tridiagonal matrix.
+        type(tridiagonal_cdp_type) :: A
+        !! Corresponding tridiagonal matrix.
 
         ! Internal variables.
         integer(ilp) :: i
@@ -181,7 +181,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
 
     !! spmv_tridiag
     module subroutine spmv_tridiag_1d_sp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: A
         real(sp), intent(in), contiguous, target :: x(:)
         real(sp), intent(inout), contiguous, target :: y(:)
         real(sp), intent(in), optional :: alpha
@@ -208,7 +208,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
     end subroutine
     module subroutine spmv_tridiag_2d_sp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: A
         real(sp), intent(in), contiguous, target :: x(:,:)
         real(sp), intent(inout), contiguous, target :: y(:,:)
         real(sp), intent(in), optional :: alpha
@@ -232,7 +232,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
     module subroutine spmv_tridiag_1d_dp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: A
         real(dp), intent(in), contiguous, target :: x(:)
         real(dp), intent(inout), contiguous, target :: y(:)
         real(dp), intent(in), optional :: alpha
@@ -259,7 +259,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
     end subroutine
     module subroutine spmv_tridiag_2d_dp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: A
         real(dp), intent(in), contiguous, target :: x(:,:)
         real(dp), intent(inout), contiguous, target :: y(:,:)
         real(dp), intent(in), optional :: alpha
@@ -283,7 +283,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
     module subroutine spmv_tridiag_1d_csp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: A
         complex(sp), intent(in), contiguous, target :: x(:)
         complex(sp), intent(inout), contiguous, target :: y(:)
         real(sp), intent(in), optional :: alpha
@@ -310,7 +310,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
     end subroutine
     module subroutine spmv_tridiag_2d_csp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: A
         complex(sp), intent(in), contiguous, target :: x(:,:)
         complex(sp), intent(inout), contiguous, target :: y(:,:)
         real(sp), intent(in), optional :: alpha
@@ -334,7 +334,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
     module subroutine spmv_tridiag_1d_cdp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: A
         complex(dp), intent(in), contiguous, target :: x(:)
         complex(dp), intent(inout), contiguous, target :: y(:)
         real(dp), intent(in), optional :: alpha
@@ -361,7 +361,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
     end subroutine
     module subroutine spmv_tridiag_2d_cdp(A, x, y, alpha, beta, op)
-        type(Tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: A
         complex(dp), intent(in), contiguous, target :: x(:,:)
         complex(dp), intent(inout), contiguous, target :: y(:,:)
         real(dp), intent(in), optional :: alpha
@@ -392,9 +392,9 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     !-------------------------------------
 
     pure module function tridiagonal_to_dense_sp(A) result(B)
-        !! Convert a `Tridiagonal` matrix to its dense representation.
-        type(Tridiagonal_sp_type), intent(in) :: A
-        !! Input Tridiagonal matrix.
+        !! Convert a `tridiagonal` matrix to its dense representation.
+        type(tridiagonal_sp_type), intent(in) :: A
+        !! Input tridiagonal matrix.
         real(sp), allocatable :: B(:, :)
         !! Corresponding dense matrix.
 
@@ -413,9 +413,9 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         end associate
     end function
     pure module function tridiagonal_to_dense_dp(A) result(B)
-        !! Convert a `Tridiagonal` matrix to its dense representation.
-        type(Tridiagonal_dp_type), intent(in) :: A
-        !! Input Tridiagonal matrix.
+        !! Convert a `tridiagonal` matrix to its dense representation.
+        type(tridiagonal_dp_type), intent(in) :: A
+        !! Input tridiagonal matrix.
         real(dp), allocatable :: B(:, :)
         !! Corresponding dense matrix.
 
@@ -434,9 +434,9 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         end associate
     end function
     pure module function tridiagonal_to_dense_csp(A) result(B)
-        !! Convert a `Tridiagonal` matrix to its dense representation.
-        type(Tridiagonal_csp_type), intent(in) :: A
-        !! Input Tridiagonal matrix.
+        !! Convert a `tridiagonal` matrix to its dense representation.
+        type(tridiagonal_csp_type), intent(in) :: A
+        !! Input tridiagonal matrix.
         complex(sp), allocatable :: B(:, :)
         !! Corresponding dense matrix.
 
@@ -455,9 +455,9 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         end associate
     end function
     pure module function tridiagonal_to_dense_cdp(A) result(B)
-        !! Convert a `Tridiagonal` matrix to its dense representation.
-        type(Tridiagonal_cdp_type), intent(in) :: A
-        !! Input Tridiagonal matrix.
+        !! Convert a `tridiagonal` matrix to its dense representation.
+        type(tridiagonal_cdp_type), intent(in) :: A
+        !! Input tridiagonal matrix.
         complex(dp), allocatable :: B(:, :)
         !! Corresponding dense matrix.
 
@@ -477,163 +477,175 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     pure module function transpose_tridiagonal_sp(A) result(B)
-        type(Tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_sp_type) :: B
-        B%n = A%n ; B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_sp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
     pure module function transpose_tridiagonal_dp(A) result(B)
-        type(Tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_dp_type) :: B
-        B%n = A%n ; B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_dp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
     pure module function transpose_tridiagonal_csp(A) result(B)
-        type(Tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_csp_type) :: B
-        B%n = A%n ; B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_csp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
     pure module function transpose_tridiagonal_cdp(A) result(B)
-        type(Tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_cdp_type) :: B
-        B%n = A%n ; B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_cdp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
 
     pure module function hermitian_tridiagonal_sp(A) result(B)
-        type(Tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_sp_type) :: B
-        B%n = A%n
-        B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_sp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
     pure module function hermitian_tridiagonal_dp(A) result(B)
-        type(Tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_dp_type) :: B
-        B%n = A%n
-        B%dv = A%dv ; B%du = A%dl ; B%dl = A%du
+        type(tridiagonal_dp_type) :: B
+        B = tridiagonal(A%du, A%dv, A%dl)
     end function
     pure module function hermitian_tridiagonal_csp(A) result(B)
-        type(Tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_csp_type) :: B
-        B%n = A%n
-        B%dv = conjg(A%dv) ; B%du = conjg(A%dl) ; B%dl = conjg(A%du)
+        type(tridiagonal_csp_type) :: B
+        B = tridiagonal(conjg(A%du), conjg(A%dv), conjg(A%dl))
     end function
     pure module function hermitian_tridiagonal_cdp(A) result(B)
-        type(Tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: A
         !! Input matrix.
-        type(Tridiagonal_cdp_type) :: B
-        B%n = A%n
-        B%dv = conjg(A%dv) ; B%du = conjg(A%dl) ; B%dl = conjg(A%du)
+        type(tridiagonal_cdp_type) :: B
+        B = tridiagonal(conjg(A%du), conjg(A%dv), conjg(A%dl))
     end function
 
     pure module function scalar_multiplication_tridiagonal_sp(alpha, A) result(B)
         real(sp), intent(in) :: alpha
-        type(Tridiagonal_sp_type), intent(in) :: A
-        type(Tridiagonal_sp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_sp(A, alpha) result(B)
-        type(Tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: A
         real(sp), intent(in) :: alpha
-        type(Tridiagonal_sp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_sp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
     pure module function scalar_multiplication_tridiagonal_dp(alpha, A) result(B)
         real(dp), intent(in) :: alpha
-        type(Tridiagonal_dp_type), intent(in) :: A
-        type(Tridiagonal_dp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_dp(A, alpha) result(B)
-        type(Tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: A
         real(dp), intent(in) :: alpha
-        type(Tridiagonal_dp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_dp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
     pure module function scalar_multiplication_tridiagonal_csp(alpha, A) result(B)
         complex(sp), intent(in) :: alpha
-        type(Tridiagonal_csp_type), intent(in) :: A
-        type(Tridiagonal_csp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_csp(A, alpha) result(B)
-        type(Tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: A
         complex(sp), intent(in) :: alpha
-        type(Tridiagonal_csp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_csp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
     pure module function scalar_multiplication_tridiagonal_cdp(alpha, A) result(B)
         complex(dp), intent(in) :: alpha
-        type(Tridiagonal_cdp_type), intent(in) :: A
-        type(Tridiagonal_cdp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_cdp(A, alpha) result(B)
-        type(Tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: A
         complex(dp), intent(in) :: alpha
-        type(Tridiagonal_cdp_type) :: B
-        B = Tridiagonal(alpha*A%dl, alpha*A%dv, alpha*A%du)
+        type(tridiagonal_cdp_type) :: B
+        B = tridiagonal(A%dl, A%dv, A%du)
+        B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
     end function
 
     pure module function matrix_add_tridiagonal_sp(A, B) result(C)
-        type(Tridiagonal_sp_type), intent(in) :: A
-        type(Tridiagonal_sp_type), intent(in) :: B
-        type(Tridiagonal_sp_type) :: C
-        C = Tridiagonal(A%dl+B%dl, A%dv+B%dv, A%du+B%du)
+        type(tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: B
+        type(tridiagonal_sp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
     end function
 
     pure module function matrix_sub_tridiagonal_sp(A, B) result(C)
-        type(Tridiagonal_sp_type), intent(in) :: A
-        type(Tridiagonal_sp_type), intent(in) :: B
-        type(Tridiagonal_sp_type) :: C
-        C = Tridiagonal(A%dl-B%dl, A%dv-B%dv, A%du-B%du)
+        type(tridiagonal_sp_type), intent(in) :: A
+        type(tridiagonal_sp_type), intent(in) :: B
+        type(tridiagonal_sp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
     end function
     pure module function matrix_add_tridiagonal_dp(A, B) result(C)
-        type(Tridiagonal_dp_type), intent(in) :: A
-        type(Tridiagonal_dp_type), intent(in) :: B
-        type(Tridiagonal_dp_type) :: C
-        C = Tridiagonal(A%dl+B%dl, A%dv+B%dv, A%du+B%du)
+        type(tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: B
+        type(tridiagonal_dp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
     end function
 
     pure module function matrix_sub_tridiagonal_dp(A, B) result(C)
-        type(Tridiagonal_dp_type), intent(in) :: A
-        type(Tridiagonal_dp_type), intent(in) :: B
-        type(Tridiagonal_dp_type) :: C
-        C = Tridiagonal(A%dl-B%dl, A%dv-B%dv, A%du-B%du)
+        type(tridiagonal_dp_type), intent(in) :: A
+        type(tridiagonal_dp_type), intent(in) :: B
+        type(tridiagonal_dp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
     end function
     pure module function matrix_add_tridiagonal_csp(A, B) result(C)
-        type(Tridiagonal_csp_type), intent(in) :: A
-        type(Tridiagonal_csp_type), intent(in) :: B
-        type(Tridiagonal_csp_type) :: C
-        C = Tridiagonal(A%dl+B%dl, A%dv+B%dv, A%du+B%du)
+        type(tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: B
+        type(tridiagonal_csp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
     end function
 
     pure module function matrix_sub_tridiagonal_csp(A, B) result(C)
-        type(Tridiagonal_csp_type), intent(in) :: A
-        type(Tridiagonal_csp_type), intent(in) :: B
-        type(Tridiagonal_csp_type) :: C
-        C = Tridiagonal(A%dl-B%dl, A%dv-B%dv, A%du-B%du)
+        type(tridiagonal_csp_type), intent(in) :: A
+        type(tridiagonal_csp_type), intent(in) :: B
+        type(tridiagonal_csp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
     end function
     pure module function matrix_add_tridiagonal_cdp(A, B) result(C)
-        type(Tridiagonal_cdp_type), intent(in) :: A
-        type(Tridiagonal_cdp_type), intent(in) :: B
-        type(Tridiagonal_cdp_type) :: C
-        C = Tridiagonal(A%dl+B%dl, A%dv+B%dv, A%du+B%du)
+        type(tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: B
+        type(tridiagonal_cdp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
     end function
 
     pure module function matrix_sub_tridiagonal_cdp(A, B) result(C)
-        type(Tridiagonal_cdp_type), intent(in) :: A
-        type(Tridiagonal_cdp_type), intent(in) :: B
-        type(Tridiagonal_cdp_type) :: C
-        C = Tridiagonal(A%dl-B%dl, A%dv-B%dv, A%du-B%du)
+        type(tridiagonal_cdp_type), intent(in) :: A
+        type(tridiagonal_cdp_type), intent(in) :: B
+        type(tridiagonal_cdp_type) :: C
+        C = tridiagonal(A%dl, A%dv, A%du)
+        C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
     end function
 
 end submodule
