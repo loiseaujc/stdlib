@@ -59,6 +59,7 @@ module test_linalg_expm
 
         ! Check result.
         err = mnorm(Eref - E, "inf")
+        print *, "Error", err, maxval(abs(Eref - E)), (n**2)*epsilon(1.0_sp)
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -91,6 +92,7 @@ module test_linalg_expm
 
         ! Check result.
         err = mnorm(Eref - E, "inf")
+        print *, "Error", err, maxval(abs(Eref - E)), (n**2)*epsilon(1.0_dp)
         call check(error, err < (n**2)*epsilon(1.0_dp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -123,6 +125,7 @@ module test_linalg_expm
 
         ! Check result.
         err = mnorm(Eref - E, "inf")
+        print *, "Error", err, maxval(abs(Eref - E)), (n**2)*epsilon(1.0_sp)
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -155,6 +158,7 @@ module test_linalg_expm
 
         ! Check result.
         err = mnorm(Eref - E, "inf")
+        print *, "Error", err, maxval(abs(Eref - E)), (n**2)*epsilon(1.0_dp)
         call check(error, err < (n**2)*epsilon(1.0_dp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
