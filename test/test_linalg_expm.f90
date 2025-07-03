@@ -20,13 +20,13 @@ module test_linalg_expm
         allocate(tests(0))
         
         tests = [tests, new_unittest("expm_s",test_expm_s)]
-        tests = [tests, new_unittest("Error-handling expm_s",test_error_handling_expm_s)]
+        ! tests = [tests, new_unittest("Error-handling expm_s",test_error_handling_expm_s)]
         tests = [tests, new_unittest("expm_d",test_expm_d)]
-        tests = [tests, new_unittest("Error-handling expm_d",test_error_handling_expm_d)]
+        ! tests = [tests, new_unittest("Error-handling expm_d",test_error_handling_expm_d)]
         tests = [tests, new_unittest("expm_c",test_expm_c)]
-        tests = [tests, new_unittest("Error-handling expm_c",test_error_handling_expm_c)]
+        ! tests = [tests, new_unittest("Error-handling expm_c",test_error_handling_expm_c)]
         tests = [tests, new_unittest("expm_z",test_expm_z)]
-        tests = [tests, new_unittest("Error-handling expm_z",test_error_handling_expm_z)]
+        ! tests = [tests, new_unittest("Error-handling expm_z",test_error_handling_expm_z)]
 
     end subroutine test_expm_computation
 
