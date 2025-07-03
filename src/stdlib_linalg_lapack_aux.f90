@@ -1,6 +1,8 @@
 module stdlib_linalg_lapack_aux
      use stdlib_linalg_constants
      use stdlib_linalg_blas
+     use stdlib_linalg_state, only: linalg_state_type, linalg_error_handling, LINALG_ERROR, &
+         LINALG_INTERNAL_ERROR, LINALG_VALUE_ERROR
      use ieee_arithmetic, only: ieee_support_inf, ieee_support_nan
      implicit none
      private
@@ -65,6 +67,7 @@ module stdlib_linalg_lapack_aux
      public :: stdlib_selctg_c     
      public :: stdlib_select_z
      public :: stdlib_selctg_z     
+     public :: handle_potrf_info
      
      ! SELCTG is a LOGICAL FUNCTION of three DOUBLE PRECISION arguments 
      ! used to select eigenvalues to sort to the top left of the Schur form. 
@@ -3037,6 +3040,40 @@ module stdlib_linalg_lapack_aux
            stdlib_I64_ilaenv2stage = stdlib_I64_iparam2stage( iispec, name, opts,n1, n2, n3, n4 )
            return
      end function stdlib_I64_ilaenv2stage
+
+
+   !----------------------------------------------------------------------------
+   !-----                                                                  -----
+   !-----     AUXILIARY INFO HANDLING FUNCTIONS FOR LAPACK SUBROUTINES     -----
+   !-----                                                                  -----
+   !----------------------------------------------------------------------------
+   
+   ! Cholesky factorization
+   elemental subroutine handle_potrf_info(this,info,triangle,lda,n,err)
+      character(len=*), intent(in) :: this
+      character, intent(in) :: triangle
+      integer(ilp), intent(in) :: info,lda,n
+      type(linalg_state_type), intent(out) :: err
+
+      ! Process output
+      select case (info)
+      case (0)
+         ! Success
+      case (-1)
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'invalid triangle selection: ', &
+                  triangle,'. should be U/L')
+      case (-2)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid matrix size n=',n)
+      case (-4)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid lda=',lda,': is < n = ',n)
+      case (1:)
+         err = linalg_state_type(this,LINALG_ERROR,'cannot complete factorization:',info, &
+               '-th order leading minor is not positive definite')
+      case default
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'catastrophic error')
+      end select
+
+   end subroutine handle_potrf_info
 
 
 end module stdlib_linalg_lapack_aux
