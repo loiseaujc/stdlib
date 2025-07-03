@@ -18,6 +18,7 @@ module stdlib_linalg
   public :: eigh
   public :: eigvals
   public :: eigvalsh
+  public :: expm
   public :: eye
   public :: inv
   public :: invert
@@ -5592,6 +5593,81 @@ module stdlib_linalg
           type(linalg_state_type), intent(out), optional :: err        
       end function matrix_norm_4D_to_2D_int_z
   end interface mnorm
+
+  !> Matrix exponential: function interface
+  interface expm
+    !! version : experimental
+    !!
+    !! Computes the exponential of a matrix using a rational Pade approximation.
+    !! ([Specification](../page/specs/stdlib_linalg.html#expm))
+    !!
+    !! ### Description
+    !!
+    !! This interface provides methods for computing the exponential of a matrix
+    !! represented as a standard Fortran rank-2 array. Supported data types include
+    !! `real` and `complex`.
+    !!
+    !! By default, the order of the Pade approximation is set to 10. It can be changed
+    !! via the `order` argument which must be non-negative.
+    !!
+    !! If the input matrix is non-square or the order of the Pade approximation is
+    !! negative, the function returns an error state.
+    !!
+    !! ### Example
+    !!
+    !! ```fortran
+    !!  real(dp) :: A(3, 3), E(3, 3)
+    !!
+    !!  A = reshape([1, 2, 3, 4, 5, 6, 7, 8, 9], [3, 3])
+    !!
+    !!  ! Default Pade approximation of the matrix exponential.
+    !!  E = expm(A)
+    !!
+    !!  ! Pade approximation with specified order.
+    !!  E = expm(A, order=12)
+    !! ```
+    !!
+    module function stdlib_expm_s(A, order, err) result(E)
+        !> Input matrix a(n, n).
+        real(sp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] State return flag. On error, if not requested, the code will stop.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Exponential of the input matrix E = exp(A).
+        real(sp), allocatable :: E(:, :)
+    end function stdlib_expm_s
+    module function stdlib_expm_d(A, order, err) result(E)
+        !> Input matrix a(n, n).
+        real(dp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] State return flag. On error, if not requested, the code will stop.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Exponential of the input matrix E = exp(A).
+        real(dp), allocatable :: E(:, :)
+    end function stdlib_expm_d
+    module function stdlib_expm_c(A, order, err) result(E)
+        !> Input matrix a(n, n).
+        complex(sp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] State return flag. On error, if not requested, the code will stop.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Exponential of the input matrix E = exp(A).
+        complex(sp), allocatable :: E(:, :)
+    end function stdlib_expm_c
+    module function stdlib_expm_z(A, order, err) result(E)
+        !> Input matrix a(n, n).
+        complex(dp), intent(in) :: A(:, :)
+        !> [optional] Order of the Pade approximation (default `order=10`)
+        integer(ilp), optional, intent(in) :: order
+        !> [optional] State return flag. On error, if not requested, the code will stop.
+        type(linalg_state_type), optional, intent(out) :: err
+        !> Exponential of the input matrix E = exp(A).
+        complex(dp), allocatable :: E(:, :)
+    end function stdlib_expm_z
+  end interface expm
 
 contains
 
