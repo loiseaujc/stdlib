@@ -2,7 +2,7 @@
 module test_linalg_expm
     use testdrive, only: error_type, check, new_unittest, unittest_type
     use stdlib_linalg_constants
-    use stdlib_linalg, only: expm, eye, mnorm
+    use stdlib_linalg, only: expm, eye, norm
     use stdlib_linalg_state, only: linalg_state_type, linalg_error_handling, LINALG_ERROR, &
          LINALG_INTERNAL_ERROR, LINALG_VALUE_ERROR
 
@@ -58,7 +58,7 @@ module test_linalg_expm
         E = expm(A)
 
         ! Check result.
-        err = mnorm(Eref - E, "inf")
+        err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -90,7 +90,7 @@ module test_linalg_expm
         E = expm(A)
 
         ! Check result.
-        err = mnorm(Eref - E, "inf")
+        err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_dp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -122,7 +122,7 @@ module test_linalg_expm
         E = expm(A)
 
         ! Check result.
-        err = mnorm(Eref - E, "inf")
+        err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
@@ -154,7 +154,7 @@ module test_linalg_expm
         E = expm(A)
 
         ! Check result.
-        err = mnorm(Eref - E, "inf")
+        err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_dp), "Analytical matrix exponential.")
         if (allocated(error)) return
         return        
