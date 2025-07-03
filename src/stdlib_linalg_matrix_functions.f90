@@ -37,7 +37,6 @@ contains
 
         ! Deal with optional args.
         order_ = 10 ; if (present(order)) order_ = order
-        print *, "inside expm :", order_
 
         ! Problem's dimension.
         m = size(A, 1) ; n = size(A, 2)
@@ -150,7 +149,6 @@ contains
 
         ! Deal with optional args.
         order_ = 10 ; if (present(order)) order_ = order
-        print *, "inside expm :", order_
 
         ! Problem's dimension.
         m = size(A, 1) ; n = size(A, 2)
@@ -263,7 +261,6 @@ contains
 
         ! Deal with optional args.
         order_ = 10 ; if (present(order)) order_ = order
-        print *, "inside expm :", order_
 
         ! Problem's dimension.
         m = size(A, 1) ; n = size(A, 2)
@@ -376,7 +373,6 @@ contains
 
         ! Deal with optional args.
         order_ = 10 ; if (present(order)) order_ = order
-        print *, "inside expm :", order_
 
         ! Problem's dimension.
         m = size(A, 1) ; n = size(A, 2)
