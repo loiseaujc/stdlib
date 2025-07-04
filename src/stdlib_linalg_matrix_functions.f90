@@ -1,19 +1,11 @@
 submodule (stdlib_linalg) stdlib_linalg_matrix_functions
+    use stdlib_constants
     use stdlib_linalg_constants
     use stdlib_linalg_blas, only: gemm
     use stdlib_linalg_lapack, only: gesv
     use stdlib_linalg_state, only: linalg_state_type, linalg_error_handling, LINALG_ERROR, &
          LINALG_INTERNAL_ERROR, LINALG_VALUE_ERROR
     implicit none
-
-    real(sp), parameter :: zero_s = 0._sp
-    real(sp), parameter :: one_s  = 1._sp
-    real(dp), parameter :: zero_d = 0._dp
-    real(dp), parameter :: one_d  = 1._dp
-    complex(sp), parameter :: zero_c = (0._sp, 0._sp)
-    complex(sp), parameter :: one_c  = (1._sp, 0._sp)
-    complex(dp), parameter :: zero_z = (0._dp, 0._dp)
-    complex(dp), parameter :: one_z  = (1._dp, 0._dp)
 
 contains
 
@@ -71,24 +63,28 @@ contains
         enddo
 
         ! Iteratively compute the Pade approximation.
-        p = .true.
-        do k = 2, order_
-            c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-            X = matmul(A2, X)
-            do concurrent(i=1:n, j=1:n)
-                E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+        block
+            real(sp) :: X_tmp(n, n)
+            p = .true.
+            do k = 2, order_
+                c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
+                X_tmp = X
+                call gemm("N", "N", n, n, n, one_sp, A2, n, X_tmp, n, zero_sp, X, n)
+                do concurrent(i=1:n, j=1:n)
+                    E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+                enddo
+                if (p) then
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
+                    enddo
+                else
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
+                    enddo
+                endif
+                p = .not. p
             enddo
-            if (p) then
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
-                enddo
-            else
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
-                enddo
-            endif
-            p = .not. p
-        enddo
+        end block
 
         block
             integer(ilp) :: ipiv(n), info
@@ -102,7 +98,7 @@ contains
             real(sp) :: E_tmp(n, n)
             do k = 1, s
                 E_tmp = E
-                call gemm("N", "N", n, n, n, one_s, E_tmp, n, E_tmp, n, zero_s, E, n)
+                call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, E, n)
             enddo
         end block
         return
@@ -183,24 +179,28 @@ contains
         enddo
 
         ! Iteratively compute the Pade approximation.
-        p = .true.
-        do k = 2, order_
-            c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-            X = matmul(A2, X)
-            do concurrent(i=1:n, j=1:n)
-                E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+        block
+            real(dp) :: X_tmp(n, n)
+            p = .true.
+            do k = 2, order_
+                c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
+                X_tmp = X
+                call gemm("N", "N", n, n, n, one_dp, A2, n, X_tmp, n, zero_dp, X, n)
+                do concurrent(i=1:n, j=1:n)
+                    E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+                enddo
+                if (p) then
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
+                    enddo
+                else
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
+                    enddo
+                endif
+                p = .not. p
             enddo
-            if (p) then
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
-                enddo
-            else
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
-                enddo
-            endif
-            p = .not. p
-        enddo
+        end block
 
         block
             integer(ilp) :: ipiv(n), info
@@ -214,7 +214,7 @@ contains
             real(dp) :: E_tmp(n, n)
             do k = 1, s
                 E_tmp = E
-                call gemm("N", "N", n, n, n, one_d, E_tmp, n, E_tmp, n, zero_d, E, n)
+                call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, E, n)
             enddo
         end block
         return
@@ -295,24 +295,28 @@ contains
         enddo
 
         ! Iteratively compute the Pade approximation.
-        p = .true.
-        do k = 2, order_
-            c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-            X = matmul(A2, X)
-            do concurrent(i=1:n, j=1:n)
-                E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+        block
+            complex(sp) :: X_tmp(n, n)
+            p = .true.
+            do k = 2, order_
+                c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
+                X_tmp = X
+                call gemm("N", "N", n, n, n, one_csp, A2, n, X_tmp, n, zero_csp, X, n)
+                do concurrent(i=1:n, j=1:n)
+                    E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+                enddo
+                if (p) then
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
+                    enddo
+                else
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
+                    enddo
+                endif
+                p = .not. p
             enddo
-            if (p) then
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
-                enddo
-            else
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
-                enddo
-            endif
-            p = .not. p
-        enddo
+        end block
 
         block
             integer(ilp) :: ipiv(n), info
@@ -326,7 +330,7 @@ contains
             complex(sp) :: E_tmp(n, n)
             do k = 1, s
                 E_tmp = E
-                call gemm("N", "N", n, n, n, one_c, E_tmp, n, E_tmp, n, zero_c, E, n)
+                call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, E, n)
             enddo
         end block
         return
@@ -407,24 +411,28 @@ contains
         enddo
 
         ! Iteratively compute the Pade approximation.
-        p = .true.
-        do k = 2, order_
-            c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-            X = matmul(A2, X)
-            do concurrent(i=1:n, j=1:n)
-                E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+        block
+            complex(dp) :: X_tmp(n, n)
+            p = .true.
+            do k = 2, order_
+                c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
+                X_tmp = X
+                call gemm("N", "N", n, n, n, one_cdp, A2, n, X_tmp, n, zero_cdp, X, n)
+                do concurrent(i=1:n, j=1:n)
+                    E(i, j) = E(i, j) + c*X(i, j)       ! E = E + c*X
+                enddo
+                if (p) then
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
+                    enddo
+                else
+                    do concurrent(i=1:n, j=1:n)
+                        Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
+                    enddo
+                endif
+                p = .not. p
             enddo
-            if (p) then
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) + c*X(i, j)   ! Q = Q + c*X
-                enddo
-            else
-                do concurrent(i=1:n, j=1:n)
-                    Q(i, j) = Q(i, j) - c*X(i, j)   ! Q = Q - c*X
-                enddo
-            endif
-            p = .not. p
-        enddo
+        end block
 
         block
             integer(ilp) :: ipiv(n), info
@@ -438,7 +446,7 @@ contains
             complex(dp) :: E_tmp(n, n)
             do k = 1, s
                 E_tmp = E
-                call gemm("N", "N", n, n, n, one_z, E_tmp, n, E_tmp, n, zero_z, E, n)
+                call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, E, n)
             enddo
         end block
         return
