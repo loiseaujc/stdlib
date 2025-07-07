@@ -5,6 +5,8 @@ module stdlib_specialmatrices
     !! applications. ([Specifications](../page/specs/stdlib_specialmatrices.html))
     use stdlib_linalg_constants
     use stdlib_constants
+    use stdlib_linalg_state, only: linalg_state_type, linalg_error_handling, LINALG_ERROR, &
+        LINALG_INTERNAL_ERROR, LINALG_VALUE_ERROR
     implicit none
     private
     public :: tridiagonal
@@ -90,7 +92,7 @@ module stdlib_specialmatrices
         !!
         !!    A = Tridiagonal(a, b, c, n)
         !! ```
-        pure module function initialize_tridiagonal_sp(dl, dv, du) result(A)
+        pure module function initialize_tridiagonal_pure_sp(dl, dv, du) result(A)
             !! Construct a `tridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             real(sp), intent(in) :: dl(:), dv(:), du(:)
@@ -99,7 +101,7 @@ module stdlib_specialmatrices
             !! Corresponding Tridiagonal matrix.
         end function
 
-        pure module function initialize_constant_tridiagonal_sp(dl, dv, du, n) result(A)
+        pure module function initialize_constant_tridiagonal_pure_sp(dl, dv, du, n) result(A)
             !! Construct a `tridiagonal` matrix with constant elements.
             real(sp), intent(in) :: dl, dv, du
             !! Tridiagonal matrix elements.
@@ -108,7 +110,30 @@ module stdlib_specialmatrices
             type(tridiagonal_sp_type) :: A
             !! Corresponding Tridiagonal matrix.
         end function   
-        pure module function initialize_tridiagonal_dp(dl, dv, du) result(A)
+
+        module function initialize_tridiagonal_impure_sp(dl, dv, du, err) result(A)
+            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! `dl`, `dv` and `du`.
+            real(sp), intent(in) :: dl(:), dv(:), du(:)
+            !! Tridiagonal matrix elements.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_sp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function
+
+        module function initialize_constant_tridiagonal_impure_sp(dl, dv, du, n, err) result(A)
+            !! Construct a `tridiagonal` matrix with constant elements.
+            real(sp), intent(in) :: dl, dv, du
+            !! Tridiagonal matrix elements.
+            integer(ilp), intent(in) :: n
+            !! Matrix dimension.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_sp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function   
+        pure module function initialize_tridiagonal_pure_dp(dl, dv, du) result(A)
             !! Construct a `tridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             real(dp), intent(in) :: dl(:), dv(:), du(:)
@@ -117,7 +142,7 @@ module stdlib_specialmatrices
             !! Corresponding Tridiagonal matrix.
         end function
 
-        pure module function initialize_constant_tridiagonal_dp(dl, dv, du, n) result(A)
+        pure module function initialize_constant_tridiagonal_pure_dp(dl, dv, du, n) result(A)
             !! Construct a `tridiagonal` matrix with constant elements.
             real(dp), intent(in) :: dl, dv, du
             !! Tridiagonal matrix elements.
@@ -126,7 +151,30 @@ module stdlib_specialmatrices
             type(tridiagonal_dp_type) :: A
             !! Corresponding Tridiagonal matrix.
         end function   
-        pure module function initialize_tridiagonal_csp(dl, dv, du) result(A)
+
+        module function initialize_tridiagonal_impure_dp(dl, dv, du, err) result(A)
+            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! `dl`, `dv` and `du`.
+            real(dp), intent(in) :: dl(:), dv(:), du(:)
+            !! Tridiagonal matrix elements.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_dp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function
+
+        module function initialize_constant_tridiagonal_impure_dp(dl, dv, du, n, err) result(A)
+            !! Construct a `tridiagonal` matrix with constant elements.
+            real(dp), intent(in) :: dl, dv, du
+            !! Tridiagonal matrix elements.
+            integer(ilp), intent(in) :: n
+            !! Matrix dimension.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_dp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function   
+        pure module function initialize_tridiagonal_pure_csp(dl, dv, du) result(A)
             !! Construct a `tridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(sp), intent(in) :: dl(:), dv(:), du(:)
@@ -135,7 +183,7 @@ module stdlib_specialmatrices
             !! Corresponding Tridiagonal matrix.
         end function
 
-        pure module function initialize_constant_tridiagonal_csp(dl, dv, du, n) result(A)
+        pure module function initialize_constant_tridiagonal_pure_csp(dl, dv, du, n) result(A)
             !! Construct a `tridiagonal` matrix with constant elements.
             complex(sp), intent(in) :: dl, dv, du
             !! Tridiagonal matrix elements.
@@ -144,7 +192,30 @@ module stdlib_specialmatrices
             type(tridiagonal_csp_type) :: A
             !! Corresponding Tridiagonal matrix.
         end function   
-        pure module function initialize_tridiagonal_cdp(dl, dv, du) result(A)
+
+        module function initialize_tridiagonal_impure_csp(dl, dv, du, err) result(A)
+            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! `dl`, `dv` and `du`.
+            complex(sp), intent(in) :: dl(:), dv(:), du(:)
+            !! Tridiagonal matrix elements.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_csp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function
+
+        module function initialize_constant_tridiagonal_impure_csp(dl, dv, du, n, err) result(A)
+            !! Construct a `tridiagonal` matrix with constant elements.
+            complex(sp), intent(in) :: dl, dv, du
+            !! Tridiagonal matrix elements.
+            integer(ilp), intent(in) :: n
+            !! Matrix dimension.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_csp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function   
+        pure module function initialize_tridiagonal_pure_cdp(dl, dv, du) result(A)
             !! Construct a `tridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(dp), intent(in) :: dl(:), dv(:), du(:)
@@ -153,12 +224,35 @@ module stdlib_specialmatrices
             !! Corresponding Tridiagonal matrix.
         end function
 
-        pure module function initialize_constant_tridiagonal_cdp(dl, dv, du, n) result(A)
+        pure module function initialize_constant_tridiagonal_pure_cdp(dl, dv, du, n) result(A)
             !! Construct a `tridiagonal` matrix with constant elements.
             complex(dp), intent(in) :: dl, dv, du
             !! Tridiagonal matrix elements.
             integer(ilp), intent(in) :: n
             !! Matrix dimension.
+            type(tridiagonal_cdp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function   
+
+        module function initialize_tridiagonal_impure_cdp(dl, dv, du, err) result(A)
+            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! `dl`, `dv` and `du`.
+            complex(dp), intent(in) :: dl(:), dv(:), du(:)
+            !! Tridiagonal matrix elements.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
+            type(tridiagonal_cdp_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function
+
+        module function initialize_constant_tridiagonal_impure_cdp(dl, dv, du, n, err) result(A)
+            !! Construct a `tridiagonal` matrix with constant elements.
+            complex(dp), intent(in) :: dl, dv, du
+            !! Tridiagonal matrix elements.
+            integer(ilp), intent(in) :: n
+            !! Matrix dimension.
+            type(linalg_state_type), intent(out) :: err
+            !! Error handling.
             type(tridiagonal_cdp_type) :: A
             !! Corresponding Tridiagonal matrix.
         end function   
