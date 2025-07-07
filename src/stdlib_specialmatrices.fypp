@@ -12,7 +12,7 @@ module stdlib_specialmatrices
     use stdlib_constants
     implicit none
     private
-    public :: tridiagonal
+    public :: tridiagonal, symtridiagonal
     public :: spmv
     public :: dense, transpose, hermitian
     public :: operator(*), operator(+), operator(-)
@@ -30,6 +30,17 @@ module stdlib_specialmatrices
         private
         ${t1}$, allocatable :: dl(:), dv(:), du(:)
         integer(ilp) :: n
+    end type
+    #:endfor
+
+    !--> Symmetric tridiagonal matrices
+    #:for k1, t1, s1 in (KINDS_TYPES)
+    type, public :: symtridiagonal_${s1}$_type
+        !! Base type to define a `symtridiagonal` matrix.
+        private
+        integer(ilp) :: n
+        ${t1}$, allocatable :: dv(:), ev(:)
+        logical(lk) :: isposdef
     end type
     #:endfor
 
@@ -101,6 +112,72 @@ module stdlib_specialmatrices
         #:endfor
     end interface
 
+    interface symtridiagonal
+        !! ([Specifications](../page/specs/stdlib_specialmatrices.html#SymTridiagonal)) This
+        !! interface provides different methods to construct a `symtridiagonal` matrix. Only
+        !! the non-zero elements of \( A \) are stored, i.e.
+        !!
+        !! \[
+        !!    A
+        !!    =
+        !!    \begin{bmatrix}
+        !!       a_1   &  b_1  \\
+        !!       b_1  &  a_2      &  b_2  \\
+        !!             &  \ddots   &  \ddots   &  \ddots   \\
+        !!             &           &  b_{n-2} &  a_{n-1}  &  b_{n-1} \\
+        !!             &           &           &  b_{n-1} &  a_n
+        !!    \end{bmatrix}.
+        !! \]
+        !!
+        !! #### Syntax
+        !!
+        !! - Construct a real `symtridiagonal` matrix from rank-1 arrays:
+        !!
+        !! ```fortran
+        !!    integer, parameter :: n
+        !!    real(dp), allocatable :: dv(:), ev(:)
+        !!    type(symtridiagonal_rdp_type) :: A
+        !!    integer :: i
+        !!
+        !!    dv = [(2*i, i=1, n)]; ev = [(3*i, i=1, n)]
+        !!    A = symtridiagonal(dv, ev)
+        !! ```
+        !!
+        !! - Construct a real `symtridiagonal` matrix with constant diagonals:
+        !!
+        !! ```fortran
+        !!    integer, parameter :: n
+        !!    real(dp), parameter :: a = 1.0_dp, b = 2.0_dp
+        !!    type(symtridiagonal_rdp_type) :: A
+        !!
+        !!    A = symtridiagonal(a, b, n)
+        !! ```
+        #:for k1, t1, s1 in (KINDS_TYPES)
+        pure module function initialize_symtridiagonal_${s1}$(dv, ev, isposdef) result(A)
+            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! `dl`, `dv` and `du`.
+            ${t1}$, intent(in) :: dv(:), ev(:)
+            !! Tridiagonal matrix elements.
+            logical(lk), optional, intent(in) :: isposdef
+            !! Logical switch (default .false.) indicating whether A is sym. pos. def. or not.
+            type(symtridiagonal_${s1}$_type) :: A
+            !! Corresponding Tridiagonal matrix.
+        end function
+
+        pure module function initialize_constant_symtridiagonal_${s1}$(dv, ev, n, isposdef) result(A)
+            !! Construct a `symtridiagonal` matrix with constant elements.
+            ${t1}$, intent(in) :: dv, ev
+            !! Tridiagonal matrix elements.
+            integer(ilp), intent(in) :: n
+            !! Matrix dimension.
+            logical(lk), optional, intent(in) :: isposdef
+            !! Logical switch (default .false.) indicating whether A is sym. pos. def. or not.
+            type(symtridiagonal_${s1}$_type) :: A
+            !! Corresponding symtridiagonal matrix.
+        end function   
+        #:endfor
+    end interface
+
     !----------------------------------
     !-----                        -----
     !-----     LINEAR ALGEBRA     -----
@@ -117,7 +194,16 @@ module stdlib_specialmatrices
         #:for k1, t1, s1 in (KINDS_TYPES)
         #:for rank in RANKS
         module subroutine spmv_tridiag_${rank}$d_${s1}$(A, x, y, alpha, beta, op)
-         type(tridiagonal_${s1}$_type), intent(in) :: A
+            type(tridiagonal_${s1}$_type), intent(in) :: A
+            ${t1}$, intent(in), contiguous, target :: x${ranksuffix(rank)}$
+            ${t1}$, intent(inout), contiguous, target :: y${ranksuffix(rank)}$
+            real(${k1}$), intent(in), optional :: alpha
+            real(${k1}$), intent(in), optional :: beta
+            character(1), intent(in), optional :: op
+        end subroutine
+
+        module subroutine spmv_symtridiag_${rank}$d_${s1}$(A, x, y, alpha, beta, op)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
             ${t1}$, intent(in), contiguous, target :: x${ranksuffix(rank)}$
             ${t1}$, intent(inout), contiguous, target :: y${ranksuffix(rank)}$
             real(${k1}$), intent(in), optional :: alpha
@@ -146,6 +232,14 @@ module stdlib_specialmatrices
             ${t1}$, allocatable :: B(:, :)
             !! Corresponding dense matrix.
         end function
+
+        pure module function symtridiagonal_to_dense_${s1}$(A) result(B)
+            !! Convert a `symtridiagonal` matrix to its dense representation.
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            !! Input Tridiagonal matrix.
+            ${t1}$, allocatable :: B(:, :)
+            !! Corresponding dense matrix.
+        end function
         #:endfor
     end interface
 
@@ -158,6 +252,12 @@ module stdlib_specialmatrices
             type(tridiagonal_${s1}$_type), intent(in) :: A
             !! Input matrix.
             type(tridiagonal_${s1}$_type) :: B
+        end function
+
+        pure module function transpose_symtridiagonal_${s1}$(A) result(B)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            !! Input matrix.
+            type(symtridiagonal_${s1}$_type) :: B
         end function
         #:endfor
     end interface
@@ -172,6 +272,12 @@ module stdlib_specialmatrices
             type(tridiagonal_${s1}$_type), intent(in) :: A
             !! Input matrix.
             type(tridiagonal_${s1}$_type) :: B
+        end function
+
+        pure module function hermitian_symtridiagonal_${s1}$(A) result(B)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            !! Input matrix.
+            type(symtridiagonal_${s1}$_type) :: B
         end function
         #:endfor
     end interface
@@ -197,6 +303,17 @@ module stdlib_specialmatrices
             ${t1}$, intent(in) :: alpha
             type(tridiagonal_${s1}$_type) :: B
         end function
+
+        pure module function scalar_multiplication_symtridiagonal_${s1}$(alpha, A) result(B)
+            ${t1}$, intent(in) :: alpha
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            type(symtridiagonal_${s1}$_type) :: B
+        end function
+        pure module function scalar_multiplication_bis_symtridiagonal_${s1}$(A, alpha) result(B)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            ${t1}$, intent(in) :: alpha
+            type(symtridiagonal_${s1}$_type) :: B
+        end function
         #:endfor
     end interface
 
@@ -210,6 +327,12 @@ module stdlib_specialmatrices
             type(tridiagonal_${s1}$_type), intent(in) :: B
             type(tridiagonal_${s1}$_type) :: C
         end function
+
+        pure module function matrix_add_symtridiagonal_${s1}$(A, B) result(C)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            type(symtridiagonal_${s1}$_type), intent(in) :: B
+            type(symtridiagonal_${s1}$_type) :: C
+        end function
         #:endfor
     end interface
 
@@ -222,6 +345,12 @@ module stdlib_specialmatrices
             type(tridiagonal_${s1}$_type), intent(in) :: A
             type(tridiagonal_${s1}$_type), intent(in) :: B
             type(tridiagonal_${s1}$_type) :: C
+        end function
+
+        pure module function matrix_sub_symtridiagonal_${s1}$(A, B) result(C)
+            type(symtridiagonal_${s1}$_type), intent(in) :: A
+            type(symtridiagonal_${s1}$_type), intent(in) :: B
+            type(symtridiagonal_${s1}$_type) :: C
         end function
         #:endfor
     end interface
