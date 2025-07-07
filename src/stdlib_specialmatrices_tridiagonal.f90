@@ -227,7 +227,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
-        nrhs =  size(x, 2) 
+        nrhs =  size(x, dim=2, kind=ilp) 
 
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
@@ -278,7 +278,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
-        nrhs =  size(x, 2) 
+        nrhs =  size(x, dim=2, kind=ilp) 
 
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
@@ -329,7 +329,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
-        nrhs =  size(x, 2) 
+        nrhs =  size(x, dim=2, kind=ilp) 
 
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
@@ -380,7 +380,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
-        nrhs =  size(x, 2) 
+        nrhs =  size(x, dim=2, kind=ilp) 
 
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, x, ldx, beta_, y, ldy)
     end subroutine
