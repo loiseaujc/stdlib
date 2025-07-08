@@ -2,6 +2,7 @@ module test_specialmatrices
     use testdrive, only : new_unittest, unittest_type, error_type, check, skip_test
     use stdlib_kinds
     use stdlib_linalg, only: hermitian
+    use stdlib_linalg_state, only: linalg_state_type
     use stdlib_math, only: all_close
     use stdlib_specialmatrices
     implicit none
@@ -15,7 +16,8 @@ contains
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
         testsuite = [ &
-            new_unittest('tridiagonal', test_tridiagonal) &
+            new_unittest('tridiagonal', test_tridiagonal), &
+            new_unittest('tridiagonal error handling', test_tridiagonal_error_handling) &
         ]
     end subroutine
 
@@ -79,6 +81,51 @@ contains
             call check(error, all_close(y1, y2), .true.)
             if (allocated(error)) return
 
+        end block
+    end subroutine
+
+    subroutine test_tridiagonal_error_handling(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(tridiagonal_sp_type) :: A
+            real(sp), allocatable :: dl(:), dv(:), du(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            dl = [(1.0_wp, i = 1, n-2)] ; du = dl
+            dv = [(2.0_wp, i = 1, n)]
+            A = tridiagonal(dl, dv, du, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = tridiagonal(dl(1), dv(1), du(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(tridiagonal_dp_type) :: A
+            real(dp), allocatable :: dl(:), dv(:), du(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            dl = [(1.0_wp, i = 1, n-2)] ; du = dl
+            dv = [(2.0_wp, i = 1, n)]
+            A = tridiagonal(dl, dv, du, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = tridiagonal(dl(1), dv(1), du(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
         end block
     end subroutine
 
