@@ -57,23 +57,6 @@ module test_linalg_expm
         ! Compute matrix exponential.
         E = expm(A)
 
-        print *, "Reference matrix"
-        do i = 1, n
-            print *, (Eref(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Computed matrix"
-        do i = 1, n
-            print *, (E(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Difference"
-        do i = 1, n
-            print *, (E(i, j) - Eref(i, j), j=1, n)
-        enddo
-
         ! Check result.
         err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
@@ -105,23 +88,6 @@ module test_linalg_expm
 
         ! Compute matrix exponential.
         E = expm(A)
-
-        print *, "Reference matrix"
-        do i = 1, n
-            print *, (Eref(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Computed matrix"
-        do i = 1, n
-            print *, (E(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Difference"
-        do i = 1, n
-            print *, (E(i, j) - Eref(i, j), j=1, n)
-        enddo
 
         ! Check result.
         err = norm(Eref - E, "inf")
@@ -155,23 +121,6 @@ module test_linalg_expm
         ! Compute matrix exponential.
         E = expm(A)
 
-        print *, "Reference matrix"
-        do i = 1, n
-            print *, (Eref(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Computed matrix"
-        do i = 1, n
-            print *, (E(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Difference"
-        do i = 1, n
-            print *, (E(i, j) - Eref(i, j), j=1, n)
-        enddo
-
         ! Check result.
         err = norm(Eref - E, "inf")
         call check(error, err < (n**2)*epsilon(1.0_sp), "Analytical matrix exponential.")
@@ -203,23 +152,6 @@ module test_linalg_expm
 
         ! Compute matrix exponential.
         E = expm(A)
-
-        print *, "Reference matrix"
-        do i = 1, n
-            print *, (Eref(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Computed matrix"
-        do i = 1, n
-            print *, (E(i, j), j=1, n)
-        enddo
-
-        print *
-        print *, "Difference"
-        do i = 1, n
-            print *, (E(i, j) - Eref(i, j), j=1, n)
-        enddo
 
         ! Check result.
         err = norm(Eref - E, "inf")
