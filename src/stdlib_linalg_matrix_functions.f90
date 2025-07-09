@@ -133,13 +133,8 @@ contains
             block
                 real(sp) :: E_tmp(n, n)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
                 enddo
             end block
         endif
@@ -269,13 +264,8 @@ contains
             block
                 real(dp) :: E_tmp(n, n)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
                 enddo
             end block
         endif
@@ -405,13 +395,8 @@ contains
             block
                 complex(sp) :: E_tmp(n, n)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
                 enddo
             end block
         endif
@@ -541,13 +526,8 @@ contains
             block
                 complex(dp) :: E_tmp(n, n)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
                 enddo
             end block
         endif
