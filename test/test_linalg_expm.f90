@@ -20,13 +20,13 @@ module test_linalg_expm
         allocate(tests(0))
         
         tests = [tests, new_unittest("expm_s",test_expm_s)]
-        ! tests = [tests, new_unittest("Error-handling expm_s",test_error_handling_expm_s)]
+        tests = [tests, new_unittest("Error-handling expm_s",test_error_handling_expm_s)]
         tests = [tests, new_unittest("expm_d",test_expm_d)]
-        ! tests = [tests, new_unittest("Error-handling expm_d",test_error_handling_expm_d)]
+        tests = [tests, new_unittest("Error-handling expm_d",test_error_handling_expm_d)]
         tests = [tests, new_unittest("expm_c",test_expm_c)]
-        ! tests = [tests, new_unittest("Error-handling expm_c",test_error_handling_expm_c)]
+        tests = [tests, new_unittest("Error-handling expm_c",test_error_handling_expm_c)]
         tests = [tests, new_unittest("expm_z",test_expm_z)]
-        ! tests = [tests, new_unittest("Error-handling expm_z",test_error_handling_expm_z)]
+        tests = [tests, new_unittest("Error-handling expm_z",test_error_handling_expm_z)]
 
     end subroutine test_expm_computation
 
@@ -182,8 +182,19 @@ module test_linalg_expm
         call check(error, err%error(), "Negative Pade order")
         if (allocated(error)) return
 
+        call matrix_exp(A, order=-1, err=err)
+        ! Check result.
+        call check(error, err%error(), "Negative Pade order")
+        if (allocated(error)) return
+
         ! Compute matrix exponential.
-        call matrix_exp(A(:n, :n-1), E, err=err)
+        call matrix_exp(A, E(:n, :n-1), err=err)
+        ! Check result.
+        call check(error, err%error(), "Invalid matrix size")
+        if (allocated(error)) return
+
+        ! Compute matrix exponential.
+        call matrix_exp(A(:n, :n-1), err=err)
         ! Check result.
         call check(error, err%error(), "Invalid matrix size")
         if (allocated(error)) return
@@ -211,8 +222,19 @@ module test_linalg_expm
         call check(error, err%error(), "Negative Pade order")
         if (allocated(error)) return
 
+        call matrix_exp(A, order=-1, err=err)
+        ! Check result.
+        call check(error, err%error(), "Negative Pade order")
+        if (allocated(error)) return
+
         ! Compute matrix exponential.
-        call matrix_exp(A(:n, :n-1), E, err=err)
+        call matrix_exp(A, E(:n, :n-1), err=err)
+        ! Check result.
+        call check(error, err%error(), "Invalid matrix size")
+        if (allocated(error)) return
+
+        ! Compute matrix exponential.
+        call matrix_exp(A(:n, :n-1), err=err)
         ! Check result.
         call check(error, err%error(), "Invalid matrix size")
         if (allocated(error)) return
@@ -240,8 +262,19 @@ module test_linalg_expm
         call check(error, err%error(), "Negative Pade order")
         if (allocated(error)) return
 
+        call matrix_exp(A, order=-1, err=err)
+        ! Check result.
+        call check(error, err%error(), "Negative Pade order")
+        if (allocated(error)) return
+
         ! Compute matrix exponential.
-        call matrix_exp(A(:n, :n-1), E, err=err)
+        call matrix_exp(A, E(:n, :n-1), err=err)
+        ! Check result.
+        call check(error, err%error(), "Invalid matrix size")
+        if (allocated(error)) return
+
+        ! Compute matrix exponential.
+        call matrix_exp(A(:n, :n-1), err=err)
         ! Check result.
         call check(error, err%error(), "Invalid matrix size")
         if (allocated(error)) return
@@ -269,8 +302,19 @@ module test_linalg_expm
         call check(error, err%error(), "Negative Pade order")
         if (allocated(error)) return
 
+        call matrix_exp(A, order=-1, err=err)
+        ! Check result.
+        call check(error, err%error(), "Negative Pade order")
+        if (allocated(error)) return
+
         ! Compute matrix exponential.
-        call matrix_exp(A(:n, :n-1), E, err=err)
+        call matrix_exp(A, E(:n, :n-1), err=err)
+        ! Check result.
+        call check(error, err%error(), "Invalid matrix size")
+        if (allocated(error)) return
+
+        ! Compute matrix exponential.
+        call matrix_exp(A(:n, :n-1), err=err)
         ! Check result.
         call check(error, err%error(), "Invalid matrix size")
         if (allocated(error)) return
