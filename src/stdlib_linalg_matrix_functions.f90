@@ -45,7 +45,7 @@ contains
                                      'invalid matrix sizes: A=',[lda,n], &
                                                           ' E=',[lde,ne])
         else
-            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_s_expm_inplace(E, order, err)
+            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_s_expm_inplace(E, order, err0)
         endif
         
         ! Process output and return
@@ -176,7 +176,7 @@ contains
                                      'invalid matrix sizes: A=',[lda,n], &
                                                           ' E=',[lde,ne])
         else
-            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_d_expm_inplace(E, order, err)
+            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_d_expm_inplace(E, order, err0)
         endif
         
         ! Process output and return
@@ -307,7 +307,7 @@ contains
                                      'invalid matrix sizes: A=',[lda,n], &
                                                           ' E=',[lde,ne])
         else
-            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_c_expm_inplace(E, order, err)
+            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_c_expm_inplace(E, order, err0)
         endif
         
         ! Process output and return
@@ -438,7 +438,7 @@ contains
                                      'invalid matrix sizes: A=',[lda,n], &
                                                           ' E=',[lde,ne])
         else
-            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_z_expm_inplace(E, order, err)
+            E(:n, :n) = A(:n, :n) ; call stdlib_linalg_z_expm_inplace(E, order, err0)
         endif
         
         ! Process output and return
