@@ -101,17 +101,12 @@ contains
 
             ! Iteratively compute the Pade approximation.
             block
-                real(sp) :: X_tmp(n, n)
+                real(sp), allocatable :: X_tmp(:, :)
                 p = .true.
                 do k = 2, order_
                     c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-                    X = matmul(A2, X)
-                    ! X_tmp = X
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, A2, n, X_tmp, n, zero_csp, X, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, A2, n, X_tmp, n, zero_sp, X, n)
-                    ! #:endif
+                    X_tmp = X
+                    call gemm("N", "N", n, n, n, one_sp, A2, n, X_tmp, n, zero_sp, X, n)
                     do concurrent(i=1:n, j=1:n)
                         A(i, j) = A(i, j) + c*X(i, j)       ! E = E + c*X
                     enddo
@@ -136,15 +131,10 @@ contains
 
             ! Matrix squaring.
             block
-                real(sp) :: E_tmp(n, n)
+                real(sp), allocatable :: E_tmp(:, :)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
                 enddo
             end block
         endif
@@ -242,17 +232,12 @@ contains
 
             ! Iteratively compute the Pade approximation.
             block
-                real(dp) :: X_tmp(n, n)
+                real(dp), allocatable :: X_tmp(:, :)
                 p = .true.
                 do k = 2, order_
                     c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-                    X = matmul(A2, X)
-                    ! X_tmp = X
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, A2, n, X_tmp, n, zero_cdp, X, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, A2, n, X_tmp, n, zero_dp, X, n)
-                    ! #:endif
+                    X_tmp = X
+                    call gemm("N", "N", n, n, n, one_dp, A2, n, X_tmp, n, zero_dp, X, n)
                     do concurrent(i=1:n, j=1:n)
                         A(i, j) = A(i, j) + c*X(i, j)       ! E = E + c*X
                     enddo
@@ -277,15 +262,10 @@ contains
 
             ! Matrix squaring.
             block
-                real(dp) :: E_tmp(n, n)
+                real(dp), allocatable :: E_tmp(:, :)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
                 enddo
             end block
         endif
@@ -383,17 +363,12 @@ contains
 
             ! Iteratively compute the Pade approximation.
             block
-                complex(sp) :: X_tmp(n, n)
+                complex(sp), allocatable :: X_tmp(:, :)
                 p = .true.
                 do k = 2, order_
                     c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-                    X = matmul(A2, X)
-                    ! X_tmp = X
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, A2, n, X_tmp, n, zero_csp, X, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, A2, n, X_tmp, n, zero_sp, X, n)
-                    ! #:endif
+                    X_tmp = X
+                    call gemm("N", "N", n, n, n, one_csp, A2, n, X_tmp, n, zero_csp, X, n)
                     do concurrent(i=1:n, j=1:n)
                         A(i, j) = A(i, j) + c*X(i, j)       ! E = E + c*X
                     enddo
@@ -418,15 +393,10 @@ contains
 
             ! Matrix squaring.
             block
-                complex(sp) :: E_tmp(n, n)
+                complex(sp), allocatable :: E_tmp(:, :)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_sp, E_tmp, n, E_tmp, n, zero_sp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_csp, E_tmp, n, E_tmp, n, zero_csp, A, n)
                 enddo
             end block
         endif
@@ -524,17 +494,12 @@ contains
 
             ! Iteratively compute the Pade approximation.
             block
-                complex(dp) :: X_tmp(n, n)
+                complex(dp), allocatable :: X_tmp(:, :)
                 p = .true.
                 do k = 2, order_
                     c = c * (order_ - k + 1) / (k * (2*order_ - k + 1))
-                    X = matmul(A2, X)
-                    ! X_tmp = X
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, A2, n, X_tmp, n, zero_cdp, X, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, A2, n, X_tmp, n, zero_dp, X, n)
-                    ! #:endif
+                    X_tmp = X
+                    call gemm("N", "N", n, n, n, one_cdp, A2, n, X_tmp, n, zero_cdp, X, n)
                     do concurrent(i=1:n, j=1:n)
                         A(i, j) = A(i, j) + c*X(i, j)       ! E = E + c*X
                     enddo
@@ -559,15 +524,10 @@ contains
 
             ! Matrix squaring.
             block
-                complex(dp) :: E_tmp(n, n)
+                complex(dp), allocatable :: E_tmp(:, :)
                 do k = 1, s
-                    A = matmul(A, A)
-                    ! E_tmp = A
-                    ! #:if rt.startswith('complex')
-                    ! call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
-                    ! #:else
-                    ! call gemm("N", "N", n, n, n, one_dp, E_tmp, n, E_tmp, n, zero_dp, A, n)
-                    ! #:endif
+                    E_tmp = A
+                    call gemm("N", "N", n, n, n, one_cdp, E_tmp, n, E_tmp, n, zero_cdp, A, n)
                 enddo
             end block
         endif
