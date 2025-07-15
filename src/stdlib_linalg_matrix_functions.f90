@@ -40,10 +40,10 @@ contains
         lda = size(A, 1, kind=ilp) ; n = size(A, 2, kind=ilp)
         lde = size(E, 1, kind=ilp) ; ne = size(E, 2, kind=ilp)
           
-        if (lda<1 .or. n<1 .or. lda<n .or. lde<n .or. ne<n) then     
+        if (lda<1 .or. n<1 .or. lda/=n .or. lde/=n .or. ne/=n) then     
             err0 = linalg_state_type(this,LINALG_VALUE_ERROR, &
-                                     'invalid matrix sizes: A=',[lda,n], &
-                                                          ' E=',[lde,ne])
+                                     'invalid matrix sizes: A must be square (lda=', lda, ', n=', n, ')', &
+                                     ' E must be square (lde=', lde, ', ne=', ne, ')')
         else
             E(:n, :n) = A(:n, :n) ; call stdlib_linalg_s_expm_inplace(E, order, err0)
         endif
@@ -171,10 +171,10 @@ contains
         lda = size(A, 1, kind=ilp) ; n = size(A, 2, kind=ilp)
         lde = size(E, 1, kind=ilp) ; ne = size(E, 2, kind=ilp)
           
-        if (lda<1 .or. n<1 .or. lda<n .or. lde<n .or. ne<n) then     
+        if (lda<1 .or. n<1 .or. lda/=n .or. lde/=n .or. ne/=n) then     
             err0 = linalg_state_type(this,LINALG_VALUE_ERROR, &
-                                     'invalid matrix sizes: A=',[lda,n], &
-                                                          ' E=',[lde,ne])
+                                     'invalid matrix sizes: A must be square (lda=', lda, ', n=', n, ')', &
+                                     ' E must be square (lde=', lde, ', ne=', ne, ')')
         else
             E(:n, :n) = A(:n, :n) ; call stdlib_linalg_d_expm_inplace(E, order, err0)
         endif
@@ -302,10 +302,10 @@ contains
         lda = size(A, 1, kind=ilp) ; n = size(A, 2, kind=ilp)
         lde = size(E, 1, kind=ilp) ; ne = size(E, 2, kind=ilp)
           
-        if (lda<1 .or. n<1 .or. lda<n .or. lde<n .or. ne<n) then     
+        if (lda<1 .or. n<1 .or. lda/=n .or. lde/=n .or. ne/=n) then     
             err0 = linalg_state_type(this,LINALG_VALUE_ERROR, &
-                                     'invalid matrix sizes: A=',[lda,n], &
-                                                          ' E=',[lde,ne])
+                                     'invalid matrix sizes: A must be square (lda=', lda, ', n=', n, ')', &
+                                     ' E must be square (lde=', lde, ', ne=', ne, ')')
         else
             E(:n, :n) = A(:n, :n) ; call stdlib_linalg_c_expm_inplace(E, order, err0)
         endif
@@ -433,10 +433,10 @@ contains
         lda = size(A, 1, kind=ilp) ; n = size(A, 2, kind=ilp)
         lde = size(E, 1, kind=ilp) ; ne = size(E, 2, kind=ilp)
           
-        if (lda<1 .or. n<1 .or. lda<n .or. lde<n .or. ne<n) then     
+        if (lda<1 .or. n<1 .or. lda/=n .or. lde/=n .or. ne/=n) then     
             err0 = linalg_state_type(this,LINALG_VALUE_ERROR, &
-                                     'invalid matrix sizes: A=',[lda,n], &
-                                                          ' E=',[lde,ne])
+                                     'invalid matrix sizes: A must be square (lda=', lda, ', n=', n, ')', &
+                                     ' E must be square (lde=', lde, ', ne=', ne, ')')
         else
             E(:n, :n) = A(:n, :n) ; call stdlib_linalg_z_expm_inplace(E, order, err0)
         endif
