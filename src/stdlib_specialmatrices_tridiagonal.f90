@@ -1796,7 +1796,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     !----- Matrix addition -----
 
     ! Tridiag + Tridiag = Tridiag
-    pure function matrix_add_tridiag_tridiag_sp(A, B) result(C)
+    pure module function matrix_add_tridiag_tridiag_sp(A, B) result(C)
         type(tridiagonal_sp_type), intent(in) :: A, B
         type(tridiagonal_sp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -1830,7 +1830,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     ! Tridiag + Tridiag = Tridiag
-    pure function matrix_add_tridiag_tridiag_dp(A, B) result(C)
+    pure module function matrix_add_tridiag_tridiag_dp(A, B) result(C)
         type(tridiagonal_dp_type), intent(in) :: A, B
         type(tridiagonal_dp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -1864,7 +1864,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     end function
 
     ! Tridiag + Tridiag = Tridiag
-    pure function matrix_add_tridiag_tridiag_csp(A, B) result(C)
+    pure module function matrix_add_tridiag_tridiag_csp(A, B) result(C)
         type(tridiagonal_csp_type), intent(in) :: A, B
         type(tridiagonal_csp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -1941,7 +1941,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = conjg(C%dl)
     end function
     ! Tridiag + Tridiag = Tridiag
-    pure function matrix_add_tridiag_tridiag_cdp(A, B) result(C)
+    pure module function matrix_add_tridiag_tridiag_cdp(A, B) result(C)
         type(tridiagonal_cdp_type), intent(in) :: A, B
         type(tridiagonal_cdp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -2021,7 +2021,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
     !----- Matrix subtraction -----
 
     ! Tridiag - Tridiag = Tridiag
-    pure function matrix_sub_tridiag_tridiag_sp(A, B) result(C)
+    pure module function matrix_sub_tridiag_tridiag_sp(A, B) result(C)
         type(tridiagonal_sp_type), intent(in) :: A, B
         type(tridiagonal_sp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -2054,9 +2054,8 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%dl
     end function
 
-
     ! Tridiag - Tridiag = Tridiag
-    pure function matrix_sub_tridiag_tridiag_dp(A, B) result(C)
+    pure module function matrix_sub_tridiag_tridiag_dp(A, B) result(C)
         type(tridiagonal_dp_type), intent(in) :: A, B
         type(tridiagonal_dp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -2089,9 +2088,8 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%dl
     end function
 
-
     ! Tridiag - Tridiag = Tridiag
-    pure function matrix_sub_tridiag_tridiag_csp(A, B) result(C)
+    pure module function matrix_sub_tridiag_tridiag_csp(A, B) result(C)
         type(tridiagonal_csp_type), intent(in) :: A, B
         type(tridiagonal_csp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -2167,9 +2165,8 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         C = hermtridiagonal(A%dv, A%du)
         C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = conjg(C%dl)
     end function
-
     ! Tridiag - Tridiag = Tridiag
-    pure function matrix_sub_tridiag_tridiag_cdp(A, B) result(C)
+    pure module function matrix_sub_tridiag_tridiag_cdp(A, B) result(C)
         type(tridiagonal_cdp_type), intent(in) :: A, B
         type(tridiagonal_cdp_type) :: C
         C = tridiagonal(A%dl, A%dv, A%du)
@@ -2245,6 +2242,5 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         C = hermtridiagonal(A%dv, A%du)
         C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = conjg(C%dl)
     end function
-
 
 end submodule
