@@ -936,6 +936,230 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         A%du = [(ev, i = 1, n)]
     end function
 
+    !----- Hermitian Tridiagonal matrices -----
+
+    pure module function initialize_hermtridiagonal_pure_csp(dv, ev) result(A)
+        !! Construct a `symtridiagonal` matrix from the rank-1 arrays
+        !! `dl`, `dv` and `du`.
+        complex(sp), intent(in) :: dv(:), ev(:)
+        !! symtridiagonal matrix elements.
+        type(hermtridiagonal_csp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: n
+        type(linalg_state_type) :: err0
+
+        ! Sanity check.
+        n = size(dv, kind=ilp)
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0)
+        endif
+        if (size(ev, kind=ilp) /= n-1) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Vector ev does not have the correct length.")
+            call linalg_error_handling(err0)
+        endif
+
+        ! Description of the matrix.
+        A%n = n
+        ! Matrix elements.
+        A%dl = conjg(ev) ; A%dv = dv ; A%du = ev
+    end function
+
+    pure module function initialize_constant_hermtridiagonal_pure_csp(dv, ev, n) result(A)
+        !! Construct a `symtridiagonal` matrix with constant elements.
+        complex(sp), intent(in) :: dv, ev
+        !! symtridiagonal matrix elements.
+        integer(ilp), intent(in) :: n
+        !! Matrix dimension.
+        type(hermtridiagonal_csp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: i
+        type(linalg_state_type) :: err0
+
+        ! Description of the matrix.
+        A%n = n
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0)
+        endif
+        ! Matrix elements.
+        A%dl = [(conjg(ev), i = 1, n-1)]
+        A%dv = [(dv, i = 1, n-1)]
+        A%du = [(ev, i = 1, n-1)]
+    end function
+
+    module function initialize_hermtridiagonal_impure_csp(dv, ev, err) result(A)
+        !! Construct a `symtridiagonal` matrix from the rank-1 arrays
+        !! `dl`, `dv` and `du`.
+        complex(sp), intent(in) :: dv(:), ev(:)
+        !! symtridiagonal matrix elements.
+        type(linalg_state_type), intent(out) :: err
+        !! Error handling.
+        type(hermtridiagonal_csp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: n
+        type(linalg_state_type) :: err0
+
+        ! Sanity check.
+        n = size(dv, kind=ilp)
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0, err)
+        endif
+        if (size(ev, kind=ilp) /= n-1) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Vector ev does not have the correct length.")
+            call linalg_error_handling(err0, err)
+        endif
+
+        ! Description of the matrix.
+        A%n = n
+        ! Matrix elements.
+        A%dl = conjg(ev) ; A%dv = dv ; A%du = ev
+    end function
+
+    module function initialize_constant_hermtridiagonal_impure_csp(dv, ev, n, err) result(A)
+        !! Construct a `symtridiagonal` matrix with constant elements.
+        complex(sp), intent(in) :: dv, ev
+        !! symtridiagonal matrix elements.
+        integer(ilp), intent(in) :: n
+        !! Matrix dimension.
+        type(linalg_state_type), intent(out) :: err
+        !! Error handling
+        type(hermtridiagonal_csp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: i
+        type(linalg_state_type) :: err0
+
+        ! Description of the matrix.
+        A%n = n
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0, err)
+        endif
+        ! Matrix elements.
+        A%dl = [(conjg(ev), i = 1, n)]
+        A%dv = [(dv, i = 1, n-1)]
+        A%du = [(ev, i = 1, n)]
+    end function
+    pure module function initialize_hermtridiagonal_pure_cdp(dv, ev) result(A)
+        !! Construct a `symtridiagonal` matrix from the rank-1 arrays
+        !! `dl`, `dv` and `du`.
+        complex(dp), intent(in) :: dv(:), ev(:)
+        !! symtridiagonal matrix elements.
+        type(hermtridiagonal_cdp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: n
+        type(linalg_state_type) :: err0
+
+        ! Sanity check.
+        n = size(dv, kind=ilp)
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0)
+        endif
+        if (size(ev, kind=ilp) /= n-1) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Vector ev does not have the correct length.")
+            call linalg_error_handling(err0)
+        endif
+
+        ! Description of the matrix.
+        A%n = n
+        ! Matrix elements.
+        A%dl = conjg(ev) ; A%dv = dv ; A%du = ev
+    end function
+
+    pure module function initialize_constant_hermtridiagonal_pure_cdp(dv, ev, n) result(A)
+        !! Construct a `symtridiagonal` matrix with constant elements.
+        complex(dp), intent(in) :: dv, ev
+        !! symtridiagonal matrix elements.
+        integer(ilp), intent(in) :: n
+        !! Matrix dimension.
+        type(hermtridiagonal_cdp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: i
+        type(linalg_state_type) :: err0
+
+        ! Description of the matrix.
+        A%n = n
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0)
+        endif
+        ! Matrix elements.
+        A%dl = [(conjg(ev), i = 1, n-1)]
+        A%dv = [(dv, i = 1, n-1)]
+        A%du = [(ev, i = 1, n-1)]
+    end function
+
+    module function initialize_hermtridiagonal_impure_cdp(dv, ev, err) result(A)
+        !! Construct a `symtridiagonal` matrix from the rank-1 arrays
+        !! `dl`, `dv` and `du`.
+        complex(dp), intent(in) :: dv(:), ev(:)
+        !! symtridiagonal matrix elements.
+        type(linalg_state_type), intent(out) :: err
+        !! Error handling.
+        type(hermtridiagonal_cdp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: n
+        type(linalg_state_type) :: err0
+
+        ! Sanity check.
+        n = size(dv, kind=ilp)
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0, err)
+        endif
+        if (size(ev, kind=ilp) /= n-1) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Vector ev does not have the correct length.")
+            call linalg_error_handling(err0, err)
+        endif
+
+        ! Description of the matrix.
+        A%n = n
+        ! Matrix elements.
+        A%dl = conjg(ev) ; A%dv = dv ; A%du = ev
+    end function
+
+    module function initialize_constant_hermtridiagonal_impure_cdp(dv, ev, n, err) result(A)
+        !! Construct a `symtridiagonal` matrix with constant elements.
+        complex(dp), intent(in) :: dv, ev
+        !! symtridiagonal matrix elements.
+        integer(ilp), intent(in) :: n
+        !! Matrix dimension.
+        type(linalg_state_type), intent(out) :: err
+        !! Error handling
+        type(hermtridiagonal_cdp_type) :: A
+        !! Corresponding symtridiagonal matrix.
+
+        ! Internal variables.
+        integer(ilp) :: i
+        type(linalg_state_type) :: err0
+
+        ! Description of the matrix.
+        A%n = n
+        if (n <= 0) then
+            err0 = linalg_state_type(this, LINALG_VALUE_ERROR, "Matrix size needs to be positive, n = ", n, ".")
+            call linalg_error_handling(err0, err)
+        endif
+        ! Matrix elements.
+        A%dl = [(conjg(ev), i = 1, n)]
+        A%dv = [(dv, i = 1, n-1)]
+        A%du = [(ev, i = 1, n)]
+    end function
 
     !-----------------------------------------
     !-----                               -----
@@ -1252,104 +1476,148 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         class(tridiagonal_sp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_sp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_sp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+    
         type is(symtridiagonal_sp_type)
             B = symtridiagonal(A%dv, A%du)
+        
         end select
+
     end function
     pure module function transpose_tridiagonal_dp(A) result(B)
         class(tridiagonal_dp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_dp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_dp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+    
         type is(symtridiagonal_dp_type)
             B = symtridiagonal(A%dv, A%du)
+        
         end select
+
     end function
     pure module function transpose_tridiagonal_csp(A) result(B)
         class(tridiagonal_csp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_csp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_csp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+    
         type is(symtridiagonal_csp_type)
             B = symtridiagonal(A%dv, A%du)
+        
+        type is(hermtridiagonal_csp_type)
+            B = hermtridiagonal(A%dv, A%dl)
         end select
+
     end function
     pure module function transpose_tridiagonal_cdp(A) result(B)
         class(tridiagonal_cdp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_cdp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_cdp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+    
         type is(symtridiagonal_cdp_type)
             B = symtridiagonal(A%dv, A%du)
+        
+        type is(hermtridiagonal_cdp_type)
+            B = hermtridiagonal(A%dv, A%dl)
         end select
+
     end function
 
     pure module function hermitian_tridiagonal_sp(A) result(B)
         class(tridiagonal_sp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_sp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_sp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+        
         type is(symtridiagonal_sp_type)
             B = symtridiagonal(A%dv, A%du)
+        
         end select
+
     end function
     pure module function hermitian_tridiagonal_dp(A) result(B)
         class(tridiagonal_dp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_dp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_dp_type)
             B = tridiagonal(A%du, A%dv, A%dl)
+        
         type is(symtridiagonal_dp_type)
             B = symtridiagonal(A%dv, A%du)
+        
         end select
+
     end function
     pure module function hermitian_tridiagonal_csp(A) result(B)
         class(tridiagonal_csp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_csp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_csp_type)
             B = tridiagonal(conjg(A%du), conjg(A%dv), conjg(A%dl))
+        
         type is(symtridiagonal_csp_type)
             B = symtridiagonal(conjg(A%dv), conjg(A%du))
+        
+        type is(hermtridiagonal_csp_type)
+            B = hermtridiagonal(A%dv, A%du)
         end select
+
     end function
     pure module function hermitian_tridiagonal_cdp(A) result(B)
         class(tridiagonal_cdp_type), intent(in) :: A
         !! Input matrix.
         class(tridiagonal_cdp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_cdp_type)
             B = tridiagonal(conjg(A%du), conjg(A%dv), conjg(A%dl))
+        
         type is(symtridiagonal_cdp_type)
             B = symtridiagonal(conjg(A%dv), conjg(A%du))
+        
+        type is(hermtridiagonal_cdp_type)
+            B = hermtridiagonal(A%dv, A%du)
         end select
+
     end function
 
     pure module function scalar_multiplication_tridiagonal_sp(alpha, A) result(B)
         real(sp), intent(in) :: alpha
         class(tridiagonal_sp_type), intent(in) :: A
         class(tridiagonal_sp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_sp_type)
             B = tridiagonal(A%dl, A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
+    
         type is(symtridiagonal_sp_type)
             B = symtridiagonal(A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = B%dl
+        
         end select
+
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_sp(A, alpha) result(B)
@@ -1362,14 +1630,18 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         real(dp), intent(in) :: alpha
         class(tridiagonal_dp_type), intent(in) :: A
         class(tridiagonal_dp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_dp_type)
             B = tridiagonal(A%dl, A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
+    
         type is(symtridiagonal_dp_type)
             B = symtridiagonal(A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = B%dl
+        
         end select
+
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_dp(A, alpha) result(B)
@@ -1382,14 +1654,21 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         complex(sp), intent(in) :: alpha
         class(tridiagonal_csp_type), intent(in) :: A
         class(tridiagonal_csp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_csp_type)
             B = tridiagonal(A%dl, A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
+    
         type is(symtridiagonal_csp_type)
             B = symtridiagonal(A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = B%dl
+        
+        type is (hermtridiagonal_csp_type)
+            B = hermtridiagonal(A%dv, A%du)
+            B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = conjg(B%dl)
         end select
+
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_csp(A, alpha) result(B)
@@ -1402,14 +1681,21 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         complex(dp), intent(in) :: alpha
         class(tridiagonal_cdp_type), intent(in) :: A
         class(tridiagonal_cdp_type), allocatable :: B
+
         select type(A)
         type is(tridiagonal_cdp_type)
             B = tridiagonal(A%dl, A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = alpha*B%du
+    
         type is(symtridiagonal_cdp_type)
             B = symtridiagonal(A%dv, A%du)
             B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = B%dl
+        
+        type is (hermtridiagonal_cdp_type)
+            B = hermtridiagonal(A%dv, A%du)
+            B%dl = alpha*B%dl; B%dv = alpha*B%dv; B%du = conjg(B%dl)
         end select
+
     end function
 
     pure module function scalar_multiplication_bis_tridiagonal_cdp(A, alpha) result(B)
@@ -1423,12 +1709,15 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         class(tridiagonal_sp_type), intent(in) :: A
         class(tridiagonal_sp_type), intent(in) :: B
         class(tridiagonal_sp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_sp_type)
             ! Tridiagonal + Tridiagonal = Tridiagonal
             ! Tridiagonal + SymTridiagonal = Tridiagonal
+            ! Tridiagonal + HermTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
+
         type is(symtridiagonal_sp_type)
             select type(B)
             type is(tridiagonal_sp_type)
@@ -1440,19 +1729,23 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%dl
             end select
+
         end select
+
     end function
 
     pure module function matrix_sub_tridiagonal_sp(A, B) result(C)
         class(tridiagonal_sp_type), intent(in) :: A
         class(tridiagonal_sp_type), intent(in) :: B
         class(tridiagonal_sp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_sp_type)
             ! Tridiagonal - Tridiagonal = Tridiagonal
             ! Tridiagonal - SymTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
+    
         type is(symtridiagonal_sp_type)
             select type(B)
             type is(tridiagonal_sp_type)
@@ -1464,18 +1757,23 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%dl
             end select
+        
         end select
+
     end function
     pure module function matrix_add_tridiagonal_dp(A, B) result(C)
         class(tridiagonal_dp_type), intent(in) :: A
         class(tridiagonal_dp_type), intent(in) :: B
         class(tridiagonal_dp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_dp_type)
             ! Tridiagonal + Tridiagonal = Tridiagonal
             ! Tridiagonal + SymTridiagonal = Tridiagonal
+            ! Tridiagonal + HermTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
+
         type is(symtridiagonal_dp_type)
             select type(B)
             type is(tridiagonal_dp_type)
@@ -1487,19 +1785,23 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%dl
             end select
+
         end select
+
     end function
 
     pure module function matrix_sub_tridiagonal_dp(A, B) result(C)
         class(tridiagonal_dp_type), intent(in) :: A
         class(tridiagonal_dp_type), intent(in) :: B
         class(tridiagonal_dp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_dp_type)
             ! Tridiagonal - Tridiagonal = Tridiagonal
             ! Tridiagonal - SymTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
+    
         type is(symtridiagonal_dp_type)
             select type(B)
             type is(tridiagonal_dp_type)
@@ -1511,18 +1813,23 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%dl
             end select
+        
         end select
+
     end function
     pure module function matrix_add_tridiagonal_csp(A, B) result(C)
         class(tridiagonal_csp_type), intent(in) :: A
         class(tridiagonal_csp_type), intent(in) :: B
         class(tridiagonal_csp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_csp_type)
             ! Tridiagonal + Tridiagonal = Tridiagonal
             ! Tridiagonal + SymTridiagonal = Tridiagonal
+            ! Tridiagonal + HermTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
+
         type is(symtridiagonal_csp_type)
             select type(B)
             type is(tridiagonal_csp_type)
@@ -1533,20 +1840,43 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 ! SymTridiagonal + SymTridiagonal = SymTridiagonal
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%dl
+            type is(hermtridiagonal_csp_type)
+                ! SymTridiagonal + HermTridiagoanl = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            end select
+
+        type is(hermtridiagonal_csp_type)
+            select type(B)
+            type is(tridiagonal_csp_type)
+                ! HermTridiagonal + Tridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            type is(symtridiagonal_csp_type)
+                ! HermTridiagonal + SymTridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            type is(hermtridiagonal_csp_type)
+                ! HermTridiagonal + HermTridiagonal = HermTridiagonal
+                C = hermtridiagonal(A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = conjg(C%dl)
             end select
         end select
+
     end function
 
     pure module function matrix_sub_tridiagonal_csp(A, B) result(C)
         class(tridiagonal_csp_type), intent(in) :: A
         class(tridiagonal_csp_type), intent(in) :: B
         class(tridiagonal_csp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_csp_type)
             ! Tridiagonal - Tridiagonal = Tridiagonal
             ! Tridiagonal - SymTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
+    
         type is(symtridiagonal_csp_type)
             select type(B)
             type is(tridiagonal_csp_type)
@@ -1557,19 +1887,43 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 ! SymTridiagonal - SymTridiagonal = SymTridiagonal
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%dl
+            type is(hermtridiagonal_csp_type)
+                ! SymTridiagonal - HermTridiagoanl = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            end select
+        
+        type is(hermtridiagonal_csp_type)
+            select type(B)
+            type is(tridiagonal_csp_type)
+                ! HermTridiagonal - Tridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            type is(symtridiagonal_csp_type)
+                ! HermTridiagonal - SymTridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            type is(hermtridiagonal_csp_type)
+                ! HermTridiagonal - HermTridiagonal = HermTridiagonal
+                C = hermtridiagonal(A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = conjg(C%dl)
             end select
         end select
+
     end function
     pure module function matrix_add_tridiagonal_cdp(A, B) result(C)
         class(tridiagonal_cdp_type), intent(in) :: A
         class(tridiagonal_cdp_type), intent(in) :: B
         class(tridiagonal_cdp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_cdp_type)
             ! Tridiagonal + Tridiagonal = Tridiagonal
             ! Tridiagonal + SymTridiagonal = Tridiagonal
+            ! Tridiagonal + HermTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%du + B%du
+
         type is(symtridiagonal_cdp_type)
             select type(B)
             type is(tridiagonal_cdp_type)
@@ -1580,20 +1934,43 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 ! SymTridiagonal + SymTridiagonal = SymTridiagonal
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl + B%dl; C%dv = C%dv + B%dv; C%du = C%dl
+            type is(hermtridiagonal_cdp_type)
+                ! SymTridiagonal + HermTridiagoanl = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            end select
+
+        type is(hermtridiagonal_cdp_type)
+            select type(B)
+            type is(tridiagonal_cdp_type)
+                ! HermTridiagonal + Tridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            type is(symtridiagonal_cdp_type)
+                ! HermTridiagonal + SymTridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = C%du + B%du
+            type is(hermtridiagonal_cdp_type)
+                ! HermTridiagonal + HermTridiagonal = HermTridiagonal
+                C = hermtridiagonal(A%dv, A%du)
+                C%dl = C%dl + B%dl ; C%dv = C%dv + B%dv ; C%du = conjg(C%dl)
             end select
         end select
+
     end function
 
     pure module function matrix_sub_tridiagonal_cdp(A, B) result(C)
         class(tridiagonal_cdp_type), intent(in) :: A
         class(tridiagonal_cdp_type), intent(in) :: B
         class(tridiagonal_cdp_type), allocatable :: C
+
         select type(A)
         type is(tridiagonal_cdp_type)
             ! Tridiagonal - Tridiagonal = Tridiagonal
             ! Tridiagonal - SymTridiagonal = Tridiagonal
             C = tridiagonal(A%dl, A%dv, A%du)
             C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%du - B%du
+    
         type is(symtridiagonal_cdp_type)
             select type(B)
             type is(tridiagonal_cdp_type)
@@ -1604,8 +1981,29 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
                 ! SymTridiagonal - SymTridiagonal = SymTridiagonal
                 C = symtridiagonal(A%dv, A%du)
                 C%dl = C%dl - B%dl; C%dv = C%dv - B%dv; C%du = C%dl
+            type is(hermtridiagonal_cdp_type)
+                ! SymTridiagonal - HermTridiagoanl = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            end select
+        
+        type is(hermtridiagonal_cdp_type)
+            select type(B)
+            type is(tridiagonal_cdp_type)
+                ! HermTridiagonal - Tridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            type is(symtridiagonal_cdp_type)
+                ! HermTridiagonal - SymTridiagonal = Tridiagonal
+                C = tridiagonal(A%dl, A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = C%du - B%du
+            type is(hermtridiagonal_cdp_type)
+                ! HermTridiagonal - HermTridiagonal = HermTridiagonal
+                C = hermtridiagonal(A%dv, A%du)
+                C%dl = C%dl - B%dl ; C%dv = C%dv - B%dv ; C%du = conjg(C%dl)
             end select
         end select
+
     end function
 
 end submodule
