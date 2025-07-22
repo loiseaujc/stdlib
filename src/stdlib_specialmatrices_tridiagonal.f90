@@ -512,6 +512,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_sp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_sp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
@@ -538,6 +539,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_sp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_sp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
@@ -563,6 +565,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_dp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_dp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
@@ -589,6 +592,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_dp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_dp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
@@ -614,6 +618,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_sp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_sp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
@@ -640,6 +645,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_sp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_sp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_sp
@@ -665,6 +671,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_dp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_dp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
@@ -691,6 +698,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         alpha_ = 1.0_dp ; if (present(alpha)) alpha_ = alpha
         beta_  = 0.0_dp ; if (present(beta))  beta_  = beta
         op_    = "N"        ; if (present(op))    op_    = op
+        if (op_ == "H") op_ = "C"
 
         ! Prepare Lapack arguments.
         n = A%n ; ldx = n ; ldy = n ; y = 0.0_dp
