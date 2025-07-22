@@ -1195,6 +1195,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         ! Pointer trick.
         xmat(1:n, 1:nrhs) => x ; ymat(1:n, 1:nrhs) => y
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
+        nullify(xmat, ymat)
     end subroutine
     module subroutine spmv_tridiag_2d_sp(A, x, y, alpha, beta, op)
         class(tridiagonal_sp_type), intent(in) :: A
@@ -1248,6 +1249,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         ! Pointer trick.
         xmat(1:n, 1:nrhs) => x ; ymat(1:n, 1:nrhs) => y
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
+        nullify(xmat, ymat)
     end subroutine
     module subroutine spmv_tridiag_2d_dp(A, x, y, alpha, beta, op)
         class(tridiagonal_dp_type), intent(in) :: A
@@ -1301,6 +1303,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         ! Pointer trick.
         xmat(1:n, 1:nrhs) => x ; ymat(1:n, 1:nrhs) => y
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
+        nullify(xmat, ymat)
     end subroutine
     module subroutine spmv_tridiag_2d_csp(A, x, y, alpha, beta, op)
         class(tridiagonal_csp_type), intent(in) :: A
@@ -1354,6 +1357,7 @@ submodule (stdlib_specialmatrices) tridiagonal_matrices
         ! Pointer trick.
         xmat(1:n, 1:nrhs) => x ; ymat(1:n, 1:nrhs) => y
         call lagtm(op_, n, nrhs, alpha_, A%dl, A%dv, A%du, xmat, ldx, beta_, ymat, ldy)
+        nullify(xmat, ymat)
     end subroutine
     module subroutine spmv_tridiag_2d_cdp(A, x, y, alpha, beta, op)
         class(tridiagonal_cdp_type), intent(in) :: A
