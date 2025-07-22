@@ -925,9 +925,11 @@ contains
             integer, parameter :: wp = sp
             integer, parameter :: n = 5
             type(hermtridiagonal_csp_type) :: A, B, C
-            complex(sp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :)
+            type(tridiagonal_csp_type) :: D
+            complex(sp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             complex(sp), allocatable :: dv(:), ev(:)
-            complex(sp), parameter :: alpha = 2.0_dp
+            complex(sp), parameter :: alpha = cmplx(2.0_wp, 2.0_wp, kind=wp)
+            real(sp), parameter :: beta = 2.0_wp
             integer :: i, j
             real(wp), allocatable :: data(:, :)
 
@@ -953,21 +955,31 @@ contains
             if (allocated(error)) return
 
             ! Matrix scalar multiplication
-            C = alpha * A ; Cmat = dense(C)
-            call check(error, all_close(Cmat, alpha * Amat), .true.)
+            D = alpha * A ; Dmat = dense(D)
+            call check(error, all_close(Dmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
-            call check(error, all_close(Cmat, alpha * Amat), .true.)
+            D = A * alpha ; Dmat = dense(D)
+            call check(error, all_close(Dmat, alpha * Amat), .true.)
+            if (allocated(error)) return
+
+            C = beta * A ; Cmat = dense(C)
+            call check(error, all_close(Cmat, beta * Amat), .true.)
+            if (allocated(error)) return
+
+            C = A * beta ; Cmat = dense(C)
+            call check(error, all_close(Cmat, beta * Amat), .true.)
             if (allocated(error)) return
         end block
         block
             integer, parameter :: wp = dp
             integer, parameter :: n = 5
             type(hermtridiagonal_cdp_type) :: A, B, C
-            complex(dp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :)
+            type(tridiagonal_cdp_type) :: D
+            complex(dp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             complex(dp), allocatable :: dv(:), ev(:)
-            complex(dp), parameter :: alpha = 2.0_dp
+            complex(dp), parameter :: alpha = cmplx(2.0_wp, 2.0_wp, kind=wp)
+            real(dp), parameter :: beta = 2.0_wp
             integer :: i, j
             real(wp), allocatable :: data(:, :)
 
@@ -993,12 +1005,20 @@ contains
             if (allocated(error)) return
 
             ! Matrix scalar multiplication
-            C = alpha * A ; Cmat = dense(C)
-            call check(error, all_close(Cmat, alpha * Amat), .true.)
+            D = alpha * A ; Dmat = dense(D)
+            call check(error, all_close(Dmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
-            call check(error, all_close(Cmat, alpha * Amat), .true.)
+            D = A * alpha ; Dmat = dense(D)
+            call check(error, all_close(Dmat, alpha * Amat), .true.)
+            if (allocated(error)) return
+
+            C = beta * A ; Cmat = dense(C)
+            call check(error, all_close(Cmat, beta * Amat), .true.)
+            if (allocated(error)) return
+
+            C = A * beta ; Cmat = dense(C)
+            call check(error, all_close(Cmat, beta * Amat), .true.)
             if (allocated(error)) return
         end block
     end subroutine
