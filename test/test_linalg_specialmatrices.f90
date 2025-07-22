@@ -1,6 +1,7 @@
 module test_specialmatrices
     use testdrive, only : new_unittest, unittest_type, error_type, check, skip_test
     use stdlib_kinds
+    use stdlib_constants
     use stdlib_linalg, only: hermitian
     use stdlib_linalg_state, only: linalg_state_type
     use stdlib_math, only: all_close
@@ -90,6 +91,84 @@ contains
             if (allocated(error)) return
 
         end block
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(tridiagonal_csp_type) :: A
+            complex(sp), allocatable :: Amat(:,:), dl(:), dv(:), du(:)
+            real(wp), allocatable :: data(:, :)
+            complex(sp), allocatable :: x(:)
+            complex(sp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source=zero_csp)
+            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            allocate(y1(n), source = zero_csp)  ; allocate(y2(n), source=zero_csp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.H @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(hermitian(Amat), x) ; call spmv(A, x, y2, op="H")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(tridiagonal_cdp_type) :: A
+            complex(dp), allocatable :: Amat(:,:), dl(:), dv(:), du(:)
+            real(wp), allocatable :: data(:, :)
+            complex(dp), allocatable :: x(:)
+            complex(dp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source=zero_cdp)
+            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            allocate(y1(n), source = zero_cdp)  ; allocate(y2(n), source=zero_cdp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.H @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(hermitian(Amat), x) ; call spmv(A, x, y2, op="H")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+        end block
     end subroutine
 
     subroutine test_tridiagonal_error_handling(error)
@@ -135,6 +214,46 @@ contains
             call check(error, state%ok(), .false.)
             if (allocated(error)) return
         end block
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(tridiagonal_csp_type) :: A
+            complex(sp), allocatable :: dl(:), dv(:), du(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            dl = [(1.0_wp, i = 1, n-2)] ; du = dl
+            dv = [(2.0_wp, i = 1, n)]
+            A = tridiagonal(dl, dv, du, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = tridiagonal(dl(1), dv(1), du(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(tridiagonal_cdp_type) :: A
+            complex(dp), allocatable :: dl(:), dv(:), du(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            dl = [(1.0_wp, i = 1, n-2)] ; du = dl
+            dv = [(2.0_wp, i = 1, n)]
+            A = tridiagonal(dl, dv, du, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = tridiagonal(dl(1), dv(1), du(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
     end subroutine
 
     !--------------------------------------------------
@@ -165,12 +284,14 @@ contains
 
             ! Test y = A @ x
             y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            print *, "matvec :", all_close(y1, y2)
             call check(error, all_close(y1, y2), .true.)
             if (allocated(error)) return
 
             ! Test y = A.T @ x
             y1 = 0.0_wp ; y2 = 0.0_wp
             y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            print *, "tranposed matvec :", all_close(y1, y2)
             call check(error, all_close(y1, y2), .true.)
             if (allocated(error)) return
 
@@ -194,15 +315,99 @@ contains
 
             ! Test y = A @ x
             y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            print *, "matvec :", all_close(y1, y2)
             call check(error, all_close(y1, y2), .true.)
             if (allocated(error)) return
 
             ! Test y = A.T @ x
             y1 = 0.0_wp ; y2 = 0.0_wp
             y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            print *, "tranposed matvec :", all_close(y1, y2)
             call check(error, all_close(y1, y2), .true.)
             if (allocated(error)) return
 
+        end block
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(symtridiagonal_csp_type) :: A
+            complex(sp), allocatable :: Amat(:,:), dv(:), ev(:)
+            real(wp), allocatable :: data(:, :)
+            complex(sp), allocatable :: x(:)
+            complex(sp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(ev(n-1), dv(n))
+            allocate(data(n, 2), source=0.0_wp)
+            call random_number(data) ; dv%re = data(:, 1) ; dv%im = data(:, 2)
+            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            A = symtridiagonal(dv, ev) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source=zero_csp)
+            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            allocate(y1(n), source = zero_csp)  ; allocate(y2(n), source=zero_csp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            print *, "matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            print *, "tranposed matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.H @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(hermitian(Amat), x) ; call spmv(A, x, y2, op="H")
+            print *, "hermitian matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(symtridiagonal_cdp_type) :: A
+            complex(dp), allocatable :: Amat(:,:), dv(:), ev(:)
+            real(wp), allocatable :: data(:, :)
+            complex(dp), allocatable :: x(:)
+            complex(dp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(ev(n-1), dv(n))
+            allocate(data(n, 2), source=0.0_wp)
+            call random_number(data) ; dv%re = data(:, 1) ; dv%im = data(:, 2)
+            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            A = symtridiagonal(dv, ev) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source=zero_cdp)
+            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            allocate(y1(n), source = zero_cdp)  ; allocate(y2(n), source=zero_cdp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            print *, "matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            print *, "tranposed matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.H @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(hermitian(Amat), x) ; call spmv(A, x, y2, op="H")
+            print *, "hermitian matvec :", all_close(y1, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
         end block
     end subroutine
 
@@ -234,6 +439,46 @@ contains
             integer, parameter :: n = 5
             type(symtridiagonal_dp_type) :: A
             real(dp), allocatable :: dv(:), ev(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            ev = [(1.0_wp, i = 1, n-2)]
+            dv = [(2.0_wp, i = 1, n)]
+            A = symtridiagonal(dv, ev, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = symtridiagonal(dv(1), ev(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(symtridiagonal_csp_type) :: A
+            complex(sp), allocatable :: dv(:), ev(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            ev = [(1.0_wp, i = 1, n-2)]
+            dv = [(2.0_wp, i = 1, n)]
+            A = symtridiagonal(dv, ev, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = symtridiagonal(dv(1), ev(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(symtridiagonal_cdp_type) :: A
+            complex(dp), allocatable :: dv(:), ev(:)
             type(linalg_state_type) :: state
             integer :: i
 
