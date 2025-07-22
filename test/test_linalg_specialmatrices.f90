@@ -341,18 +341,11 @@ contains
             real(sp), allocatable :: x(:)
             real(sp), allocatable :: y1(:), y2(:)
 
-            ! ! Initialize matrix.
-            ! allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
-            ! A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            call random_number(dl) ; call random_number(dv) ; call random_number(du)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
             ! ! Random vectors.
             ! #:if t1.startswith('real')
             ! allocate(x(n), source = 0.0_wp)   ; call random_number(x)
@@ -390,18 +383,11 @@ contains
             real(dp), allocatable :: x(:)
             real(dp), allocatable :: y1(:), y2(:)
 
-            ! ! Initialize matrix.
-            ! allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
-            ! A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            call random_number(dl) ; call random_number(dv) ; call random_number(du)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
             ! ! Random vectors.
             ! #:if t1.startswith('real')
             ! allocate(x(n), source = 0.0_wp)   ; call random_number(x)
@@ -440,18 +426,14 @@ contains
             complex(sp), allocatable :: x(:)
             complex(sp), allocatable :: y1(:), y2(:)
 
-            ! ! Initialize matrix.
-            ! allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
-            ! A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
             ! ! Random vectors.
             ! #:if t1.startswith('real')
             ! allocate(x(n), source = 0.0_wp)   ; call random_number(x)
@@ -490,18 +472,14 @@ contains
             complex(dp), allocatable :: x(:)
             complex(dp), allocatable :: y1(:), y2(:)
 
-            ! ! Initialize matrix.
-            ! allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
-            ! A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !
+            ! Initialize matrix.
+            allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+
             ! ! Random vectors.
             ! #:if t1.startswith('real')
             ! allocate(x(n), source = 0.0_wp)   ; call random_number(x)
