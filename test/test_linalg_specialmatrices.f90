@@ -17,9 +17,17 @@ contains
 
         testsuite = [ &
             new_unittest('tridiagonal', test_tridiagonal), &
-            new_unittest('tridiagonal error handling', test_tridiagonal_error_handling) &
+            new_unittest('tridiagonal error handling', test_tridiagonal_error_handling), &
+            new_unittest('symtridiagonal', test_symtridiagonal), &
+            new_unittest('symtridiagonal error handling', test_symtridiagonal_error_handling) &
         ]
     end subroutine
+
+    !----------------------------------------
+    !-----                              -----
+    !-----     TRIDIAGONAL MATRICES     -----
+    !-----                              -----
+    !----------------------------------------
 
     subroutine test_tridiagonal(error)
         !> Error handling
@@ -124,6 +132,120 @@ contains
 
             !> Test contructor from constants.
             A = tridiagonal(dl(1), dv(1), du(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+    end subroutine
+
+    !--------------------------------------------------
+    !-----                                        -----
+    !-----     SYMMETRIC TRIDIAGONAL MATRICES     -----
+    !-----                                        -----
+    !--------------------------------------------------
+
+    subroutine test_symtridiagonal(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(symtridiagonal_sp_type) :: A
+            real(sp), allocatable :: Amat(:,:), dv(:), ev(:)
+            real(sp), allocatable :: x(:)
+            real(sp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(ev(n-1), dv(n))
+            call random_number(dv) ; call random_number(ev)
+            A = symtridiagonal(dv, ev) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source = 0.0_wp)   ; call random_number(x)
+            allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(symtridiagonal_dp_type) :: A
+            real(dp), allocatable :: Amat(:,:), dv(:), ev(:)
+            real(dp), allocatable :: x(:)
+            real(dp), allocatable :: y1(:), y2(:)
+
+            ! Initialize matrix.
+            allocate(ev(n-1), dv(n))
+            call random_number(dv) ; call random_number(ev)
+            A = symtridiagonal(dv, ev) ; Amat = dense(A)
+
+            ! Random vectors.
+            allocate(x(n), source = 0.0_wp)   ; call random_number(x)
+            allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
+
+            ! Test y = A @ x
+            y1 = matmul(Amat, x) ; call spmv(A, x, y2)
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+            ! Test y = A.T @ x
+            y1 = 0.0_wp ; y2 = 0.0_wp
+            y1 = matmul(transpose(Amat), x) ; call spmv(A, x, y2, op="T")
+            call check(error, all_close(y1, y2), .true.)
+            if (allocated(error)) return
+
+        end block
+    end subroutine
+
+    subroutine test_symtridiagonal_error_handling(error)
+        !> Error handling
+        type(error_type), allocatable, intent(out) :: error
+        block
+            integer, parameter :: wp = sp
+            integer, parameter :: n = 5
+            type(symtridiagonal_sp_type) :: A
+            real(sp), allocatable :: dv(:), ev(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            ev = [(1.0_wp, i = 1, n-2)]
+            dv = [(2.0_wp, i = 1, n)]
+            A = symtridiagonal(dv, ev, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = symtridiagonal(dv(1), ev(1), -n, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+        end block
+        block
+            integer, parameter :: wp = dp
+            integer, parameter :: n = 5
+            type(symtridiagonal_dp_type) :: A
+            real(dp), allocatable :: dv(:), ev(:)
+            type(linalg_state_type) :: state
+            integer :: i
+
+            !> Test constructor from arrays.
+            ev = [(1.0_wp, i = 1, n-2)]
+            dv = [(2.0_wp, i = 1, n)]
+            A = symtridiagonal(dv, ev, state)
+            call check(error, state%ok(), .false.)
+            if (allocated(error)) return
+
+            !> Test contructor from constants.
+            A = symtridiagonal(dv(1), ev(1), -n, state)
             call check(error, state%ok(), .false.)
             if (allocated(error)) return
         end block
