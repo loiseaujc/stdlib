@@ -976,25 +976,129 @@ module stdlib_specialmatrices
         !! Overload the `+` operator for matrix-matrix addition. The two matrices need to
         !! be of the same type and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
-        pure module function matrix_add_tridiagonal_sp(A, B) result(C)
-            class(tridiagonal_sp_type), intent(in) :: A
-            class(tridiagonal_sp_type), intent(in) :: B
-            class(tridiagonal_sp_type), allocatable :: C
+        pure module function matrix_add_tridiag_tridiag_sp(A, B) result(C)
+            type(tridiagonal_sp_type), intent(in) :: A, B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_add_tridiagonal_dp(A, B) result(C)
-            class(tridiagonal_dp_type), intent(in) :: A
-            class(tridiagonal_dp_type), intent(in) :: B
-            class(tridiagonal_dp_type), allocatable :: C
+        pure module function matrix_add_tridiag_symtridiag_sp(A, B) result(C)
+            type(tridiagonal_sp_type), intent(in) :: A
+            type(symtridiagonal_sp_type), intent(in) :: B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_add_tridiagonal_csp(A, B) result(C)
-            class(tridiagonal_csp_type), intent(in) :: A
-            class(tridiagonal_csp_type), intent(in) :: B
-            class(tridiagonal_csp_type), allocatable :: C
+        pure module function matrix_add_symtridiag_tridiag_sp(A, B) result(C)
+            type(symtridiagonal_sp_type), intent(in) :: A
+            type(tridiagonal_sp_type), intent(in) :: B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_add_tridiagonal_cdp(A, B) result(C)
-            class(tridiagonal_cdp_type), intent(in) :: A
-            class(tridiagonal_cdp_type), intent(in) :: B
-            class(tridiagonal_cdp_type), allocatable :: C
+        pure module function matrix_add_symtridiag_symtridiag_sp(A, B) result(C)
+            type(symtridiagonal_sp_type), intent(in) :: A, B
+            type(symtridiagonal_sp_type) :: C
+        end function
+
+        pure module function matrix_add_tridiag_tridiag_dp(A, B) result(C)
+            type(tridiagonal_dp_type), intent(in) :: A, B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_add_tridiag_symtridiag_dp(A, B) result(C)
+            type(tridiagonal_dp_type), intent(in) :: A
+            type(symtridiagonal_dp_type), intent(in) :: B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_tridiag_dp(A, B) result(C)
+            type(symtridiagonal_dp_type), intent(in) :: A
+            type(tridiagonal_dp_type), intent(in) :: B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_symtridiag_dp(A, B) result(C)
+            type(symtridiagonal_dp_type), intent(in) :: A, B
+            type(symtridiagonal_dp_type) :: C
+        end function
+
+        pure module function matrix_add_tridiag_tridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A, B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_tridiag_symtridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A
+            type(symtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_tridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A
+            type(tridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_symtridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A, B
+            type(symtridiagonal_csp_type) :: C
+        end function
+
+        pure module function matrix_add_tridiag_hermtridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A
+            type(hermtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_tridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            type(tridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_hermtridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A
+            type(hermtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_symtridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            type(symtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_hermtridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A, B
+            type(hermtridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_add_tridiag_tridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A, B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_tridiag_symtridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A
+            type(symtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_tridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A
+            type(tridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_symtridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A, B
+            type(symtridiagonal_cdp_type) :: C
+        end function
+
+        pure module function matrix_add_tridiag_hermtridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A
+            type(hermtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_tridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            type(tridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_symtridiag_hermtridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A
+            type(hermtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_symtridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            type(symtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_add_hermtridiag_hermtridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A, B
+            type(hermtridiagonal_cdp_type) :: C
         end function
     end interface
 
@@ -1002,25 +1106,129 @@ module stdlib_specialmatrices
         !! Overload the `-` operator for matrix-matrix subtraction. The two matrices need to
         !! be of the same type and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
-        pure module function matrix_sub_tridiagonal_sp(A, B) result(C)
-            class(tridiagonal_sp_type), intent(in) :: A
-            class(tridiagonal_sp_type), intent(in) :: B
-            class(tridiagonal_sp_type), allocatable :: C
+        pure module function matrix_sub_tridiag_tridiag_sp(A, B) result(C)
+            type(tridiagonal_sp_type), intent(in) :: A, B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_sub_tridiagonal_dp(A, B) result(C)
-            class(tridiagonal_dp_type), intent(in) :: A
-            class(tridiagonal_dp_type), intent(in) :: B
-            class(tridiagonal_dp_type), allocatable :: C
+        pure module function matrix_sub_tridiag_symtridiag_sp(A, B) result(C)
+            type(tridiagonal_sp_type), intent(in) :: A
+            type(symtridiagonal_sp_type), intent(in) :: B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_sub_tridiagonal_csp(A, B) result(C)
-            class(tridiagonal_csp_type), intent(in) :: A
-            class(tridiagonal_csp_type), intent(in) :: B
-            class(tridiagonal_csp_type), allocatable :: C
+        pure module function matrix_sub_symtridiag_tridiag_sp(A, B) result(C)
+            type(symtridiagonal_sp_type), intent(in) :: A
+            type(tridiagonal_sp_type), intent(in) :: B
+            type(tridiagonal_sp_type) :: C
         end function
-        pure module function matrix_sub_tridiagonal_cdp(A, B) result(C)
-            class(tridiagonal_cdp_type), intent(in) :: A
-            class(tridiagonal_cdp_type), intent(in) :: B
-            class(tridiagonal_cdp_type), allocatable :: C
+        pure module function matrix_sub_symtridiag_symtridiag_sp(A, B) result(C)
+            type(symtridiagonal_sp_type), intent(in) :: A, B
+            type(symtridiagonal_sp_type) :: C
+        end function
+
+        pure module function matrix_sub_tridiag_tridiag_dp(A, B) result(C)
+            type(tridiagonal_dp_type), intent(in) :: A, B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_sub_tridiag_symtridiag_dp(A, B) result(C)
+            type(tridiagonal_dp_type), intent(in) :: A
+            type(symtridiagonal_dp_type), intent(in) :: B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_tridiag_dp(A, B) result(C)
+            type(symtridiagonal_dp_type), intent(in) :: A
+            type(tridiagonal_dp_type), intent(in) :: B
+            type(tridiagonal_dp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_symtridiag_dp(A, B) result(C)
+            type(symtridiagonal_dp_type), intent(in) :: A, B
+            type(symtridiagonal_dp_type) :: C
+        end function
+
+        pure module function matrix_sub_tridiag_tridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A, B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_tridiag_symtridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A
+            type(symtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_tridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A
+            type(tridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_symtridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A, B
+            type(symtridiagonal_csp_type) :: C
+        end function
+
+        pure module function matrix_sub_tridiag_hermtridiag_csp(A, B) result(C)
+            type(tridiagonal_csp_type), intent(in) :: A
+            type(hermtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_tridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            type(tridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_hermtridiag_csp(A, B) result(C)
+            type(symtridiagonal_csp_type), intent(in) :: A
+            type(hermtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_symtridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            type(symtridiagonal_csp_type), intent(in) :: B
+            type(tridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_hermtridiag_csp(A, B) result(C)
+            type(hermtridiagonal_csp_type), intent(in) :: A, B
+            type(hermtridiagonal_csp_type) :: C
+        end function
+        pure module function matrix_sub_tridiag_tridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A, B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_tridiag_symtridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A
+            type(symtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_tridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A
+            type(tridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_symtridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A, B
+            type(symtridiagonal_cdp_type) :: C
+        end function
+
+        pure module function matrix_sub_tridiag_hermtridiag_cdp(A, B) result(C)
+            type(tridiagonal_cdp_type), intent(in) :: A
+            type(hermtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_tridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            type(tridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_symtridiag_hermtridiag_cdp(A, B) result(C)
+            type(symtridiagonal_cdp_type), intent(in) :: A
+            type(hermtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_symtridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            type(symtridiagonal_cdp_type), intent(in) :: B
+            type(tridiagonal_cdp_type) :: C
+        end function
+        pure module function matrix_sub_hermtridiag_hermtridiag_cdp(A, B) result(C)
+            type(hermtridiagonal_cdp_type), intent(in) :: A, B
+            type(hermtridiagonal_cdp_type) :: C
         end function
     end interface
 
