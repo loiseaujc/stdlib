@@ -1120,7 +1120,7 @@ program tester
     stat = 0
 
     testsuites = [ &
-        new_testsuite("sparse", collect_suite) &
+        new_testsuite("Tridiagonal matrices", collect_suite) &
         ]
 
     do is = 1, size(testsuites)
