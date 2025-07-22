@@ -47,33 +47,23 @@ module stdlib_specialmatrices
     end type
 
     !--> Symmetric Tridiagonal matrices
-    type, public :: symtridiagonal_sp_type
+    type, extends(tridiagonal_sp_type), public :: symtridiagonal_sp_type
         !! Base type to define a `symtridiagonal` matrix.
         private
-        real(sp), allocatable :: dv(:), ev(:)
-        integer(ilp) :: n
         logical(lk) :: is_posdef
     end type
-    type, public :: symtridiagonal_dp_type
+    type, extends(tridiagonal_dp_type), public :: symtridiagonal_dp_type
         !! Base type to define a `symtridiagonal` matrix.
         private
-        real(dp), allocatable :: dv(:), ev(:)
-        integer(ilp) :: n
         logical(lk) :: is_posdef
     end type
-    type, public :: symtridiagonal_csp_type
+    type, extends(tridiagonal_csp_type), public :: symtridiagonal_csp_type
         !! Base type to define a `symtridiagonal` matrix.
         private
-        complex(sp), allocatable :: dv(:), ev(:)
-        integer(ilp) :: n
-        logical(lk) :: is_posdef
     end type
-    type, public :: symtridiagonal_cdp_type
+    type, extends(tridiagonal_cdp_type), public :: symtridiagonal_cdp_type
         !! Base type to define a `symtridiagonal` matrix.
         private
-        complex(dp), allocatable :: dv(:), ev(:)
-        integer(ilp) :: n
-        logical(lk) :: is_posdef
     end type
 
     !--------------------------------
@@ -508,16 +498,7 @@ module stdlib_specialmatrices
         !!
         !! for the different matrix types defined by `stdlib_specialmatrices`.
         module subroutine spmv_tridiag_1d_sp(A, x, y, alpha, beta, op)
-            type(tridiagonal_sp_type), intent(in) :: A
-            real(sp), intent(in), contiguous, target :: x(:)
-            real(sp), intent(inout), contiguous, target :: y(:)
-            real(sp), intent(in), optional :: alpha
-            real(sp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_1d_sp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             real(sp), intent(in), contiguous, target :: x(:)
             real(sp), intent(inout), contiguous, target :: y(:)
             real(sp), intent(in), optional :: alpha
@@ -525,16 +506,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_2d_sp(A, x, y, alpha, beta, op)
-            type(tridiagonal_sp_type), intent(in) :: A
-            real(sp), intent(in), contiguous, target :: x(:,:)
-            real(sp), intent(inout), contiguous, target :: y(:,:)
-            real(sp), intent(in), optional :: alpha
-            real(sp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_2d_sp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             real(sp), intent(in), contiguous, target :: x(:,:)
             real(sp), intent(inout), contiguous, target :: y(:,:)
             real(sp), intent(in), optional :: alpha
@@ -542,16 +514,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_1d_dp(A, x, y, alpha, beta, op)
-            type(tridiagonal_dp_type), intent(in) :: A
-            real(dp), intent(in), contiguous, target :: x(:)
-            real(dp), intent(inout), contiguous, target :: y(:)
-            real(dp), intent(in), optional :: alpha
-            real(dp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_1d_dp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             real(dp), intent(in), contiguous, target :: x(:)
             real(dp), intent(inout), contiguous, target :: y(:)
             real(dp), intent(in), optional :: alpha
@@ -559,16 +522,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_2d_dp(A, x, y, alpha, beta, op)
-            type(tridiagonal_dp_type), intent(in) :: A
-            real(dp), intent(in), contiguous, target :: x(:,:)
-            real(dp), intent(inout), contiguous, target :: y(:,:)
-            real(dp), intent(in), optional :: alpha
-            real(dp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_2d_dp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             real(dp), intent(in), contiguous, target :: x(:,:)
             real(dp), intent(inout), contiguous, target :: y(:,:)
             real(dp), intent(in), optional :: alpha
@@ -576,16 +530,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_1d_csp(A, x, y, alpha, beta, op)
-            type(tridiagonal_csp_type), intent(in) :: A
-            complex(sp), intent(in), contiguous, target :: x(:)
-            complex(sp), intent(inout), contiguous, target :: y(:)
-            real(sp), intent(in), optional :: alpha
-            real(sp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_1d_csp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             complex(sp), intent(in), contiguous, target :: x(:)
             complex(sp), intent(inout), contiguous, target :: y(:)
             real(sp), intent(in), optional :: alpha
@@ -593,16 +538,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_2d_csp(A, x, y, alpha, beta, op)
-            type(tridiagonal_csp_type), intent(in) :: A
-            complex(sp), intent(in), contiguous, target :: x(:,:)
-            complex(sp), intent(inout), contiguous, target :: y(:,:)
-            real(sp), intent(in), optional :: alpha
-            real(sp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_2d_csp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             complex(sp), intent(in), contiguous, target :: x(:,:)
             complex(sp), intent(inout), contiguous, target :: y(:,:)
             real(sp), intent(in), optional :: alpha
@@ -610,16 +546,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_1d_cdp(A, x, y, alpha, beta, op)
-            type(tridiagonal_cdp_type), intent(in) :: A
-            complex(dp), intent(in), contiguous, target :: x(:)
-            complex(dp), intent(inout), contiguous, target :: y(:)
-            real(dp), intent(in), optional :: alpha
-            real(dp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_1d_cdp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             complex(dp), intent(in), contiguous, target :: x(:)
             complex(dp), intent(inout), contiguous, target :: y(:)
             real(dp), intent(in), optional :: alpha
@@ -627,16 +554,7 @@ module stdlib_specialmatrices
             character(1), intent(in), optional :: op
         end subroutine
         module subroutine spmv_tridiag_2d_cdp(A, x, y, alpha, beta, op)
-            type(tridiagonal_cdp_type), intent(in) :: A
-            complex(dp), intent(in), contiguous, target :: x(:,:)
-            complex(dp), intent(inout), contiguous, target :: y(:,:)
-            real(dp), intent(in), optional :: alpha
-            real(dp), intent(in), optional :: beta
-            character(1), intent(in), optional :: op
-        end subroutine
-
-        module subroutine spmv_symtridiag_2d_cdp(A, x, y, alpha, beta, op)
-            type(symtridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             complex(dp), intent(in), contiguous, target :: x(:,:)
             complex(dp), intent(inout), contiguous, target :: y(:,:)
             real(dp), intent(in), optional :: alpha
@@ -657,61 +575,29 @@ module stdlib_specialmatrices
         !! ([Specifications](../page/specs/stdlib_specialmatrices.html#dense))
         pure module function tridiagonal_to_dense_sp(A) result(B)
             !! Convert a `tridiagonal` matrix to its dense representation.
-            type(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             !! Input Tridiagonal matrix.
-            real(sp), allocatable :: B(:, :)
-            !! Corresponding dense matrix.
-        end function
-
-        pure module function symtridiagonal_to_dense_sp(A) result(B)
-            !! Convert a `symtridiagonal` matrix to its dense representation.
-            type(symtridiagonal_sp_type), intent(in) :: A
-            !! Input SymTridiagonal matrix.
             real(sp), allocatable :: B(:, :)
             !! Corresponding dense matrix.
         end function
         pure module function tridiagonal_to_dense_dp(A) result(B)
             !! Convert a `tridiagonal` matrix to its dense representation.
-            type(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             !! Input Tridiagonal matrix.
-            real(dp), allocatable :: B(:, :)
-            !! Corresponding dense matrix.
-        end function
-
-        pure module function symtridiagonal_to_dense_dp(A) result(B)
-            !! Convert a `symtridiagonal` matrix to its dense representation.
-            type(symtridiagonal_dp_type), intent(in) :: A
-            !! Input SymTridiagonal matrix.
             real(dp), allocatable :: B(:, :)
             !! Corresponding dense matrix.
         end function
         pure module function tridiagonal_to_dense_csp(A) result(B)
             !! Convert a `tridiagonal` matrix to its dense representation.
-            type(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             !! Input Tridiagonal matrix.
-            complex(sp), allocatable :: B(:, :)
-            !! Corresponding dense matrix.
-        end function
-
-        pure module function symtridiagonal_to_dense_csp(A) result(B)
-            !! Convert a `symtridiagonal` matrix to its dense representation.
-            type(symtridiagonal_csp_type), intent(in) :: A
-            !! Input SymTridiagonal matrix.
             complex(sp), allocatable :: B(:, :)
             !! Corresponding dense matrix.
         end function
         pure module function tridiagonal_to_dense_cdp(A) result(B)
             !! Convert a `tridiagonal` matrix to its dense representation.
-            type(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             !! Input Tridiagonal matrix.
-            complex(dp), allocatable :: B(:, :)
-            !! Corresponding dense matrix.
-        end function
-
-        pure module function symtridiagonal_to_dense_cdp(A) result(B)
-            !! Convert a `symtridiagonal` matrix to its dense representation.
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            !! Input SymTridiagonal matrix.
             complex(dp), allocatable :: B(:, :)
             !! Corresponding dense matrix.
         end function
@@ -722,48 +608,24 @@ module stdlib_specialmatrices
         !! the different matrix types defined by `stdlib_specialmatrices`.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#transpose)
         pure module function transpose_tridiagonal_sp(A) result(B)
-            type(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_sp_type) :: B
-        end function
-
-        pure module function transpose_symtridiagonal_sp(A) result(B)
-            type(symtridiagonal_sp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_sp_type) :: B
+            class(tridiagonal_sp_type), allocatable :: B
         end function
         pure module function transpose_tridiagonal_dp(A) result(B)
-            type(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_dp_type) :: B
-        end function
-
-        pure module function transpose_symtridiagonal_dp(A) result(B)
-            type(symtridiagonal_dp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_dp_type) :: B
+            class(tridiagonal_dp_type), allocatable :: B
         end function
         pure module function transpose_tridiagonal_csp(A) result(B)
-            type(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_csp_type) :: B
-        end function
-
-        pure module function transpose_symtridiagonal_csp(A) result(B)
-            type(symtridiagonal_csp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_csp_type) :: B
+            class(tridiagonal_csp_type), allocatable :: B
         end function
         pure module function transpose_tridiagonal_cdp(A) result(B)
-            type(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_cdp_type) :: B
-        end function
-
-        pure module function transpose_symtridiagonal_cdp(A) result(B)
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_cdp_type) :: B
+            class(tridiagonal_cdp_type), allocatable :: B
         end function
     end interface
 
@@ -773,48 +635,24 @@ module stdlib_specialmatrices
         !! real-valued matrices, this is equivalent to the standard `transpose`.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#hermitian)
         pure module function hermitian_tridiagonal_sp(A) result(B)
-            type(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_sp_type) :: B
-        end function
-
-        pure module function hermitian_symtridiagonal_sp(A) result(B)
-            type(symtridiagonal_sp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_sp_type) :: B
+            class(tridiagonal_sp_type), allocatable :: B
         end function
         pure module function hermitian_tridiagonal_dp(A) result(B)
-            type(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_dp_type) :: B
-        end function
-
-        pure module function hermitian_symtridiagonal_dp(A) result(B)
-            type(symtridiagonal_dp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_dp_type) :: B
+            class(tridiagonal_dp_type), allocatable :: B
         end function
         pure module function hermitian_tridiagonal_csp(A) result(B)
-            type(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_csp_type) :: B
-        end function
-
-        pure module function hermitian_symtridiagonal_csp(A) result(B)
-            type(symtridiagonal_csp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_csp_type) :: B
+            class(tridiagonal_csp_type), allocatable :: B
         end function
         pure module function hermitian_tridiagonal_cdp(A) result(B)
-            type(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             !! Input matrix.
-            type(tridiagonal_cdp_type) :: B
-        end function
-
-        pure module function hermitian_symtridiagonal_cdp(A) result(B)
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            !! Input matrix.
-            type(symtridiagonal_cdp_type) :: B
+            class(tridiagonal_cdp_type), allocatable :: B
         end function
     end interface
 
@@ -830,87 +668,43 @@ module stdlib_specialmatrices
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
         pure module function scalar_multiplication_tridiagonal_sp(alpha, A) result(B)
             real(sp), intent(in) :: alpha
-            type(tridiagonal_sp_type), intent(in) :: A
-            type(tridiagonal_sp_type) :: B
+            class(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_bis_tridiagonal_sp(A, alpha) result(B)
-            type(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: A
             real(sp), intent(in) :: alpha
-            type(tridiagonal_sp_type) :: B
-        end function
-
-        pure module function scalar_multiplication_symtridiagonal_sp(alpha, A) result(B)
-            real(sp), intent(in) :: alpha
-            type(symtridiagonal_sp_type), intent(in) :: A
-            type(symtridiagonal_sp_type) :: B
-        end function
-        pure module function scalar_multiplication_bis_symtridiagonal_sp(A, alpha) result(B)
-            type(symtridiagonal_sp_type), intent(in) :: A
-            real(sp), intent(in) :: alpha
-            type(symtridiagonal_sp_type) :: B
+            class(tridiagonal_sp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_tridiagonal_dp(alpha, A) result(B)
             real(dp), intent(in) :: alpha
-            type(tridiagonal_dp_type), intent(in) :: A
-            type(tridiagonal_dp_type) :: B
+            class(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_bis_tridiagonal_dp(A, alpha) result(B)
-            type(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: A
             real(dp), intent(in) :: alpha
-            type(tridiagonal_dp_type) :: B
-        end function
-
-        pure module function scalar_multiplication_symtridiagonal_dp(alpha, A) result(B)
-            real(dp), intent(in) :: alpha
-            type(symtridiagonal_dp_type), intent(in) :: A
-            type(symtridiagonal_dp_type) :: B
-        end function
-        pure module function scalar_multiplication_bis_symtridiagonal_dp(A, alpha) result(B)
-            type(symtridiagonal_dp_type), intent(in) :: A
-            real(dp), intent(in) :: alpha
-            type(symtridiagonal_dp_type) :: B
+            class(tridiagonal_dp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_tridiagonal_csp(alpha, A) result(B)
             complex(sp), intent(in) :: alpha
-            type(tridiagonal_csp_type), intent(in) :: A
-            type(tridiagonal_csp_type) :: B
+            class(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_bis_tridiagonal_csp(A, alpha) result(B)
-            type(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: A
             complex(sp), intent(in) :: alpha
-            type(tridiagonal_csp_type) :: B
-        end function
-
-        pure module function scalar_multiplication_symtridiagonal_csp(alpha, A) result(B)
-            complex(sp), intent(in) :: alpha
-            type(symtridiagonal_csp_type), intent(in) :: A
-            type(symtridiagonal_csp_type) :: B
-        end function
-        pure module function scalar_multiplication_bis_symtridiagonal_csp(A, alpha) result(B)
-            type(symtridiagonal_csp_type), intent(in) :: A
-            complex(sp), intent(in) :: alpha
-            type(symtridiagonal_csp_type) :: B
+            class(tridiagonal_csp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_tridiagonal_cdp(alpha, A) result(B)
             complex(dp), intent(in) :: alpha
-            type(tridiagonal_cdp_type), intent(in) :: A
-            type(tridiagonal_cdp_type) :: B
+            class(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), allocatable :: B
         end function
         pure module function scalar_multiplication_bis_tridiagonal_cdp(A, alpha) result(B)
-            type(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: A
             complex(dp), intent(in) :: alpha
-            type(tridiagonal_cdp_type) :: B
-        end function
-
-        pure module function scalar_multiplication_symtridiagonal_cdp(alpha, A) result(B)
-            complex(dp), intent(in) :: alpha
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            type(symtridiagonal_cdp_type) :: B
-        end function
-        pure module function scalar_multiplication_bis_symtridiagonal_cdp(A, alpha) result(B)
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            complex(dp), intent(in) :: alpha
-            type(symtridiagonal_cdp_type) :: B
+            class(tridiagonal_cdp_type), allocatable :: B
         end function
     end interface
 
@@ -919,48 +713,24 @@ module stdlib_specialmatrices
         !! be of the same type and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
         pure module function matrix_add_tridiagonal_sp(A, B) result(C)
-            type(tridiagonal_sp_type), intent(in) :: A
-            type(tridiagonal_sp_type), intent(in) :: B
-            type(tridiagonal_sp_type) :: C
-        end function
-
-        pure module function matrix_add_symtridiagonal_sp(A, B) result(C)
-            type(symtridiagonal_sp_type), intent(in) :: A
-            type(symtridiagonal_sp_type), intent(in) :: B
-            type(symtridiagonal_sp_type) :: C
+            class(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: B
+            class(tridiagonal_sp_type), allocatable :: C
         end function
         pure module function matrix_add_tridiagonal_dp(A, B) result(C)
-            type(tridiagonal_dp_type), intent(in) :: A
-            type(tridiagonal_dp_type), intent(in) :: B
-            type(tridiagonal_dp_type) :: C
-        end function
-
-        pure module function matrix_add_symtridiagonal_dp(A, B) result(C)
-            type(symtridiagonal_dp_type), intent(in) :: A
-            type(symtridiagonal_dp_type), intent(in) :: B
-            type(symtridiagonal_dp_type) :: C
+            class(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: B
+            class(tridiagonal_dp_type), allocatable :: C
         end function
         pure module function matrix_add_tridiagonal_csp(A, B) result(C)
-            type(tridiagonal_csp_type), intent(in) :: A
-            type(tridiagonal_csp_type), intent(in) :: B
-            type(tridiagonal_csp_type) :: C
-        end function
-
-        pure module function matrix_add_symtridiagonal_csp(A, B) result(C)
-            type(symtridiagonal_csp_type), intent(in) :: A
-            type(symtridiagonal_csp_type), intent(in) :: B
-            type(symtridiagonal_csp_type) :: C
+            class(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: B
+            class(tridiagonal_csp_type), allocatable :: C
         end function
         pure module function matrix_add_tridiagonal_cdp(A, B) result(C)
-            type(tridiagonal_cdp_type), intent(in) :: A
-            type(tridiagonal_cdp_type), intent(in) :: B
-            type(tridiagonal_cdp_type) :: C
-        end function
-
-        pure module function matrix_add_symtridiagonal_cdp(A, B) result(C)
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            type(symtridiagonal_cdp_type), intent(in) :: B
-            type(symtridiagonal_cdp_type) :: C
+            class(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: B
+            class(tridiagonal_cdp_type), allocatable :: C
         end function
     end interface
 
@@ -969,48 +739,24 @@ module stdlib_specialmatrices
         !! be of the same type and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
         pure module function matrix_sub_tridiagonal_sp(A, B) result(C)
-            type(tridiagonal_sp_type), intent(in) :: A
-            type(tridiagonal_sp_type), intent(in) :: B
-            type(tridiagonal_sp_type) :: C
-        end function
-
-        pure module function matrix_sub_symtridiagonal_sp(A, B) result(C)
-            type(symtridiagonal_sp_type), intent(in) :: A
-            type(symtridiagonal_sp_type), intent(in) :: B
-            type(symtridiagonal_sp_type) :: C
+            class(tridiagonal_sp_type), intent(in) :: A
+            class(tridiagonal_sp_type), intent(in) :: B
+            class(tridiagonal_sp_type), allocatable :: C
         end function
         pure module function matrix_sub_tridiagonal_dp(A, B) result(C)
-            type(tridiagonal_dp_type), intent(in) :: A
-            type(tridiagonal_dp_type), intent(in) :: B
-            type(tridiagonal_dp_type) :: C
-        end function
-
-        pure module function matrix_sub_symtridiagonal_dp(A, B) result(C)
-            type(symtridiagonal_dp_type), intent(in) :: A
-            type(symtridiagonal_dp_type), intent(in) :: B
-            type(symtridiagonal_dp_type) :: C
+            class(tridiagonal_dp_type), intent(in) :: A
+            class(tridiagonal_dp_type), intent(in) :: B
+            class(tridiagonal_dp_type), allocatable :: C
         end function
         pure module function matrix_sub_tridiagonal_csp(A, B) result(C)
-            type(tridiagonal_csp_type), intent(in) :: A
-            type(tridiagonal_csp_type), intent(in) :: B
-            type(tridiagonal_csp_type) :: C
-        end function
-
-        pure module function matrix_sub_symtridiagonal_csp(A, B) result(C)
-            type(symtridiagonal_csp_type), intent(in) :: A
-            type(symtridiagonal_csp_type), intent(in) :: B
-            type(symtridiagonal_csp_type) :: C
+            class(tridiagonal_csp_type), intent(in) :: A
+            class(tridiagonal_csp_type), intent(in) :: B
+            class(tridiagonal_csp_type), allocatable :: C
         end function
         pure module function matrix_sub_tridiagonal_cdp(A, B) result(C)
-            type(tridiagonal_cdp_type), intent(in) :: A
-            type(tridiagonal_cdp_type), intent(in) :: B
-            type(tridiagonal_cdp_type) :: C
-        end function
-
-        pure module function matrix_sub_symtridiagonal_cdp(A, B) result(C)
-            type(symtridiagonal_cdp_type), intent(in) :: A
-            type(symtridiagonal_cdp_type), intent(in) :: B
-            type(symtridiagonal_cdp_type) :: C
+            class(tridiagonal_cdp_type), intent(in) :: A
+            class(tridiagonal_cdp_type), intent(in) :: B
+            class(tridiagonal_cdp_type), allocatable :: C
         end function
     end interface
 
