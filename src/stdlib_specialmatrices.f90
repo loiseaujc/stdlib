@@ -931,11 +931,21 @@ module stdlib_specialmatrices
         pure module function scalar_multiplication_hermtridiagonal_csp(alpha, A) result(B)
             complex(sp), intent(in) :: alpha
             type(hermtridiagonal_csp_type), intent(in) :: A
-            type(hermtridiagonal_csp_type) :: B
+            type(tridiagonal_csp_type) :: B
         end function
         pure module function scalar_multiplication_bis_hermtridiagonal_csp(A, alpha) result(B)
             type(hermtridiagonal_csp_type), intent(in) :: A
             complex(sp), intent(in) :: alpha
+            type(tridiagonal_csp_type) :: B
+        end function
+        pure module function real_scalar_multiplication_hermtridiagonal_csp(alpha, A) result(B)
+            real(sp), intent(in) :: alpha
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            type(hermtridiagonal_csp_type) :: B
+        end function
+        pure module function real_scalar_multiplication_bis_hermtridiagonal_csp(A, alpha) result(B)
+            type(hermtridiagonal_csp_type), intent(in) :: A
+            real(sp), intent(in) :: alpha
             type(hermtridiagonal_csp_type) :: B
         end function
         pure module function scalar_multiplication_tridiagonal_cdp(alpha, A) result(B)
@@ -963,11 +973,21 @@ module stdlib_specialmatrices
         pure module function scalar_multiplication_hermtridiagonal_cdp(alpha, A) result(B)
             complex(dp), intent(in) :: alpha
             type(hermtridiagonal_cdp_type), intent(in) :: A
-            type(hermtridiagonal_cdp_type) :: B
+            type(tridiagonal_cdp_type) :: B
         end function
         pure module function scalar_multiplication_bis_hermtridiagonal_cdp(A, alpha) result(B)
             type(hermtridiagonal_cdp_type), intent(in) :: A
             complex(dp), intent(in) :: alpha
+            type(tridiagonal_cdp_type) :: B
+        end function
+        pure module function real_scalar_multiplication_hermtridiagonal_cdp(alpha, A) result(B)
+            real(dp), intent(in) :: alpha
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            type(hermtridiagonal_cdp_type) :: B
+        end function
+        pure module function real_scalar_multiplication_bis_hermtridiagonal_cdp(A, alpha) result(B)
+            type(hermtridiagonal_cdp_type), intent(in) :: A
+            real(dp), intent(in) :: alpha
             type(hermtridiagonal_cdp_type) :: B
         end function
     end interface
