@@ -175,7 +175,7 @@ contains
             call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
             call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             #:endif
-            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+            A = tridiagonal(dl, dv, du) !; Amat = dense(A)
 
             ! ! Random vectors.
             ! #:if t1.startswith('real')
