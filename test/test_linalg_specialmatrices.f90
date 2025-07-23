@@ -431,9 +431,9 @@ contains
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
             allocate(data(n, 2), source=0.0_wp)
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -477,9 +477,9 @@ contains
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
             allocate(data(n, 2), source=0.0_wp)
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
