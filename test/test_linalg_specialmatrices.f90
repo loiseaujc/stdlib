@@ -343,14 +343,12 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
+            call random_number(dl) ; call random_number(dv) ; call random_number(du)
             ! #:else
             ! allocate(data(n, 2))
             ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
             ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
             ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -392,14 +390,12 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
+            call random_number(dl) ; call random_number(dv) ; call random_number(du)
             ! #:else
             ! allocate(data(n, 2))
             ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
             ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
             ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -442,14 +438,6 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -492,14 +480,6 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
-            ! #:if t1.startswith('real')
-            ! call random_number(dl) ; call random_number(dv) ; call random_number(du)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
-            ! #:endif
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
