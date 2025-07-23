@@ -17,7 +17,7 @@ contains
         type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
         testsuite = [ &
-            ! new_unittest('tridiagonal arithmetic', test_tridiagonal_arithmetic), &
+            new_unittest('tridiagonal arithmetic', test_tridiagonal_arithmetic), &
             new_unittest('tridiagonal spmv kernel', test_tridiagonal_spmv) &
             ! new_unittest('tridiagonal error handling', test_tridiagonal_error_handling), &
             ! new_unittest('symtridiagonal arithmetic', test_symtridiagonal_arithmetic), &
@@ -43,7 +43,7 @@ contains
             type(symtridiagonal_sp_type) :: D
             real(sp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             real(sp), allocatable :: dl(:), dv(:), du(:), ev(:)
-            real(sp), parameter :: alpha = 2.0_dp
+            real(sp), parameter :: alpha =  2.0_wp 
             integer :: i, j
 
             ! Initialize A and B matrices.
@@ -86,13 +86,12 @@ contains
             if (allocated(error)) return
 
 
-
             ! Matrix scalar multiplication
             C = alpha * A ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
+            C = A * alpha ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
         end block
@@ -103,7 +102,7 @@ contains
             type(symtridiagonal_dp_type) :: D
             real(dp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             real(dp), allocatable :: dl(:), dv(:), du(:), ev(:)
-            real(dp), parameter :: alpha = 2.0_dp
+            real(dp), parameter :: alpha =  2.0_wp 
             integer :: i, j
 
             ! Initialize A and B matrices.
@@ -146,13 +145,12 @@ contains
             if (allocated(error)) return
 
 
-
             ! Matrix scalar multiplication
             C = alpha * A ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
+            C = A * alpha ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
         end block
@@ -163,7 +161,7 @@ contains
             type(symtridiagonal_csp_type) :: D
             complex(sp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             complex(sp), allocatable :: dl(:), dv(:), du(:), ev(:)
-            complex(sp), parameter :: alpha = 2.0_dp
+            complex(sp), parameter :: alpha =  cmplx(2.0_wp, 2.0_wp, kind=wp) 
             integer :: i, j
             type(hermtridiagonal_csp_type) :: E
             complex(sp), allocatable :: Emat(:, :)
@@ -172,22 +170,22 @@ contains
             ! Initialize A and B matrices.
             allocate(dl(n-1), dv(n), du(n-1), ev(n-1))
             allocate(data(n, 2))
-            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
             
-            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             B = tridiagonal(dl, dv, du) ; Bmat = dense(B)
             
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             D = symtridiagonal(dv, ev) ; Dmat = dense(D)
 
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             E = hermtridiagonal(dv, ev) ; Emat = dense(E)
        
             ! Matrix addition.
@@ -232,13 +230,12 @@ contains
             call check(error, all_close(Cmat, Emat-Amat), .true.)
             if (allocated(error)) return
 
-
             ! Matrix scalar multiplication
             C = alpha * A ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
+            C = A * alpha ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
         end block
@@ -249,7 +246,7 @@ contains
             type(symtridiagonal_cdp_type) :: D
             complex(dp), allocatable :: Amat(:, :), Bmat(:, :), Cmat(:, :), Dmat(:, :)
             complex(dp), allocatable :: dl(:), dv(:), du(:), ev(:)
-            complex(dp), parameter :: alpha = 2.0_dp
+            complex(dp), parameter :: alpha =  cmplx(2.0_wp, 2.0_wp, kind=wp) 
             integer :: i, j
             type(hermtridiagonal_cdp_type) :: E
             complex(dp), allocatable :: Emat(:, :)
@@ -258,22 +255,22 @@ contains
             ! Initialize A and B matrices.
             allocate(dl(n-1), dv(n), du(n-1), ev(n-1))
             allocate(data(n, 2))
-            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
             
-            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
+            call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             B = tridiagonal(dl, dv, du) ; Bmat = dense(B)
             
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             D = symtridiagonal(dv, ev) ; Dmat = dense(D)
 
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             E = hermtridiagonal(dv, ev) ; Emat = dense(E)
        
             ! Matrix addition.
@@ -318,13 +315,12 @@ contains
             call check(error, all_close(Cmat, Emat-Amat), .true.)
             if (allocated(error)) return
 
-
             ! Matrix scalar multiplication
             C = alpha * A ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
 
-            C = A *alpha ; Cmat = dense(C)
+            C = A * alpha ; Cmat = dense(C)
             call check(error, all_close(Cmat, alpha * Amat), .true.)
             if (allocated(error)) return
         end block
