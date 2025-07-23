@@ -24,8 +24,8 @@ contains
             new_unittest('tridiagonal spmv kernel', test_tridiagonal_spmv), &
             new_unittest('tridiagonal error handling', test_tridiagonal_error_handling), &
             new_unittest('symtridiagonal arithmetic', test_symtridiagonal_arithmetic), &
-            new_unittest('symtridiagonal spmv kernel', test_symtridiagonal_spmv) &
-            ! ! new_unittest('hermtridiagonal arithmetic', test_hermtridiagonal_arithmetic), &
+            new_unittest('symtridiagonal spmv kernel', test_symtridiagonal_spmv), &
+            new_unittest('hermtridiagonal arithmetic', test_hermtridiagonal_arithmetic) &
             ! new_unittest('hermtridiagonal spmv kernel', test_hermtridiagonal_spmv) &
         ]
     end subroutine
@@ -409,12 +409,12 @@ contains
             ! Initialize A and B matrices.
             allocate(ev(n-1), dv(n))
             allocate(data(n, 2))
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             A = hermtridiagonal(dv, ev) ; Amat = dense(A)
 
-            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             B = hermtridiagonal(dv, ev) ; Bmat = dense(B)
 
             ! Matrix addition.
