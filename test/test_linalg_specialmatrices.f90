@@ -21,8 +21,8 @@ contains
             new_unittest('tridiagonal error handling', test_tridiagonal_error_handling), &
             new_unittest('symtridiagonal arithmetic', test_symtridiagonal_arithmetic), &
             new_unittest('symtridiagonal spmv kernel', test_symtridiagonal_spmv), &
-            new_unittest('hermtridiagonal arithmetic', test_hermtridiagonal_arithmetic) &
-            ! new_unittest('hermtridiagonal spmv kernel', test_hermtridiagonal_spmv) &
+            new_unittest('hermtridiagonal arithmetic', test_hermtridiagonal_arithmetic), &
+            new_unittest('hermtridiagonal spmv kernel', test_hermtridiagonal_spmv) &
         ]
     end subroutine
 
@@ -1033,13 +1033,13 @@ contains
             ! Initialize matrix.
             allocate(ev(n-1), dv(n))
             allocate(data(n, 2), source=0.0_wp)
-            call random_number(data) ; dv%re = data(:, 1) ; dv%im = data(:, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             A = hermtridiagonal(dv, ev) ; Amat = dense(A)
 
             ! Random vectors.
             allocate(x(n), source=zero_csp)
-            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             allocate(y1(n), source = zero_csp)  ; allocate(y2(n), source=zero_csp)
 
             ! Test y = A @ x
@@ -1071,13 +1071,13 @@ contains
             ! Initialize matrix.
             allocate(ev(n-1), dv(n))
             allocate(data(n, 2), source=0.0_wp)
-            call random_number(data) ; dv%re = data(:, 1) ; dv%im = data(:, 2)
-            call random_number(data) ; ev%re = data(:n-1, 1) ; ev%im = data(:n-1, 2)
+            call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
+            call random_number(data) ; ev = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             A = hermtridiagonal(dv, ev) ; Amat = dense(A)
 
             ! Random vectors.
             allocate(x(n), source=zero_cdp)
-            call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             allocate(y1(n), source = zero_cdp)  ; allocate(y2(n), source=zero_cdp)
 
             ! Test y = A @ x
