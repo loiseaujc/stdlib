@@ -345,11 +345,6 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -393,11 +388,6 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            ! #:else
-            ! allocate(data(n, 2))
-            ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
-            ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -440,6 +430,10 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
@@ -482,6 +476,10 @@ contains
 
             ! Initialize matrix.
             allocate(dl(n-1), dv(n), du(n-1))
+            allocate(data(n, 2))
+            call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
