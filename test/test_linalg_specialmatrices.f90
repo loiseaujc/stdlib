@@ -345,7 +345,6 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
             ! #:if t1.startswith('real')
@@ -353,7 +352,7 @@ contains
             ! allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
             ! #:else
             ! allocate(x(n), source=zero_csp)
-            ! call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            ! call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             ! allocate(y1(n), source = zero_csp)  ; allocate(y2(n), source=zero_csp)
             ! #:endif
 
@@ -388,7 +387,6 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             call random_number(dl) ; call random_number(dv) ; call random_number(du)
             A = tridiagonal(dl, dv, du) ; Amat = dense(A)
-            !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
             ! #:if t1.startswith('real')
@@ -396,7 +394,7 @@ contains
             ! allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
             ! #:else
             ! allocate(x(n), source=zero_cdp)
-            ! call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            ! call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             ! allocate(y1(n), source = zero_cdp)  ; allocate(y2(n), source=zero_cdp)
             ! #:endif
 
@@ -434,7 +432,7 @@ contains
             call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
             call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
-            !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
             ! #:if t1.startswith('real')
@@ -442,7 +440,7 @@ contains
             ! allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
             ! #:else
             ! allocate(x(n), source=zero_csp)
-            ! call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            ! call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             ! allocate(y1(n), source = zero_csp)  ; allocate(y2(n), source=zero_csp)
             ! #:endif
 
@@ -480,7 +478,7 @@ contains
             call random_number(data) ; dl = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
             call random_number(data) ; dv = cmplx(data(:, 1), data(:, 2), kind=wp)
             call random_number(data) ; du = cmplx(data(:n-1, 1), data(:n-1, 2), kind=wp)
-            !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
+            A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
             ! ! Random vectors.
             ! #:if t1.startswith('real')
@@ -488,7 +486,7 @@ contains
             ! allocate(y1(n), source = 0.0_wp)  ; allocate(y2(n), source=0.0_wp)
             ! #:else
             ! allocate(x(n), source=zero_cdp)
-            ! call random_number(data) ; x%re = data(:, 1) ; x%im = data(:, 2)
+            ! call random_number(data) ; x = cmplx(data(:, 1), data(:, 2), kind=wp)
             ! allocate(y1(n), source = zero_cdp)  ; allocate(y2(n), source=zero_cdp)
             ! #:endif
 
