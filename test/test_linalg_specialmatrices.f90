@@ -432,7 +432,7 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             allocate(data(n, 2), source=0.0_wp)
             ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
             ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
@@ -478,7 +478,7 @@ contains
             allocate(dl(n-1), dv(n), du(n-1))
             allocate(data(n, 2), source=0.0_wp)
             ! call random_number(data) ; dl%re = data(:n-1, 1) ; dl%im = data(:n-1, 2)
-            ! call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
+            call random_number(data) ; dv%re = data(:n, 1) ; dv%im = data(:n, 2)
             ! call random_number(data) ; du%re = data(:n-1, 1) ; du%im = data(:n-1, 2)
             !A = tridiagonal(dl, dv, du) ; Amat = dense(A)
 
