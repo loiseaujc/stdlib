@@ -331,7 +331,7 @@ module stdlib_specialmatrices
         !!    A = SymTridiagonal(a, b, n)
         !! ```
         pure module function initialize_symtridiagonal_pure_sp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `symtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             real(sp), intent(in) :: dv(:), ev(:)
             !! SymTridiagonal matrix elements.
@@ -372,7 +372,7 @@ module stdlib_specialmatrices
             !! Corresponding SymTridiagonal matrix.
         end function   
         pure module function initialize_symtridiagonal_pure_dp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `symtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             real(dp), intent(in) :: dv(:), ev(:)
             !! SymTridiagonal matrix elements.
@@ -413,7 +413,7 @@ module stdlib_specialmatrices
             !! Corresponding SymTridiagonal matrix.
         end function   
         pure module function initialize_symtridiagonal_pure_csp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `symtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(sp), intent(in) :: dv(:), ev(:)
             !! SymTridiagonal matrix elements.
@@ -454,7 +454,7 @@ module stdlib_specialmatrices
             !! Corresponding SymTridiagonal matrix.
         end function   
         pure module function initialize_symtridiagonal_pure_cdp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `symtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(dp), intent(in) :: dv(:), ev(:)
             !! SymTridiagonal matrix elements.
@@ -506,10 +506,10 @@ module stdlib_specialmatrices
         !!    =
         !!    \begin{bmatrix}
         !!       a_1   &  b_1  \\
-        !!       b_1  &  a_2      &  b_2  \\
+        !!       \bar{b}_1  &  a_2      &  b_2  \\
         !!             &  \ddots   &  \ddots   &  \ddots   \\
-        !!             &           &  b_{n-2} &  a_{n-1}  &  b_{n-1} \\
-        !!             &           &           &  b_{n-1} &  a_n
+        !!             &           &  \bar{b}_{n-2} &  a_{n-1}  &  b_{n-1} \\
+        !!             &           &           &  \bar{b}_{n-1} &  a_n
         !!    \end{bmatrix}.
         !! \]
         !!
@@ -537,10 +537,10 @@ module stdlib_specialmatrices
         !!    A = HermTridiagonal(a, b, n)
         !! ```
         pure module function initialize_hermtridiagonal_pure_csp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `hermtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(sp), intent(in) :: dv(:), ev(:)
-            !! SymTridiagonal matrix elements.
+            !! HermTridiagonal matrix elements.
             type(hermtridiagonal_csp_type) :: A
             !! Corresponding HermTridiagonal matrix.
         end function
@@ -578,10 +578,10 @@ module stdlib_specialmatrices
             !! Corresponding HermTridiagonal matrix.
         end function   
         pure module function initialize_hermtridiagonal_pure_cdp(dv, ev) result(A)
-            !! Construct a `tridiagonal` matrix from the rank-1 arrays
+            !! Construct a `hermtridiagonal` matrix from the rank-1 arrays
             !! `dl`, `dv` and `du`.
             complex(dp), intent(in) :: dv(:), ev(:)
-            !! SymTridiagonal matrix elements.
+            !! HermTridiagonal matrix elements.
             type(hermtridiagonal_cdp_type) :: A
             !! Corresponding HermTridiagonal matrix.
         end function
@@ -634,68 +634,148 @@ module stdlib_specialmatrices
         !!
         !! for the different matrix types defined by `stdlib_specialmatrices`.
         module subroutine spmv_tridiag_1d_sp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_sp_type), intent(in) :: A
+            !! Input matrix.
             real(sp), intent(in), contiguous, target :: x(:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             real(sp), intent(inout), contiguous, target :: y(:)
+            !! Resulting vector.
             real(sp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(sp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_2d_sp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_sp_type), intent(in) :: A
+            !! Input matrix.
             real(sp), intent(in), contiguous, target :: x(:,:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             real(sp), intent(inout), contiguous, target :: y(:,:)
+            !! Resulting vector.
             real(sp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(sp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_1d_dp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_dp_type), intent(in) :: A
+            !! Input matrix.
             real(dp), intent(in), contiguous, target :: x(:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             real(dp), intent(inout), contiguous, target :: y(:)
+            !! Resulting vector.
             real(dp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(dp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_2d_dp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_dp_type), intent(in) :: A
+            !! Input matrix.
             real(dp), intent(in), contiguous, target :: x(:,:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             real(dp), intent(inout), contiguous, target :: y(:,:)
+            !! Resulting vector.
             real(dp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(dp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_1d_csp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_csp_type), intent(in) :: A
+            !! Input matrix.
             complex(sp), intent(in), contiguous, target :: x(:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             complex(sp), intent(inout), contiguous, target :: y(:)
+            !! Resulting vector.
             real(sp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(sp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_2d_csp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_csp_type), intent(in) :: A
+            !! Input matrix.
             complex(sp), intent(in), contiguous, target :: x(:,:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             complex(sp), intent(inout), contiguous, target :: y(:,:)
+            !! Resulting vector.
             real(sp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(sp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_1d_cdp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_cdp_type), intent(in) :: A
+            !! Input matrix.
             complex(dp), intent(in), contiguous, target :: x(:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             complex(dp), intent(inout), contiguous, target :: y(:)
+            !! Resulting vector.
             real(dp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(dp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
         module subroutine spmv_tridiag_2d_cdp(A, x, y, alpha, beta, op)
+            !! Matrix-vector kernel for matrices extended from the `tridiagonal` class.
             class(tridiagonal_cdp_type), intent(in) :: A
+            !! Input matrix.
             complex(dp), intent(in), contiguous, target :: x(:,:)
+            !! Vector(s) to be multiplied by the matrix `A`.
             complex(dp), intent(inout), contiguous, target :: y(:,:)
+            !! Resulting vector.
             real(dp), intent(in), optional :: alpha
+            !! Real scaling parameter for `Ax`
             real(dp), intent(in), optional :: beta
+            !! Real scaling parameter for `y` (right-hand side)
             character(1), intent(in), optional :: op
+            !! Which operation to perform:
+            !! - `op = "N"` : `y = alpha * A @ x + beta * y`
+            !! - `op = "T"` : `y = alpha * A.T @ x + beta * y`
+            !! - `op = "H"` : `y = alpha * A.H @ x + beta * y` (for complex-valued matrices only).
         end subroutine
     end interface
 
@@ -994,7 +1074,7 @@ module stdlib_specialmatrices
 
     interface operator(+)
         !! Overload the `+` operator for matrix-matrix addition. The two matrices need to
-        !! be of the same type and kind.
+        !! be of the class type and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
         pure module function matrix_add_tridiag_tridiag_sp(A, B) result(C)
             type(tridiagonal_sp_type), intent(in) :: A, B
@@ -1124,7 +1204,7 @@ module stdlib_specialmatrices
 
     interface operator(-)
         !! Overload the `-` operator for matrix-matrix subtraction. The two matrices need to
-        !! be of the same type and kind.
+        !! be of the same class and kind.
         !! [Specifications](../page/specs/stdlib_specialmatrices.html#operators)
         pure module function matrix_sub_tridiag_tridiag_sp(A, B) result(C)
             type(tridiagonal_sp_type), intent(in) :: A, B
