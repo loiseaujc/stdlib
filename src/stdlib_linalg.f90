@@ -1516,6 +1516,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_s_qr
+
+      pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          real(sp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          real(sp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          real(sp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+          real(sp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_s_pivoting_qr
       pure module subroutine stdlib_linalg_d_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          real(dp), intent(inout), target :: a(:,:)
@@ -1530,6 +1547,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_d_qr
+
+      pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          real(dp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          real(dp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          real(dp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+          real(dp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_d_pivoting_qr
       pure module subroutine stdlib_linalg_c_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          complex(sp), intent(inout), target :: a(:,:)
@@ -1544,6 +1578,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_c_qr
+
+      pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          complex(sp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          complex(sp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          complex(sp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+          complex(sp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_c_pivoting_qr
       pure module subroutine stdlib_linalg_z_qr(a,q,r,overwrite_a,storage,err) 
          !> Input matrix a[m,n]
          complex(dp), intent(inout), target :: a(:,:)
@@ -1558,6 +1609,23 @@ module stdlib_linalg
          !> [optional] state return flag. On error if not requested, the code will stop
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_z_qr
+
+      pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+          !> Input matrix a[m, n]
+          complex(dp), intent(inout), target :: a(:, :)
+          !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
+          complex(dp), intent(out), contiguous, target :: q(:, :)
+          !> Upper triangular matrix R ([m, n] or [k, n] if reduced)
+          complex(dp), intent(out), contiguous, target :: r(:, :)
+          !> Pivots.
+          integer(ilp), intent(out) :: pivots(:)
+          !> [optional] Can A data be overwritten and destroyed?
+          logical(lk), optional, intent(in) :: overwrite_a
+          !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+          complex(dp), intent(out), optional, target :: storage(:)
+          !> [optional] state return flag. On error if not requested, the code will stop.
+          type(linalg_state_type), optional, intent(out) :: err
+      end subroutine stdlib_linalg_z_pivoting_qr
   end interface qr
 
   ! Return the working array space required by the QR factorization solver
