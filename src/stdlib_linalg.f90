@@ -1651,6 +1651,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_s_workspace
+
+      pure module subroutine get_pivoting_qr_s_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        real(sp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_s_workspace
       pure module subroutine get_qr_d_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          real(dp), intent(in), target :: a(:,:)
@@ -1659,6 +1670,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_d_workspace
+
+      pure module subroutine get_pivoting_qr_d_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        real(dp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_d_workspace
       pure module subroutine get_qr_c_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          complex(sp), intent(in), target :: a(:,:)
@@ -1667,6 +1689,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_c_workspace
+
+      pure module subroutine get_pivoting_qr_c_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        complex(sp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_c_workspace
       pure module subroutine get_qr_z_workspace(a,lwork,err)
          !> Input matrix a[m,n]
          complex(dp), intent(in), target :: a(:,:)
@@ -1675,6 +1708,17 @@ module stdlib_linalg
          !> State return flag. Returns an error if the query failed
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_z_workspace
+
+      pure module subroutine get_pivoting_qr_z_workspace(a, lwork, pivoting, err)
+        !> Input matrix a[m, n]
+        complex(dp), intent(in), target :: a(:, :)
+        !> Minimum workspace size for both operations.
+        integer(ilp), intent(out) :: lwork
+        !> Pivoting flag.
+        logical(lk), intent(in) :: pivoting
+        !> State return flag. Returns an error if the query failed.
+        type(linalg_state_type), optional, intent(out) :: err
+      end subroutine get_pivoting_qr_z_workspace
   end interface qr_space
  
   ! Schur decomposition of rank-2 array A
