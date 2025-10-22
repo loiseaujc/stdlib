@@ -28,12 +28,15 @@ module stdlib_linalg
   public :: operator(.pinv.)
   public :: lstsq
   public :: lstsq_space
+  public :: constrained_lstsq
+  public :: constrained_lstsq_space
   public :: norm
   public :: mnorm
   public :: get_norm
   public :: solve
   public :: solve_lu  
   public :: solve_lstsq
+  public :: solve_constrained_lstsq
   public :: trace
   public :: svd
   public :: svdvals
@@ -1543,7 +1546,7 @@ module stdlib_linalg
         !> Solution vector.
         real(sp), intent(out) :: x(:)
         !> [optional] Storage.
-        real(sp), optional, intent(out) :: storage(:)
+        real(sp), optional, intent(out), target :: storage(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag. On error if not requested, the code stops.
@@ -1557,7 +1560,7 @@ module stdlib_linalg
         !> Solution vector.
         real(dp), intent(out) :: x(:)
         !> [optional] Storage.
-        real(dp), optional, intent(out) :: storage(:)
+        real(dp), optional, intent(out), target :: storage(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag. On error if not requested, the code stops.
@@ -1571,7 +1574,7 @@ module stdlib_linalg
         !> Solution vector.
         complex(sp), intent(out) :: x(:)
         !> [optional] Storage.
-        complex(sp), optional, intent(out) :: storage(:)
+        complex(sp), optional, intent(out), target :: storage(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag. On error if not requested, the code stops.
@@ -1585,7 +1588,7 @@ module stdlib_linalg
         !> Solution vector.
         complex(dp), intent(out) :: x(:)
         !> [optional] Storage.
-        complex(dp), optional, intent(out) :: storage(:)
+        complex(dp), optional, intent(out), target :: storage(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag. On error if not requested, the code stops.
@@ -1594,25 +1597,29 @@ module stdlib_linalg
   end interface
 
   interface constrained_lstsq_space
-    pure module subroutine stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork)
+    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork, err)
         real(sp), intent(in), target :: A(:, :), C(:, :)
         real(sp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_s_constrained_lstsq_space
-    pure module subroutine stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork)
+    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork, err)
         real(dp), intent(in), target :: A(:, :), C(:, :)
         real(dp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_d_constrained_lstsq_space
-    pure module subroutine stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork)
+    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork, err)
         complex(sp), intent(in), target :: A(:, :), C(:, :)
         complex(sp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_c_constrained_lstsq_space
-    pure module subroutine stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork)
+    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork, err)
         complex(dp), intent(in), target :: A(:, :), C(:, :)
         complex(dp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out) :: lwork
+        type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_z_constrained_lstsq_space
   end interface
 
