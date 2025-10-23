@@ -1644,35 +1644,35 @@ module stdlib_linalg
     !!  case several repeated solutions to a same system are sought. If pre-allocated,
     !!  working arrays are provided, no internal allocation will take place.
     !!
-    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        real(sp), intent(in) :: A(:, :), b(:)
+        real(sp), intent(in) :: A(:, :)
         !> Equality constraints.
-        real(sp), intent(in) :: C(:, :), d(:)
+        real(sp), intent(in) :: C(:, :)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_s_constrained_lstsq_space
-    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        real(dp), intent(in) :: A(:, :), b(:)
+        real(dp), intent(in) :: A(:, :)
         !> Equality constraints.
-        real(dp), intent(in) :: C(:, :), d(:)
+        real(dp), intent(in) :: C(:, :)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_d_constrained_lstsq_space
-    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        complex(sp), intent(in) :: A(:, :), b(:)
+        complex(sp), intent(in) :: A(:, :)
         !> Equality constraints.
-        complex(sp), intent(in) :: C(:, :), d(:)
+        complex(sp), intent(in) :: C(:, :)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_c_constrained_lstsq_space
-    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        complex(dp), intent(in) :: A(:, :), b(:)
+        complex(dp), intent(in) :: A(:, :)
         !> Equality constraints.
-        complex(dp), intent(in) :: C(:, :), d(:)
+        complex(dp), intent(in) :: C(:, :)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_z_constrained_lstsq_space
