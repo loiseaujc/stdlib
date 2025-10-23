@@ -1485,11 +1485,28 @@ module stdlib_linalg
   ! Equality-constrained least-squares, i.e. minimize the sum of squares
   ! cost || Ax - b ||^2 subject to the equality constraint Cx = d.
   interface constrained_lstsq
+    !!  version: experimental
+    !!
+    !!  Computes the solution of the equality constrained least-squares problem
+    !!
+    !!  minimize     || Ax - b ||²
+    !!  subject to      Cx = d
+    !!
+    !!  where A is of size `m x n` and C of size `p x n`.
+    !!  ([Specification]())
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides methods for computing the solution of an equality-constrained
+    !!  least-squares problem using a function. Supported data types include `real` and
+    !!  `complex`. 
+    !!
+    !!  @note The solution is based on LAPACK's `*GLLSE` methods.
     module function stdlib_linalg_s_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
-        !> Input matrices.
-        real(sp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        real(sp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost
+        real(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(sp), intent(inout), target :: C(:, :), d(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag.
@@ -1498,10 +1515,10 @@ module stdlib_linalg
         real(sp), allocatable, target :: x(:)
     end function stdlib_linalg_s_constrained_lstsq
     module function stdlib_linalg_d_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
-        !> Input matrices.
-        real(dp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        real(dp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost
+        real(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(dp), intent(inout), target :: C(:, :), d(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag.
@@ -1510,10 +1527,10 @@ module stdlib_linalg
         real(dp), allocatable, target :: x(:)
     end function stdlib_linalg_d_constrained_lstsq
     module function stdlib_linalg_c_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
-        !> Input matrices.
-        complex(sp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        complex(sp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost
+        complex(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(sp), intent(inout), target :: C(:, :), d(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag.
@@ -1522,10 +1539,10 @@ module stdlib_linalg
         complex(sp), allocatable, target :: x(:)
     end function stdlib_linalg_c_constrained_lstsq
     module function stdlib_linalg_z_constrained_lstsq(A, b, C, d, overwrite_matrices, err) result(x)
-        !> Input matrices.
-        complex(dp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        complex(dp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost
+        complex(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(dp), intent(inout), target :: C(:, :), d(:)
         !> [optional] Can A and C be overwritten?
         logical(lk), optional, intent(in) :: overwrite_matrices
         !> [optional] State return flag.
@@ -1538,11 +1555,29 @@ module stdlib_linalg
   ! Equality-constrained least-squares, i.e. minimize the sum of squares
   ! cost || Ax - b ||^2 subject to the equality constraint Cx = d.
   interface solve_constrained_lstsq
+    !!  version: experimental
+    !!
+    !!  Computes the solution of the equality constrained least-squares problem
+    !!
+    !!  minimize     || Ax - b ||²
+    !!  subject to      Cx = d
+    !!
+    !!  where A is of size `m x n` and C of size `p x n`.
+    !!  ([Specification]())
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides methods for computing the solution of an equality-constrained
+    !!  least-squares problem using a subroutine. Supported data types include `real` and
+    !!  `complex`. If a pre-allocated workspace is provided, no internal memory allocation takes
+    !!  place.
+    !!
+    !!  @note The solution is based on LAPACK's `*GLLSE` methods.
     module subroutine stdlib_linalg_s_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
-        !> Input matrices.
-        real(sp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        real(sp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost.
+        real(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(sp), intent(inout), target :: C(:, :), d(:)
         !> Solution vector.
         real(sp), intent(out) :: x(:)
         !> [optional] Storage.
@@ -1553,10 +1588,10 @@ module stdlib_linalg
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_s_solve_constrained_lstsq
     module subroutine stdlib_linalg_d_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
-        !> Input matrices.
-        real(dp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        real(dp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost.
+        real(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        real(dp), intent(inout), target :: C(:, :), d(:)
         !> Solution vector.
         real(dp), intent(out) :: x(:)
         !> [optional] Storage.
@@ -1567,10 +1602,10 @@ module stdlib_linalg
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_d_solve_constrained_lstsq
     module subroutine stdlib_linalg_c_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
-        !> Input matrices.
-        complex(sp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        complex(sp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost.
+        complex(sp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(sp), intent(inout), target :: C(:, :), d(:)
         !> Solution vector.
         complex(sp), intent(out) :: x(:)
         !> [optional] Storage.
@@ -1581,10 +1616,10 @@ module stdlib_linalg
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_c_solve_constrained_lstsq
     module subroutine stdlib_linalg_z_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
-        !> Input matrices.
-        complex(dp), intent(inout), target :: A(:, :), C(:, :)
-        !> Right-hand side vectors.
-        complex(dp), intent(inout), target :: b(:), d(:)
+        !> Least-squares cost.
+        complex(dp), intent(inout), target :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(dp), intent(inout), target :: C(:, :), d(:)
         !> Solution vector.
         complex(dp), intent(out) :: x(:)
         !> [optional] Storage.
@@ -1597,27 +1632,47 @@ module stdlib_linalg
   end interface
 
   interface constrained_lstsq_space
+    !!  version: experimental
+    !!
+    !!  Computes the size of the workspace required by the constrained least-squares solver.
+    !!  ([Specification]())
+    !!
+    !!  ### Description
+    !!
+    !!  This interface provides the size of the workspace array required by the constrained
+    !!  least-squares solver. It can be used to pre-allocate the working array in
+    !!  case several repeated solutions to a same system are sought. If pre-allocated,
+    !!  working arrays are provided, no internal allocation will take place.
+    !!
     module subroutine stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork, err)
-        real(sp), intent(in), target :: A(:, :), C(:, :)
-        real(sp), intent(in), target :: b(:), d(:)
+        !> Least-squares cost.
+        real(sp), intent(in) :: A(:, :), b(:)
+        !> Equality constraints.
+        real(sp), intent(in) :: C(:, :), d(:)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_s_constrained_lstsq_space
     module subroutine stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork, err)
-        real(dp), intent(in), target :: A(:, :), C(:, :)
-        real(dp), intent(in), target :: b(:), d(:)
+        !> Least-squares cost.
+        real(dp), intent(in) :: A(:, :), b(:)
+        !> Equality constraints.
+        real(dp), intent(in) :: C(:, :), d(:)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_d_constrained_lstsq_space
     module subroutine stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork, err)
-        complex(sp), intent(in), target :: A(:, :), C(:, :)
-        complex(sp), intent(in), target :: b(:), d(:)
+        !> Least-squares cost.
+        complex(sp), intent(in) :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(sp), intent(in) :: C(:, :), d(:)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_c_constrained_lstsq_space
     module subroutine stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork, err)
-        complex(dp), intent(in), target :: A(:, :), C(:, :)
-        complex(dp), intent(in), target :: b(:), d(:)
+        !> Least-squares cost.
+        complex(dp), intent(in) :: A(:, :), b(:)
+        !> Equality constraints.
+        complex(dp), intent(in) :: C(:, :), d(:)
         integer(ilp), intent(out) :: lwork
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_z_constrained_lstsq_space
