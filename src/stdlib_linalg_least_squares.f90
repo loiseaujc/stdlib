@@ -2181,6 +2181,19 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         real(sp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out)  :: lwork
         type(linalg_state_type), optional, intent(out) :: err
+        !> Local variables.
+        integer(ilp) :: m, n, p, info
+        real(sp) :: a_dummy(1, 1), b_dummy(1)
+        real(sp) :: c_dummy(1, 1), d_dummy(1)
+        real(sp) :: work(1), x(1)
+        !> Problem dimensions.
+        m = size(A, 1) ; n = size(A, 2) ; p = size(C, 1)
+        lwork = -1_ilp
+        !> Compute constrained lstsq solution.
+        call gglse(m, n, p, a_dummy, m, c_dummy, p, b_dummy, d_dummy, x, work, lwork, info)
+        call handle_gglse_info(this, info, m, n, p, err)
+        !> Optimal workspace size.
+        lwork = ceiling(real(work(1), kind=sp), kind=ilp)
     end subroutine stdlib_linalg_s_constrained_lstsq_space
 
     module subroutine stdlib_linalg_s_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
@@ -2256,7 +2269,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
             call handle_gglse_info(this, info, ma, na, mc, err0)
 
             !> Deallocate.
-            deallocate(work)
+            if (.not. present(storage)) deallocate(work)
         endif
 
         if (.not. overwrite_matrices_) then
@@ -2291,6 +2304,19 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         real(dp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out)  :: lwork
         type(linalg_state_type), optional, intent(out) :: err
+        !> Local variables.
+        integer(ilp) :: m, n, p, info
+        real(dp) :: a_dummy(1, 1), b_dummy(1)
+        real(dp) :: c_dummy(1, 1), d_dummy(1)
+        real(dp) :: work(1), x(1)
+        !> Problem dimensions.
+        m = size(A, 1) ; n = size(A, 2) ; p = size(C, 1)
+        lwork = -1_ilp
+        !> Compute constrained lstsq solution.
+        call gglse(m, n, p, a_dummy, m, c_dummy, p, b_dummy, d_dummy, x, work, lwork, info)
+        call handle_gglse_info(this, info, m, n, p, err)
+        !> Optimal workspace size.
+        lwork = ceiling(real(work(1), kind=dp), kind=ilp)
     end subroutine stdlib_linalg_d_constrained_lstsq_space
 
     module subroutine stdlib_linalg_d_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
@@ -2366,7 +2392,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
             call handle_gglse_info(this, info, ma, na, mc, err0)
 
             !> Deallocate.
-            deallocate(work)
+            if (.not. present(storage)) deallocate(work)
         endif
 
         if (.not. overwrite_matrices_) then
@@ -2401,6 +2427,19 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         complex(sp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out)  :: lwork
         type(linalg_state_type), optional, intent(out) :: err
+        !> Local variables.
+        integer(ilp) :: m, n, p, info
+        complex(sp) :: a_dummy(1, 1), b_dummy(1)
+        complex(sp) :: c_dummy(1, 1), d_dummy(1)
+        complex(sp) :: work(1), x(1)
+        !> Problem dimensions.
+        m = size(A, 1) ; n = size(A, 2) ; p = size(C, 1)
+        lwork = -1_ilp
+        !> Compute constrained lstsq solution.
+        call gglse(m, n, p, a_dummy, m, c_dummy, p, b_dummy, d_dummy, x, work, lwork, info)
+        call handle_gglse_info(this, info, m, n, p, err)
+        !> Optimal workspace size.
+        lwork = ceiling(real(work(1), kind=sp), kind=ilp)
     end subroutine stdlib_linalg_c_constrained_lstsq_space
 
     module subroutine stdlib_linalg_c_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
@@ -2476,7 +2515,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
             call handle_gglse_info(this, info, ma, na, mc, err0)
 
             !> Deallocate.
-            deallocate(work)
+            if (.not. present(storage)) deallocate(work)
         endif
 
         if (.not. overwrite_matrices_) then
@@ -2511,6 +2550,19 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         complex(dp), intent(in), target :: b(:), d(:)
         integer(ilp), intent(out)  :: lwork
         type(linalg_state_type), optional, intent(out) :: err
+        !> Local variables.
+        integer(ilp) :: m, n, p, info
+        complex(dp) :: a_dummy(1, 1), b_dummy(1)
+        complex(dp) :: c_dummy(1, 1), d_dummy(1)
+        complex(dp) :: work(1), x(1)
+        !> Problem dimensions.
+        m = size(A, 1) ; n = size(A, 2) ; p = size(C, 1)
+        lwork = -1_ilp
+        !> Compute constrained lstsq solution.
+        call gglse(m, n, p, a_dummy, m, c_dummy, p, b_dummy, d_dummy, x, work, lwork, info)
+        call handle_gglse_info(this, info, m, n, p, err)
+        !> Optimal workspace size.
+        lwork = ceiling(real(work(1), kind=dp), kind=ilp)
     end subroutine stdlib_linalg_z_constrained_lstsq_space
 
     module subroutine stdlib_linalg_z_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
@@ -2586,7 +2638,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
             call handle_gglse_info(this, info, ma, na, mc, err0)
 
             !> Deallocate.
-            deallocate(work)
+            if (.not. present(storage)) deallocate(work)
         endif
 
         if (.not. overwrite_matrices_) then
