@@ -1563,7 +1563,7 @@ module stdlib_linalg
     !!  subject to      Cx = d
     !!
     !!  where A is of size `m x n` and C of size `p x n`.
-    !!  ([Specification]())
+    !!  ([Specification](../page/specs/stdlib_linalg.html#solve-constrained-lstsq))
     !!
     !!  ### Description
     !!
@@ -1635,7 +1635,7 @@ module stdlib_linalg
     !!  version: experimental
     !!
     !!  Computes the size of the workspace required by the constrained least-squares solver.
-    !!  ([Specification]())
+    !!  ([Specification](../page/specs/stdlib_linalg.html#constrained-lstsq-space))
     !!
     !!  ### Description
     !!
