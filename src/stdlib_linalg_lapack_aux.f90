@@ -1897,6 +1897,7 @@ module stdlib_linalg_lapack_aux
                 err = linalg_state_type(this, LINALG_ERROR, "rank(C) < p, the least-squares solution cannot be computed.")
             case(0)
                 ! Success.
+                err%state = LINALG_SUCCESS
             case(-1)
                 err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid number of rows for A, m=', m)
             case(-2)
