@@ -2177,11 +2177,11 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
     end subroutine check_problem_size
 
     ! Compute the size of the workspace requested by the constrained least-squares procedure.
-    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_s_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        real(sp), intent(in) :: A(:, :), b(:)
+        real(sp), intent(in) :: A(:, :)
         !> Equality constraints.
-        real(sp), intent(in) :: C(:, :), d(:)
+        real(sp), intent(in) :: C(:, :)
         !> Size of the workspace array.
         integer(ilp), intent(out)  :: lwork
         !> [optional] State return flag.
@@ -2279,7 +2279,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         endif
 
         !> Retrieve workspace size.
-        call stdlib_linalg_s_constrained_lstsq_space(A, b, C, d, lwork, err0)
+        call stdlib_linalg_s_constrained_lstsq_space(A, C, lwork, err0)
 
         if (err0%ok()) then
             !> Workspace.
@@ -2350,11 +2350,11 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         call stdlib_linalg_s_solve_constrained_lstsq(A, b, C, d, x, overwrite_matrices=overwrite_matrices, err=err)
     end function stdlib_linalg_s_constrained_lstsq
     ! Compute the size of the workspace requested by the constrained least-squares procedure.
-    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_d_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        real(dp), intent(in) :: A(:, :), b(:)
+        real(dp), intent(in) :: A(:, :)
         !> Equality constraints.
-        real(dp), intent(in) :: C(:, :), d(:)
+        real(dp), intent(in) :: C(:, :)
         !> Size of the workspace array.
         integer(ilp), intent(out)  :: lwork
         !> [optional] State return flag.
@@ -2452,7 +2452,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         endif
 
         !> Retrieve workspace size.
-        call stdlib_linalg_d_constrained_lstsq_space(A, b, C, d, lwork, err0)
+        call stdlib_linalg_d_constrained_lstsq_space(A, C, lwork, err0)
 
         if (err0%ok()) then
             !> Workspace.
@@ -2523,11 +2523,11 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         call stdlib_linalg_d_solve_constrained_lstsq(A, b, C, d, x, overwrite_matrices=overwrite_matrices, err=err)
     end function stdlib_linalg_d_constrained_lstsq
     ! Compute the size of the workspace requested by the constrained least-squares procedure.
-    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_c_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        complex(sp), intent(in) :: A(:, :), b(:)
+        complex(sp), intent(in) :: A(:, :)
         !> Equality constraints.
-        complex(sp), intent(in) :: C(:, :), d(:)
+        complex(sp), intent(in) :: C(:, :)
         !> Size of the workspace array.
         integer(ilp), intent(out)  :: lwork
         !> [optional] State return flag.
@@ -2625,7 +2625,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         endif
 
         !> Retrieve workspace size.
-        call stdlib_linalg_c_constrained_lstsq_space(A, b, C, d, lwork, err0)
+        call stdlib_linalg_c_constrained_lstsq_space(A, C, lwork, err0)
 
         if (err0%ok()) then
             !> Workspace.
@@ -2696,11 +2696,11 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         call stdlib_linalg_c_solve_constrained_lstsq(A, b, C, d, x, overwrite_matrices=overwrite_matrices, err=err)
     end function stdlib_linalg_c_constrained_lstsq
     ! Compute the size of the workspace requested by the constrained least-squares procedure.
-    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork, err)
+    module subroutine stdlib_linalg_z_constrained_lstsq_space(A, C, lwork, err)
         !> Least-squares cost.
-        complex(dp), intent(in) :: A(:, :), b(:)
+        complex(dp), intent(in) :: A(:, :)
         !> Equality constraints.
-        complex(dp), intent(in) :: C(:, :), d(:)
+        complex(dp), intent(in) :: C(:, :)
         !> Size of the workspace array.
         integer(ilp), intent(out)  :: lwork
         !> [optional] State return flag.
@@ -2798,7 +2798,7 @@ submodule (stdlib_linalg) stdlib_linalg_least_squares
         endif
 
         !> Retrieve workspace size.
-        call stdlib_linalg_z_constrained_lstsq_space(A, b, C, d, lwork, err0)
+        call stdlib_linalg_z_constrained_lstsq_space(A, C, lwork, err0)
 
         if (err0%ok()) then
             !> Workspace.
