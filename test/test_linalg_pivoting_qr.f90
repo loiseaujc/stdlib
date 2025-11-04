@@ -210,7 +210,7 @@ module test_linalg_pivoting_qr
             if (allocated(error)) return        
             
             ! Check solution
-            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (fulle)')
+            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
             if (allocated(error)) return        
                     
             ! 2) QR factorization with reduced matrices
@@ -440,7 +440,7 @@ module test_linalg_pivoting_qr
             if (allocated(error)) return        
             
             ! Check solution
-            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (fulle)')
+            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
             if (allocated(error)) return        
                     
             ! 2) QR factorization with reduced matrices
@@ -673,7 +673,7 @@ module test_linalg_pivoting_qr
             if (allocated(error)) return        
             
             ! Check solution
-            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (fulle)')
+            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
             if (allocated(error)) return        
                     
             ! 2) QR factorization with reduced matrices
@@ -906,7 +906,7 @@ module test_linalg_pivoting_qr
             if (allocated(error)) return        
             
             ! Check solution
-            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (fulle)')
+            call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
             if (allocated(error)) return        
                     
             ! 2) QR factorization with reduced matrices
