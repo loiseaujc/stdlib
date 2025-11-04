@@ -1572,7 +1572,7 @@ module stdlib_linalg
     !!  `complex`. If a pre-allocated workspace is provided, no internal memory allocation takes
     !!  place.
     !!
-    !!  @note The solution is based on LAPACK's `*GLLSE` methods.
+    !!  @note The solution is based on LAPACK's `*GGLSE` methods.
     module subroutine stdlib_linalg_s_solve_constrained_lstsq(A, b, C, d, x, storage, overwrite_matrices, err)
         !> Least-squares cost.
         real(sp), intent(inout), target :: A(:, :), b(:)
