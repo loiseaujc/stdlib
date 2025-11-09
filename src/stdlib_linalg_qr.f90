@@ -804,7 +804,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         integer(ilp), intent(out) :: pivots(:)
         !> [optional] Can A data be overwritten and destroyed?
         logical(lk), optional, intent(in) :: overwrite_a
-        !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+        !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
         real(sp), intent(out), optional, target :: storage(:)
         !> [optional] state return flag. On error if not requested, the code will stop.
         type(linalg_state_type), optional, intent(out) :: err
@@ -983,7 +983,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         integer(ilp), intent(out) :: pivots(:)
         !> [optional] Can A data be overwritten and destroyed?
         logical(lk), optional, intent(in) :: overwrite_a
-        !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+        !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
         real(dp), intent(out), optional, target :: storage(:)
         !> [optional] state return flag. On error if not requested, the code will stop.
         type(linalg_state_type), optional, intent(out) :: err
@@ -1162,7 +1162,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         integer(ilp), intent(out) :: pivots(:)
         !> [optional] Can A data be overwritten and destroyed?
         logical(lk), optional, intent(in) :: overwrite_a
-        !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+        !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
         complex(sp), intent(out), optional, target :: storage(:)
         !> [optional] state return flag. On error if not requested, the code will stop.
         type(linalg_state_type), optional, intent(out) :: err
@@ -1342,7 +1342,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         integer(ilp), intent(out) :: pivots(:)
         !> [optional] Can A data be overwritten and destroyed?
         logical(lk), optional, intent(in) :: overwrite_a
-        !> [optional] Provide pre-allocated workspace, size to be checked with pivoting_qr_space.
+        !> [optional] Provide pre-allocated workspace, size to be checked with qr_space.
         complex(dp), intent(out), optional, target :: storage(:)
         !> [optional] state return flag. On error if not requested, the code will stop.
         type(linalg_state_type), optional, intent(out) :: err
