@@ -2731,7 +2731,10 @@ module stdlib_linalg_lapack
                 real(sp), intent(inout) :: a(lda, *)
                 real(sp), intent(out) :: tau(*), work(*)
             end subroutine sgeqp3
-
+#else
+            module procedure stdlib_sgeqp3
+#endif
+#ifdef STDLIB_EXTERNAL_LAPACK
             pure subroutine dgeqp3(m, n, a, lda, jpvt, tau, work, lwork, info)
                 import sp, dp, qp, ilp, lk
                 implicit none
@@ -2741,7 +2744,10 @@ module stdlib_linalg_lapack
                 real(dp), intent(inout) :: a(lda, *)
                 real(dp), intent(out) :: tau(*), work(*)
             end subroutine dgeqp3
-
+#else
+            module procedure stdlib_dgeqp3
+#endif
+#ifdef STDLIB_EXTERNAL_LAPACK
             pure subroutine cgeqp3(m, n, a, lda, jpvt, tau, work, lwork, rwork, info)
                 import sp, dp, qp, ilp, lk
                 implicit none
@@ -2752,7 +2758,10 @@ module stdlib_linalg_lapack
                 complex(sp), intent(out) :: tau(*), work(*)
                 real(sp), intent(out) :: rwork(*)
             end subroutine cgeqp3
-    
+#else
+            module procedure stdlib_cgeqp3
+#endif
+#ifdef STDLIB_EXTERNAL_LAPACK
             pure subroutine zgeqp3(m, n, a, lda, jpvt, tau, work, lwork, rwork, info)
                 import sp, dp, qp, ilp, lk
                 implicit none
@@ -2764,9 +2773,6 @@ module stdlib_linalg_lapack
                 real(dp), intent(out) :: rwork(*)
             end subroutine zgeqp3
 #else
-            module procedure stdlib_sgeqp3
-            module procedure stdlib_dgeqp3
-            module procedure stdlib_cgeqp3
             module procedure stdlib_zgeqp3
 #endif
           end interface geqp3
