@@ -20,17 +20,17 @@ module test_linalg_pivoting_qr
         allocate(tests(0))
         
         call add_test(tests,new_unittest("pivoting_qr_random_tall_matrix_s",test_pivoting_qr_random_tall_matrix_s))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_s",test_pivoting_qr_random_rank_deficient_s))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_s",test_pivoting_qr_random_wide_matrix_s))
+        call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_s",test_pivoting_qr_random_rank_deficient_s))
+        call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_s",test_pivoting_qr_random_wide_matrix_s))
         call add_test(tests,new_unittest("pivoting_qr_random_tall_matrix_d",test_pivoting_qr_random_tall_matrix_d))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_d",test_pivoting_qr_random_rank_deficient_d))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_d",test_pivoting_qr_random_wide_matrix_d))
+        call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_d",test_pivoting_qr_random_rank_deficient_d))
+        call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_d",test_pivoting_qr_random_wide_matrix_d))
         call add_test(tests,new_unittest("pivoting_qr_random_tall_matrix_c",test_pivoting_qr_random_tall_matrix_c))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_c",test_pivoting_qr_random_rank_deficient_c))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_c",test_pivoting_qr_random_wide_matrix_c))
+        call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_c",test_pivoting_qr_random_rank_deficient_c))
+        call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_c",test_pivoting_qr_random_wide_matrix_c))
         call add_test(tests,new_unittest("pivoting_qr_random_tall_matrix_z",test_pivoting_qr_random_tall_matrix_z))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_z",test_pivoting_qr_random_rank_deficient_z))
-        ! call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_z",test_pivoting_qr_random_wide_matrix_z))
+        call add_test(tests,new_unittest("pivoting_qr_random_rank_deficient_z",test_pivoting_qr_random_rank_deficient_z))
+        call add_test(tests,new_unittest("pivoting_qr_random_wide_matrix_z",test_pivoting_qr_random_wide_matrix_z))
     end subroutine test_pivoting_qr_factorization
 
     !> QR factorization of a random matrix
@@ -61,31 +61,31 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        call check(error, mnorm(a(:, pivots)-matmul(q,r), order=2) < tol, 'converged solution (full)')
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
-
+                
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
+
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
-        !
+
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
+
         ! 4) External storage option   
         a = aorig
         call qr_space(a, lwork, pivoting=.true.)
@@ -95,11 +95,11 @@ module test_linalg_pivoting_qr
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
+
         ! Check that an invalid problem size returns an error
         a = aorig        
         call qr(a, qerr, rerr, pivots, err=state)
@@ -134,9 +134,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
         
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
+        if (allocated(error)) return        
                 
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
@@ -145,9 +145,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
 
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
@@ -156,9 +156,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
 
         ! 4) External storage option   
         a = aorig
@@ -170,9 +170,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
 
         ! Check that an invalid problem size returns an error
         a = aorig        
@@ -281,31 +281,31 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        call check(error, mnorm(a(:, pivots)-matmul(q,r), order=2) < tol, 'converged solution (full)')
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
-
+                
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
+
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
-        !
+
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
+
         ! 4) External storage option   
         a = aorig
         call qr_space(a, lwork, pivoting=.true.)
@@ -315,11 +315,11 @@ module test_linalg_pivoting_qr
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
+
         ! Check that an invalid problem size returns an error
         a = aorig        
         call qr(a, qerr, rerr, pivots, err=state)
@@ -354,9 +354,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
         
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
+        if (allocated(error)) return        
                 
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
@@ -365,9 +365,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
 
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
@@ -376,9 +376,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
 
         ! 4) External storage option   
         a = aorig
@@ -390,9 +390,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
 
         ! Check that an invalid problem size returns an error
         a = aorig        
@@ -502,31 +502,31 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        call check(error, mnorm(a(:, pivots)-matmul(q,r), order=2) < tol, 'converged solution (full)')
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
-
+                
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
+
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
-        !
+
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
+
         ! 4) External storage option   
         a = aorig
         call qr_space(a, lwork, pivoting=.true.)
@@ -536,11 +536,11 @@ module test_linalg_pivoting_qr
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
+
         ! Check that an invalid problem size returns an error
         a = aorig        
         call qr(a, qerr, rerr, pivots, err=state)
@@ -576,9 +576,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
         
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
+        if (allocated(error)) return        
                 
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
@@ -587,9 +587,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
 
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
@@ -598,9 +598,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
 
         ! 4) External storage option   
         a = aorig
@@ -612,9 +612,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
 
         ! Check that an invalid problem size returns an error
         a = aorig        
@@ -725,31 +725,31 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        call check(error, mnorm(a(:, pivots)-matmul(q,r), order=2) < tol, 'converged solution (full)')
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
-
+                
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
+
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
 
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
-        !
+
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
+
         ! 4) External storage option   
         a = aorig
         call qr_space(a, lwork, pivoting=.true.)
@@ -759,11 +759,11 @@ module test_linalg_pivoting_qr
         ! Check return code
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
-        !
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
-        !
+
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
+
         ! Check that an invalid problem size returns an error
         a = aorig        
         call qr(a, qerr, rerr, pivots, err=state)
@@ -799,9 +799,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
         
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
+        if (allocated(error)) return        
                 
         ! 2) QR factorization with reduced matrices
         call qr(a, qred, rred, pivots, err=state)
@@ -810,9 +810,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
-        ! if (allocated(error)) return        
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
+        if (allocated(error)) return        
 
         ! 3) overwrite A
         call qr(a, qred, rred, pivots, overwrite_a=.true., err=state)
@@ -821,9 +821,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
-        ! if (allocated(error)) return                
+        ! Check solution
+        call check(error, all(abs(aorig(:, pivots)-matmul(qred,rred))<tol), 'converged solution (overwrite A)')
+        if (allocated(error)) return                
 
         ! 4) External storage option   
         a = aorig
@@ -835,9 +835,9 @@ module test_linalg_pivoting_qr
         call check(error,state%ok(),state%print())
         if (allocated(error)) return        
 
-        ! ! Check solution
-        ! call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
-        ! if (allocated(error)) return          
+        ! Check solution
+        call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (external storage)')
+        if (allocated(error)) return          
 
         ! Check that an invalid problem size returns an error
         a = aorig        
