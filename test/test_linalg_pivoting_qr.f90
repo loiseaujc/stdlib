@@ -47,16 +47,8 @@ module test_linalg_pivoting_qr
         real(sp), allocatable :: work(:)
         type(linalg_state_type) :: state
         
-        ! call random_number(rea)
-        ! #:if rt.startswith('complex')
-        ! call random_number(ima)
-        ! a = cmplx(rea,ima,kind=sp)
-        ! #:else
-        ! a = rea
-        ! #:endif
-        do concurrent(i=1:m, j=1:n)
-            a(i, j) = i ** (j-1)
-        enddo
+        call random_number(rea)
+        a = rea
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
@@ -275,16 +267,8 @@ module test_linalg_pivoting_qr
         real(dp), allocatable :: work(:)
         type(linalg_state_type) :: state
         
-        ! call random_number(rea)
-        ! #:if rt.startswith('complex')
-        ! call random_number(ima)
-        ! a = cmplx(rea,ima,kind=dp)
-        ! #:else
-        ! a = rea
-        ! #:endif
-        do concurrent(i=1:m, j=1:n)
-            a(i, j) = i ** (j-1)
-        enddo
+        call random_number(rea)
+        a = rea
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
@@ -503,16 +487,9 @@ module test_linalg_pivoting_qr
         complex(sp), allocatable :: work(:)
         type(linalg_state_type) :: state
         
-        ! call random_number(rea)
-        ! #:if rt.startswith('complex')
-        ! call random_number(ima)
-        ! a = cmplx(rea,ima,kind=sp)
-        ! #:else
-        ! a = rea
-        ! #:endif
-        do concurrent(i=1:m, j=1:n)
-            a(i, j) = cmplx(i**(j-1), 0.0_sp, kind=sp)
-        enddo
+        call random_number(rea)
+        call random_number(ima)
+        a = cmplx(rea,ima,kind=sp)
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
@@ -733,16 +710,9 @@ module test_linalg_pivoting_qr
         complex(dp), allocatable :: work(:)
         type(linalg_state_type) :: state
         
-        ! call random_number(rea)
-        ! #:if rt.startswith('complex')
-        ! call random_number(ima)
-        ! a = cmplx(rea,ima,kind=dp)
-        ! #:else
-        ! a = rea
-        ! #:endif
-        do concurrent(i=1:m, j=1:n)
-            a(i, j) = cmplx(i**(j-1), 0.0_dp, kind=dp)
-        enddo
+        call random_number(rea)
+        call random_number(ima)
+        a = cmplx(rea,ima,kind=dp)
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
