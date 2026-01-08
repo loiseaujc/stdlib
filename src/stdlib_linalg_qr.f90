@@ -886,10 +886,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:n)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
+                do concurrent(i=1:min(r1, m), j=2:n)
+                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call  orgqr   &
@@ -1065,10 +1064,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:n)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
+                do concurrent(i=1:min(r1, m), j=2:n)
+                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call  orgqr   &
@@ -1245,10 +1243,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:n)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
+                do concurrent(i=1:min(r1, m), j=2:n)
+                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call  ungqr   &
@@ -1425,10 +1422,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:n)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
+                do concurrent(i=1:min(r1, m), j=2:n)
+                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call  ungqr   &
