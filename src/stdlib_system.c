@@ -9,13 +9,6 @@
 #ifdef _WIN32
 #include <direct.h>
 #include <windows.h>
-#ifndef S_ISREG
-#if defined(S_IFMT) && defined(S_IFREG)
-#define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
-#elif defined(_S_IFMT) && defined(_S_IFREG)
-#define S_ISREG(mode) (((mode) & _S_IFMT) == _S_IFREG)
-#endif
-#endif /* ifndef S_ISREG */
 #else
 #include <unistd.h>
 #endif /* ifdef _WIN32 */
@@ -105,13 +98,8 @@ char* stdlib_get_cwd(size_t* len, int* stat){
 
     *len = strlen(buffer);
 
-    char* res = malloc(*len + 1);  // Allocate space for null terminator
-    if (res == NULL) {
-        *stat = ENOMEM;  // Set error code for memory allocation failure
-        return NULL;
-    }
+    char* res = malloc(*len);
     strncpy(res, buffer, *len);
-    res[*len] = '\0';  // Ensure null termination
 
     return res;
 #endif /* ifdef _WIN32 */
@@ -120,7 +108,7 @@ char* stdlib_get_cwd(size_t* len, int* stat){
 // Wrapper to the platform's `chdir`(change directory) call.
 // Uses `chdir` on unix, `_chdir` on windows.
 // Returns 0 if successful, otherwise returns the `errno`.
-int stdlib_set_cwd(const char* path) {
+int stdlib_set_cwd(char* path) {
     int code;
 #ifdef _WIN32
     code = _chdir(path);
