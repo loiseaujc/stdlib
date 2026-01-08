@@ -41,7 +41,7 @@ module test_linalg_pivoting_qr
         integer(ilp), parameter :: k   = min(m,n)
         real(sp), parameter :: tol = 100*sqrt(epsilon(0.0_sp))
         real(sp) :: a(m,n),aorig(m,n),q(m,m),r(m,n),qred(m,k),rred(k,n),qerr(m,6),rerr(6,n)
-        real(sp) :: rea(m,n),ima(m,n), G(n, n)
+        real(sp) :: rea(m,n),ima(m,n)
         integer(ilp) :: pivots(n), i, j
         integer(ilp) :: lwork
         real(sp), allocatable :: work(:)
@@ -60,12 +60,8 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        ! q = ieee_value(0.0_sp,ieee_quiet_nan)
-        ! r = ieee_value(0.0_sp,ieee_quiet_nan)
-        q = 0.0_sp
-        r = 0.0_sp
-        G = 0.0_sp
-        pivots = 0
+        q = ieee_value(0.0_sp,ieee_quiet_nan)
+        r = ieee_value(0.0_sp,ieee_quiet_nan)
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -73,22 +69,6 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, "Reconstruction error :"
-        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
-        do concurrent(i=1:n, j=1:n)
-            G(i, j) = dot_product(q(:, i), q(:, j))
-        enddo
-        print *
-        print *, "Orthogonality:"
-        do i = 1, n
-            write(*, *) (G(i, j), j = 1, n)
-        enddo
-
-        print *
-        print *, "R matrix:"
-        do i = 1, n
-            write(*, *) (R(i, j), j =1, n)
-        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -289,7 +269,7 @@ module test_linalg_pivoting_qr
         integer(ilp), parameter :: k   = min(m,n)
         real(dp), parameter :: tol = 100*sqrt(epsilon(0.0_dp))
         real(dp) :: a(m,n),aorig(m,n),q(m,m),r(m,n),qred(m,k),rred(k,n),qerr(m,6),rerr(6,n)
-        real(dp) :: rea(m,n),ima(m,n), G(n, n)
+        real(dp) :: rea(m,n),ima(m,n)
         integer(ilp) :: pivots(n), i, j
         integer(ilp) :: lwork
         real(dp), allocatable :: work(:)
@@ -308,12 +288,8 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        ! q = ieee_value(0.0_dp,ieee_quiet_nan)
-        ! r = ieee_value(0.0_dp,ieee_quiet_nan)
-        q = 0.0_dp
-        r = 0.0_dp
-        G = 0.0_dp
-        pivots = 0
+        q = ieee_value(0.0_dp,ieee_quiet_nan)
+        r = ieee_value(0.0_dp,ieee_quiet_nan)
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -321,22 +297,6 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, "Reconstruction error :"
-        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
-        do concurrent(i=1:n, j=1:n)
-            G(i, j) = dot_product(q(:, i), q(:, j))
-        enddo
-        print *
-        print *, "Orthogonality:"
-        do i = 1, n
-            write(*, *) (G(i, j), j = 1, n)
-        enddo
-
-        print *
-        print *, "R matrix:"
-        do i = 1, n
-            write(*, *) (R(i, j), j =1, n)
-        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -537,7 +497,7 @@ module test_linalg_pivoting_qr
         integer(ilp), parameter :: k   = min(m,n)
         real(sp), parameter :: tol = 100*sqrt(epsilon(0.0_sp))
         complex(sp) :: a(m,n),aorig(m,n),q(m,m),r(m,n),qred(m,k),rred(k,n),qerr(m,6),rerr(6,n)
-        real(sp) :: rea(m,n),ima(m,n), G(n, n)
+        real(sp) :: rea(m,n),ima(m,n)
         integer(ilp) :: pivots(n), i, j
         integer(ilp) :: lwork
         complex(sp), allocatable :: work(:)
@@ -556,12 +516,8 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        ! q = ieee_value(0.0_sp,ieee_quiet_nan)
-        ! r = ieee_value(0.0_sp,ieee_quiet_nan)
-        q = 0.0_sp
-        r = 0.0_sp
-        G = 0.0_sp
-        pivots = 0
+        q = ieee_value(0.0_sp,ieee_quiet_nan)
+        r = ieee_value(0.0_sp,ieee_quiet_nan)
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -569,22 +525,6 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, "Reconstruction error :"
-        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
-        do concurrent(i=1:n, j=1:n)
-            G(i, j) = dot_product(q(:, i), q(:, j))
-        enddo
-        print *
-        print *, "Orthogonality:"
-        do i = 1, n
-            write(*, *) (G(i, j), j = 1, n)
-        enddo
-
-        print *
-        print *, "R matrix:"
-        do i = 1, n
-            write(*, *) (R(i, j), j =1, n)
-        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -787,7 +727,7 @@ module test_linalg_pivoting_qr
         integer(ilp), parameter :: k   = min(m,n)
         real(dp), parameter :: tol = 100*sqrt(epsilon(0.0_dp))
         complex(dp) :: a(m,n),aorig(m,n),q(m,m),r(m,n),qred(m,k),rred(k,n),qerr(m,6),rerr(6,n)
-        real(dp) :: rea(m,n),ima(m,n), G(n, n)
+        real(dp) :: rea(m,n),ima(m,n)
         integer(ilp) :: pivots(n), i, j
         integer(ilp) :: lwork
         complex(dp), allocatable :: work(:)
@@ -806,12 +746,8 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        ! q = ieee_value(0.0_dp,ieee_quiet_nan)
-        ! r = ieee_value(0.0_dp,ieee_quiet_nan)
-        q = 0.0_dp
-        r = 0.0_dp
-        G = 0.0_dp
-        pivots = 0
+        q = ieee_value(0.0_dp,ieee_quiet_nan)
+        r = ieee_value(0.0_dp,ieee_quiet_nan)
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -819,22 +755,6 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, "Reconstruction error :"
-        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
-        do concurrent(i=1:n, j=1:n)
-            G(i, j) = dot_product(q(:, i), q(:, j))
-        enddo
-        print *
-        print *, "Orthogonality:"
-        do i = 1, n
-            write(*, *) (G(i, j), j = 1, n)
-        enddo
-
-        print *
-        print *, "R matrix:"
-        do i = 1, n
-            write(*, *) (R(i, j), j =1, n)
-        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
