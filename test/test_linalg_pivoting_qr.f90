@@ -55,7 +55,7 @@ module test_linalg_pivoting_qr
         ! a = rea
         ! #:endif
         do concurrent(i=1:m, j=1:n)
-            a(i, j) = i+j
+            a(i, j) = i ** (j-1)
         enddo
         aorig = a
         
@@ -303,7 +303,7 @@ module test_linalg_pivoting_qr
         ! a = rea
         ! #:endif
         do concurrent(i=1:m, j=1:n)
-            a(i, j) = i+j
+            a(i, j) = i ** (j-1)
         enddo
         aorig = a
         
@@ -551,7 +551,7 @@ module test_linalg_pivoting_qr
         ! a = rea
         ! #:endif
         do concurrent(i=1:m, j=1:n)
-            a(i, j) = cmplx(i+j, i-j, kind=sp)
+            a(i, j) = cmplx(i**(j-1), 0.0_sp, kind=sp)
         enddo
         aorig = a
         
@@ -801,7 +801,7 @@ module test_linalg_pivoting_qr
         ! a = rea
         ! #:endif
         do concurrent(i=1:m, j=1:n)
-            a(i, j) = cmplx(i+j, i-j, kind=dp)
+            a(i, j) = cmplx(i**(j-1), 0.0_dp, kind=dp)
         enddo
         aorig = a
         
