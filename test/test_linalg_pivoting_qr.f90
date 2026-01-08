@@ -93,11 +93,11 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
 
         ! 2) QR factorization with reduced matrices
-        ! call qr(a, qred, rred, pivots, err=state)
+        call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
-        ! call check(error,state%ok(),state%print())
-        ! if (allocated(error)) return        
+        call check(error,state%ok(),state%print())
+        if (allocated(error)) return        
 
         ! Check solution
         ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
@@ -341,11 +341,11 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
 
         ! 2) QR factorization with reduced matrices
-        ! call qr(a, qred, rred, pivots, err=state)
+        call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
-        ! call check(error,state%ok(),state%print())
-        ! if (allocated(error)) return        
+        call check(error,state%ok(),state%print())
+        if (allocated(error)) return        
 
         ! Check solution
         ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
@@ -589,11 +589,11 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
 
         ! 2) QR factorization with reduced matrices
-        ! call qr(a, qred, rred, pivots, err=state)
+        call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
-        ! call check(error,state%ok(),state%print())
-        ! if (allocated(error)) return        
+        call check(error,state%ok(),state%print())
+        if (allocated(error)) return        
 
         ! Check solution
         ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
@@ -839,11 +839,11 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
 
         ! 2) QR factorization with reduced matrices
-        ! call qr(a, qred, rred, pivots, err=state)
+        call qr(a, qred, rred, pivots, err=state)
 
         ! Check return code
-        ! call check(error,state%ok(),state%print())
-        ! if (allocated(error)) return        
+        call check(error,state%ok(),state%print())
+        if (allocated(error)) return        
 
         ! Check solution
         ! call check(error, all(abs(a(:, pivots)-matmul(qred,rred))<tol), 'converged solution (reduced)')
