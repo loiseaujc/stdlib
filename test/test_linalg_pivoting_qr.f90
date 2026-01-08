@@ -52,8 +52,10 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        q = ieee_value(0.0_sp,ieee_quiet_nan)
-        r = ieee_value(0.0_sp,ieee_quiet_nan)
+        ! q = ieee_value(0.0_sp,ieee_quiet_nan)
+        ! r = ieee_value(0.0_sp,ieee_quiet_nan)
+        q = 0.0_sp
+        r = 0.0_sp
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -61,6 +63,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
+        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -272,8 +275,10 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        q = ieee_value(0.0_dp,ieee_quiet_nan)
-        r = ieee_value(0.0_dp,ieee_quiet_nan)
+        ! q = ieee_value(0.0_dp,ieee_quiet_nan)
+        ! r = ieee_value(0.0_dp,ieee_quiet_nan)
+        q = 0.0_dp
+        r = 0.0_dp
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -281,6 +286,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
+        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -493,8 +499,10 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        q = ieee_value(0.0_sp,ieee_quiet_nan)
-        r = ieee_value(0.0_sp,ieee_quiet_nan)
+        ! q = ieee_value(0.0_sp,ieee_quiet_nan)
+        ! r = ieee_value(0.0_sp,ieee_quiet_nan)
+        q = 0.0_sp
+        r = 0.0_sp
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -502,6 +510,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
+        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -716,8 +725,10 @@ module test_linalg_pivoting_qr
         aorig = a
         
         ! 1) QR factorization with full matrices. Input NaNs to be sure Q and R are OK on return
-        q = ieee_value(0.0_dp,ieee_quiet_nan)
-        r = ieee_value(0.0_dp,ieee_quiet_nan)
+        ! q = ieee_value(0.0_dp,ieee_quiet_nan)
+        ! r = ieee_value(0.0_dp,ieee_quiet_nan)
+        q = 0.0_dp
+        r = 0.0_dp
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -725,6 +736,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
+        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
