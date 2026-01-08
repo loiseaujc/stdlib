@@ -1517,7 +1517,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_s_qr
 
-      module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+      pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
           !> Input matrix a[m, n]
           real(sp), intent(inout), target :: a(:, :)
           !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1548,7 +1548,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_d_qr
 
-      module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+      pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
           !> Input matrix a[m, n]
           real(dp), intent(inout), target :: a(:, :)
           !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1579,7 +1579,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_c_qr
 
-      module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+      pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
           !> Input matrix a[m, n]
           complex(sp), intent(inout), target :: a(:, :)
           !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1610,7 +1610,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine stdlib_linalg_z_qr
 
-      module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+      pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
           !> Input matrix a[m, n]
           complex(dp), intent(inout), target :: a(:, :)
           !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1652,7 +1652,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_s_workspace
 
-      module subroutine get_pivoting_qr_s_workspace(a, lwork, pivoting, err)
+      pure module subroutine get_pivoting_qr_s_workspace(a, lwork, pivoting, err)
         !> Input matrix a[m, n]
         real(sp), intent(in), target :: a(:, :)
         !> Minimum workspace size for both operations.
@@ -1671,7 +1671,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_d_workspace
 
-      module subroutine get_pivoting_qr_d_workspace(a, lwork, pivoting, err)
+      pure module subroutine get_pivoting_qr_d_workspace(a, lwork, pivoting, err)
         !> Input matrix a[m, n]
         real(dp), intent(in), target :: a(:, :)
         !> Minimum workspace size for both operations.
@@ -1690,7 +1690,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_c_workspace
 
-      module subroutine get_pivoting_qr_c_workspace(a, lwork, pivoting, err)
+      pure module subroutine get_pivoting_qr_c_workspace(a, lwork, pivoting, err)
         !> Input matrix a[m, n]
         complex(sp), intent(in), target :: a(:, :)
         !> Minimum workspace size for both operations.
@@ -1709,7 +1709,7 @@ module stdlib_linalg
          type(linalg_state_type), optional, intent(out) :: err
       end subroutine get_qr_z_workspace
 
-      module subroutine get_pivoting_qr_z_workspace(a, lwork, pivoting, err)
+      pure module subroutine get_pivoting_qr_z_workspace(a, lwork, pivoting, err)
         !> Input matrix a[m, n]
         complex(dp), intent(in), target :: a(:, :)
         !> Minimum workspace size for both operations.

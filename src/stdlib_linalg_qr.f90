@@ -740,7 +740,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
     !---------------------------------------------------------
 
      ! Get workspace size for QR operations
-     module subroutine get_pivoting_qr_s_workspace(a,lwork,pivoting,err)
+     pure module subroutine get_pivoting_qr_s_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          real(sp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -767,7 +767,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, info)
-             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -779,7 +778,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              lwork_ord = -1_ilp
              call  orgqr   &
                   (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
-             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -795,7 +793,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_s_workspace 
 
-    module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -843,10 +841,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
-        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
-        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
-        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
-
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
             amat(1:q1, 1:q2) => q
@@ -870,7 +864,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_s_workspace(a, lwork, .true., err0)
-        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -888,9 +881,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
-            print *, "GEQP3 INFO FLAG :", info
-            print *, "TAU VECTOR      :", tau(1:k)
-            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -905,7 +895,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  orgqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
-                print *, "ORGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -930,7 +919,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_s_pivoting_qr
      ! Get workspace size for QR operations
-     module subroutine get_pivoting_qr_d_workspace(a,lwork,pivoting,err)
+     pure module subroutine get_pivoting_qr_d_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          real(dp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -957,7 +946,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, info)
-             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -969,7 +957,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              lwork_ord = -1_ilp
              call  orgqr   &
                   (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
-             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -985,7 +972,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_d_workspace 
 
-    module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1033,10 +1020,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
-        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
-        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
-        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
-
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
             amat(1:q1, 1:q2) => q
@@ -1060,7 +1043,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_d_workspace(a, lwork, .true., err0)
-        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1078,9 +1060,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
-            print *, "GEQP3 INFO FLAG :", info
-            print *, "TAU VECTOR      :", tau(1:k)
-            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1095,7 +1074,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  orgqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
-                print *, "ORGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -1120,7 +1098,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_d_pivoting_qr
      ! Get workspace size for QR operations
-     module subroutine get_pivoting_qr_c_workspace(a,lwork,pivoting,err)
+     pure module subroutine get_pivoting_qr_c_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          complex(sp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -1147,7 +1125,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, rwork_dummy, info)
-             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1159,7 +1136,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              lwork_ord = -1_ilp
              call  ungqr   &
                   (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
-             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1175,7 +1151,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_c_workspace 
 
-    module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1224,10 +1200,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
-        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
-        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
-        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
-
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
             amat(1:q1, 1:q2) => q
@@ -1251,7 +1223,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_c_workspace(a, lwork, .true., err0)
-        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1269,9 +1240,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
-            print *, "GEQP3 INFO FLAG :", info
-            print *, "TAU VECTOR      :", tau(1:k)
-            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1286,7 +1254,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  ungqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
-                print *, "UNGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -1311,7 +1278,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_c_pivoting_qr
      ! Get workspace size for QR operations
-     module subroutine get_pivoting_qr_z_workspace(a,lwork,pivoting,err)
+     pure module subroutine get_pivoting_qr_z_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          complex(dp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -1338,7 +1305,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, rwork_dummy, info)
-             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1350,7 +1316,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              lwork_ord = -1_ilp
              call  ungqr   &
                   (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
-             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1366,7 +1331,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_z_workspace 
 
-    module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1415,10 +1380,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
-        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
-        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
-        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
-
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
             amat(1:q1, 1:q2) => q
@@ -1442,7 +1403,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_z_workspace(a, lwork, .true., err0)
-        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1460,9 +1420,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
-            print *, "GEQP3 INFO FLAG :", info
-            print *, "TAU VECTOR      :", tau(1:k)
-            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1477,7 +1434,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  ungqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
-                print *, "UNGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
