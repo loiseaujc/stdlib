@@ -76,7 +76,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
          ! Ordering space (for full factorization)
          lwork_ord = -1_ilp
          call  orgqr   &
-              (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+              (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
          call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
          if (err0%error()) then 
             call linalg_error_handling(err0,err)
@@ -249,7 +249,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
          ! Ordering space (for full factorization)
          lwork_ord = -1_ilp
          call  orgqr   &
-              (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+              (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
          call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
          if (err0%error()) then 
             call linalg_error_handling(err0,err)
@@ -422,7 +422,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
          ! Ordering space (for full factorization)
          lwork_ord = -1_ilp
          call  ungqr   &
-              (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+              (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
          call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
          if (err0%error()) then 
             call linalg_error_handling(err0,err)
@@ -595,7 +595,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
          ! Ordering space (for full factorization)
          lwork_ord = -1_ilp
          call  ungqr   &
-              (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+              (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
          call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
          if (err0%error()) then 
             call linalg_error_handling(err0,err)
@@ -777,7 +777,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  orgqr   &
-                  (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -965,7 +965,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  orgqr   &
-                  (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1153,7 +1153,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  ungqr   &
-                  (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1342,7 +1342,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  ungqr   &
-                  (m,m,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
