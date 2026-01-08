@@ -740,7 +740,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
     !---------------------------------------------------------
 
      ! Get workspace size for QR operations
-     pure module subroutine get_pivoting_qr_s_workspace(a,lwork,pivoting,err)
+     module subroutine get_pivoting_qr_s_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          real(sp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -767,6 +767,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, info)
+             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -777,7 +778,8 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  orgqr   &
-                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -928,7 +930,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_s_pivoting_qr
      ! Get workspace size for QR operations
-     pure module subroutine get_pivoting_qr_d_workspace(a,lwork,pivoting,err)
+     module subroutine get_pivoting_qr_d_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          real(dp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -955,6 +957,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, info)
+             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -965,7 +968,8 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  orgqr   &
-                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1116,7 +1120,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_d_pivoting_qr
      ! Get workspace size for QR operations
-     pure module subroutine get_pivoting_qr_c_workspace(a,lwork,pivoting,err)
+     module subroutine get_pivoting_qr_c_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          complex(sp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -1143,6 +1147,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, rwork_dummy, info)
+             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1153,7 +1158,8 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  ungqr   &
-                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1305,7 +1311,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
     end subroutine stdlib_linalg_c_pivoting_qr
      ! Get workspace size for QR operations
-     pure module subroutine get_pivoting_qr_z_workspace(a,lwork,pivoting,err)
+     module subroutine get_pivoting_qr_z_workspace(a,lwork,pivoting,err)
          !> Input matrix a[m,n]
          complex(dp), intent(in), target :: a(:,:)
          !> Minimum workspace size for both operations
@@ -1332,6 +1338,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! QR space
              lwork_qr = -1_ilp
              call geqp3(m, n, a_dummy, m, jpvt_dummy, tau_dummy, work_dummy, lwork_qr, rwork_dummy, info)
+             print *, "QUERY GEQP3 INFO :", info
              call handle_geqp3_info(this, info, m, n, lwork_qr, err0)
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
@@ -1342,7 +1349,8 @@ submodule (stdlib_linalg) stdlib_linalg_qr
              ! Ordering space (for full factorization)
              lwork_ord = -1_ilp
              call  ungqr   &
-                  (m,n,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+                  (m,k,k,a_dummy,m,tau_dummy,work_dummy,lwork_ord,info)
+             print *, "QUERY ORGQR :", work_dummy(1), info
              call handle_orgqr_info(this,info,m,n,k,lwork_ord,err0)   
              if (err0%error()) then 
                 call linalg_error_handling(err0,err)
