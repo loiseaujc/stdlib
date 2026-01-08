@@ -73,7 +73,7 @@ module test_linalg_pivoting_qr
         print *
         print *, "Orthogonality:"
         do i = 1, n
-            print *, G(i, :)
+            write(*, *) (G(i, j), j = 1, n)
         enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
@@ -307,7 +307,7 @@ module test_linalg_pivoting_qr
         print *
         print *, "Orthogonality:"
         do i = 1, n
-            print *, G(i, :)
+            write(*, *) (G(i, j), j = 1, n)
         enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
@@ -542,7 +542,7 @@ module test_linalg_pivoting_qr
         print *
         print *, "Orthogonality:"
         do i = 1, n
-            print *, G(i, :)
+            write(*, *) (G(i, j), j = 1, n)
         enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
@@ -779,7 +779,7 @@ module test_linalg_pivoting_qr
         print *
         print *, "Orthogonality:"
         do i = 1, n
-            print *, G(i, :)
+            write(*, *) (G(i, j), j = 1, n)
         enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        

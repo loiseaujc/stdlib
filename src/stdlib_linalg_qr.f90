@@ -793,7 +793,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_s_workspace 
 
-    pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -882,6 +882,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
+            print *, "GEQP3 INFO FLAG :", info
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -895,6 +896,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  orgqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                print *, "ORGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -972,7 +974,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_d_workspace 
 
-    pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1061,6 +1063,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
+            print *, "GEQP3 INFO FLAG :", info
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1074,6 +1077,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  orgqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                print *, "ORGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -1151,7 +1155,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_c_workspace 
 
-    pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1241,6 +1245,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
+            print *, "GEQP3 INFO FLAG :", info
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1254,6 +1259,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  ungqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                print *, "UNGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
@@ -1331,7 +1337,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_z_workspace 
 
-    pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1421,6 +1427,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
             call handle_geqp3_info(this, info, m, n, lwork, err0)
+            print *, "GEQP3 INFO FLAG :", info
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1434,6 +1441,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call  ungqr   &
                     (q1,q2,k,amat,lda,tau,work,lwork,info)
                 call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                print *, "UNGQR INFO FLAG :", info
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(:q1,:q2) 
