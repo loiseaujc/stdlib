@@ -56,6 +56,7 @@ module test_linalg_pivoting_qr
         ! r = ieee_value(0.0_sp,ieee_quiet_nan)
         q = 0.0_sp
         r = 0.0_sp
+        pivots = [(i, i=1, n)]
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -63,7 +64,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
+        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -279,6 +280,7 @@ module test_linalg_pivoting_qr
         ! r = ieee_value(0.0_dp,ieee_quiet_nan)
         q = 0.0_dp
         r = 0.0_dp
+        pivots = [(i, i=1, n)]
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -286,7 +288,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
+        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -503,6 +505,7 @@ module test_linalg_pivoting_qr
         ! r = ieee_value(0.0_sp,ieee_quiet_nan)
         q = 0.0_sp
         r = 0.0_sp
+        pivots = [(i, i=1, n)]
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -510,7 +513,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
+        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -729,6 +732,7 @@ module test_linalg_pivoting_qr
         ! r = ieee_value(0.0_dp,ieee_quiet_nan)
         q = 0.0_dp
         r = 0.0_dp
+        pivots = [(i, i=1, n)]
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -736,7 +740,7 @@ module test_linalg_pivoting_qr
         if (allocated(error)) return        
         
         ! Check solution
-        print *, all(abs(a(:, pivots) - matmul(q, r)) < tol)
+        print *, maxval(abs(a(:, pivots) - matmul(q, r))), tol
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
