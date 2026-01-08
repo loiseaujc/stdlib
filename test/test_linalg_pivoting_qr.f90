@@ -65,7 +65,7 @@ module test_linalg_pivoting_qr
         q = 0.0_sp
         r = 0.0_sp
         G = 0.0_sp
-        pivots = [(i, i=1, n)]
+        pivots = 0
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -313,7 +313,7 @@ module test_linalg_pivoting_qr
         q = 0.0_dp
         r = 0.0_dp
         G = 0.0_dp
-        pivots = [(i, i=1, n)]
+        pivots = 0
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -561,7 +561,7 @@ module test_linalg_pivoting_qr
         q = 0.0_sp
         r = 0.0_sp
         G = 0.0_sp
-        pivots = [(i, i=1, n)]
+        pivots = 0
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
@@ -811,7 +811,7 @@ module test_linalg_pivoting_qr
         q = 0.0_dp
         r = 0.0_dp
         G = 0.0_dp
-        pivots = [(i, i=1, n)]
+        pivots = 0
         call qr(a, q, r, pivots, err=state)
         
         ! Check return code
