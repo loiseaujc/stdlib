@@ -841,11 +841,14 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
+        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
+        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
+        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
 
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
-            amat => q
-            q(:m, :n) = a
+            amat(1:q1, 1:q2) => q
+            q(1:m, 1:n) = a
         else if (overwrite_a_) then
             amat => a
         else
@@ -865,6 +868,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_s_workspace(a, lwork, .true., err0)
+        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1022,11 +1026,14 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
+        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
+        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
+        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
 
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
-            amat => q
-            q(:m, :n) = a
+            amat(1:q1, 1:q2) => q
+            q(1:m, 1:n) = a
         else if (overwrite_a_) then
             amat => a
         else
@@ -1046,6 +1053,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_d_workspace(a, lwork, .true., err0)
+        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1204,11 +1212,14 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
+        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
+        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
+        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
 
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
-            amat => q
-            q(:m, :n) = a
+            amat(1:q1, 1:q2) => q
+            q(1:m, 1:n) = a
         else if (overwrite_a_) then
             amat => a
         else
@@ -1228,6 +1239,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_c_workspace(a, lwork, .true., err0)
+        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
@@ -1386,11 +1398,14 @@ submodule (stdlib_linalg) stdlib_linalg_qr
         !> Can A be overwritten ? (By default, no).
         overwrite_a_ = .false._lk
         if (present(overwrite_a) .and. .not. use_q_matrix) overwrite_a_ = overwrite_a
+        print *, "Is A overwritten   ?", merge("true ", "false", overwrite_a_)
+        print *, "Is Q being used    ?", merge("true ", "false", use_q_matrix)
+        print *, "Is it a reduced QR ?", merge("true ", "false", reduced)
 
         !> Initialize a temporary matrix or reuse available storage if possible.
         if (use_q_matrix) then
-            amat => q
-            q(:m, :n) = a
+            amat(1:q1, 1:q2) => q
+            q(1:m, 1:n) = a
         else if (overwrite_a_) then
             amat => a
         else
@@ -1410,6 +1425,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         ! Retrieve workspace size.
         call get_pivoting_qr_z_workspace(a, lwork, .true., err0)
+        print *, "Workspace size after query :", lwork
 
         if (err0%ok()) then
 
