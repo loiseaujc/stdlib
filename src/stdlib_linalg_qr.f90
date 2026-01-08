@@ -888,6 +888,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             call handle_geqp3_info(this, info, m, n, lwork, err0)
             print *, "GEQP3 INFO FLAG :", info
             print *, "TAU VECTOR      :", tau(1:k)
+            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1074,6 +1075,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             call handle_geqp3_info(this, info, m, n, lwork, err0)
             print *, "GEQP3 INFO FLAG :", info
             print *, "TAU VECTOR      :", tau(1:k)
+            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1261,6 +1263,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             call handle_geqp3_info(this, info, m, n, lwork, err0)
             print *, "GEQP3 INFO FLAG :", info
             print *, "TAU VECTOR      :", tau(1:k)
+            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
@@ -1448,6 +1451,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             call handle_geqp3_info(this, info, m, n, lwork, err0)
             print *, "GEQP3 INFO FLAG :", info
             print *, "TAU VECTOR      :", tau(1:k)
+            print *, "PIVOTS          :", pivots
 
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
