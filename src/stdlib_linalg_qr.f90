@@ -793,7 +793,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_s_workspace 
 
-    module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -877,7 +877,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call linalg_error_handling(err0, err)
                 return
             endif
-            print *, "LWORK / size(WORK)", lwork, size(work)
 
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
@@ -886,38 +885,20 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
-                print *, "TAU BEFORE UPDATING R", tau(1:k)
-                print *, "AMAT BEFORE UPDATING R", amat(:, 1)
-                print *
                 r11 = amat(1, 1)
-                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:r2)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
                 do j = 2, r2
                     do i = 1, min(r1, m)
-                        if (i <= j) then
-                            r(i, j) = amat(i, j)
-                        else
-                            r(i, j) = zero
-                        endif
+                        r(i, j) = merge(amat(i, j), zero, i <= j)
                     enddo
                 enddo
-                print *, "TAU AFTER UPDATING R", tau(1:k)
-                print *, "AMAT AFTER UPDATING R", amat(:, 1)
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call orgqr(q1, q2, k, amat, lda, tau, work, lwork, info)
-                print *, "ORGQR INFO FLAG :", info
                 call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
-                print *, "DOT PRODUCTS :"
-                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
-                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
-                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
-             
+            
                 ! Copy first column of R
                 r(1,1)  = r11
                 r(2:r1,1) = zero
@@ -991,7 +972,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_d_workspace 
 
-    module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1075,7 +1056,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call linalg_error_handling(err0, err)
                 return
             endif
-            print *, "LWORK / size(WORK)", lwork, size(work)
 
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, info)
@@ -1084,38 +1064,20 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
-                print *, "TAU BEFORE UPDATING R", tau(1:k)
-                print *, "AMAT BEFORE UPDATING R", amat(:, 1)
-                print *
                 r11 = amat(1, 1)
-                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:r2)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
                 do j = 2, r2
                     do i = 1, min(r1, m)
-                        if (i <= j) then
-                            r(i, j) = amat(i, j)
-                        else
-                            r(i, j) = zero
-                        endif
+                        r(i, j) = merge(amat(i, j), zero, i <= j)
                     enddo
                 enddo
-                print *, "TAU AFTER UPDATING R", tau(1:k)
-                print *, "AMAT AFTER UPDATING R", amat(:, 1)
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call orgqr(q1, q2, k, amat, lda, tau, work, lwork, info)
-                print *, "ORGQR INFO FLAG :", info
                 call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
-                print *, "DOT PRODUCTS :"
-                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
-                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
-                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
-             
+            
                 ! Copy first column of R
                 r(1,1)  = r11
                 r(2:r1,1) = zero
@@ -1189,7 +1151,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_c_workspace 
 
-    module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1274,7 +1236,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call linalg_error_handling(err0, err)
                 return
             endif
-            print *, "LWORK / size(WORK)", lwork, size(work)
 
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
@@ -1283,38 +1244,20 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
-                print *, "TAU BEFORE UPDATING R", tau(1:k)
-                print *, "AMAT BEFORE UPDATING R", amat(:, 1)
-                print *
                 r11 = amat(1, 1)
-                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:r2)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
                 do j = 2, r2
                     do i = 1, min(r1, m)
-                        if (i <= j) then
-                            r(i, j) = amat(i, j)
-                        else
-                            r(i, j) = zero
-                        endif
+                        r(i, j) = merge(amat(i, j), zero, i <= j)
                     enddo
                 enddo
-                print *, "TAU AFTER UPDATING R", tau(1:k)
-                print *, "AMAT AFTER UPDATING R", amat(:, 1)
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call ungqr(q1, q2, k, amat, lda, tau, work, lwork, info)
-                print *, "ORGQR INFO FLAG :", info
                 call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
-                print *, "DOT PRODUCTS :"
-                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
-                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
-                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
-             
+            
                 ! Copy first column of R
                 r(1,1)  = r11
                 r(2:r1,1) = zero
@@ -1388,7 +1331,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_z_workspace 
 
-    module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1473,7 +1416,6 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 call linalg_error_handling(err0, err)
                 return
             endif
-            print *, "LWORK / size(WORK)", lwork, size(work)
 
             ! Compute factorization.
             call geqp3(m, n, amat, m, pivots, tau, work, lwork, rwork, info)
@@ -1482,38 +1424,20 @@ submodule (stdlib_linalg) stdlib_linalg_qr
             if (err0%ok()) then
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
-                print *, "TAU BEFORE UPDATING R", tau(1:k)
-                print *, "AMAT BEFORE UPDATING R", amat(:, 1)
-                print *
                 r11 = amat(1, 1)
-                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                ! do concurrent(i=1:min(r1, m), j=2:r2)
-                !     r(i, j) = merge(amat(i, j), zero, i <= j)
-                ! enddo
                 do j = 2, r2
                     do i = 1, min(r1, m)
-                        if (i <= j) then
-                            r(i, j) = amat(i, j)
-                        else
-                            r(i, j) = zero
-                        endif
+                        r(i, j) = merge(amat(i, j), zero, i <= j)
                     enddo
                 enddo
-                print *, "TAU AFTER UPDATING R", tau(1:k)
-                print *, "AMAT AFTER UPDATING R", amat(:, 1)
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
                 call ungqr(q1, q2, k, amat, lda, tau, work, lwork, info)
-                print *, "ORGQR INFO FLAG :", info
                 call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
                 if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
-                print *, "DOT PRODUCTS :"
-                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
-                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
-                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
-             
+            
                 ! Copy first column of R
                 r(1,1)  = r11
                 r(2:r1,1) = zero
