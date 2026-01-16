@@ -793,7 +793,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_s_workspace 
 
-    pure module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_s_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -886,17 +886,22 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do concurrent(i=1:min(r1, m), j=2:n)
+                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
+                do concurrent(i=1:min(r1, m), j=2:r2)
                     r(i, j) = merge(amat(i, j), zero, i <= j)
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
-                call  orgqr   &
-                    (q1,q2,k,amat,lda,tau,work,lwork,info)
-                call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                call orgqr(q1, q2, k, amat, lda, tau, work, lwork, info)
+                print *, "ORGQR INFO FLAG :", info
+                call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
-                if (.not.use_q_matrix) q = amat(:q1,:q2) 
+                if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
+                print *, "DOT PRODUCTS :"
+                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
+                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
+                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
              
                 ! Copy first column of R
                 r(1,1)  = r11
@@ -971,7 +976,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_d_workspace 
 
-    pure module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_d_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         real(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1064,17 +1069,22 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do concurrent(i=1:min(r1, m), j=2:n)
+                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
+                do concurrent(i=1:min(r1, m), j=2:r2)
                     r(i, j) = merge(amat(i, j), zero, i <= j)
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
-                call  orgqr   &
-                    (q1,q2,k,amat,lda,tau,work,lwork,info)
-                call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                call orgqr(q1, q2, k, amat, lda, tau, work, lwork, info)
+                print *, "ORGQR INFO FLAG :", info
+                call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
-                if (.not.use_q_matrix) q = amat(:q1,:q2) 
+                if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
+                print *, "DOT PRODUCTS :"
+                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
+                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
+                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
              
                 ! Copy first column of R
                 r(1,1)  = r11
@@ -1149,7 +1159,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_c_workspace 
 
-    pure module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_c_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(sp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1243,17 +1253,22 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do concurrent(i=1:min(r1, m), j=2:n)
+                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
+                do concurrent(i=1:min(r1, m), j=2:r2)
                     r(i, j) = merge(amat(i, j), zero, i <= j)
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
-                call  ungqr   &
-                    (q1,q2,k,amat,lda,tau,work,lwork,info)
-                call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                call ungqr(q1, q2, k, amat, lda, tau, work, lwork, info)
+                print *, "ORGQR INFO FLAG :", info
+                call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
-                if (.not.use_q_matrix) q = amat(:q1,:q2) 
+                if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
+                print *, "DOT PRODUCTS :"
+                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
+                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
+                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
              
                 ! Copy first column of R
                 r(1,1)  = r11
@@ -1328,7 +1343,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                   
     end subroutine get_pivoting_qr_z_workspace 
 
-    pure module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
+    module subroutine stdlib_linalg_z_pivoting_qr(a, q, r, pivots, overwrite_a, storage, err)
         !> Input matrix a[m, n]
         complex(dp), intent(inout), target :: a(:, :)
         !> Orthogonal matrix Q ([m, m] or [m, k] if reduced)
@@ -1422,17 +1437,22 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do concurrent(i=1:min(r1, m), j=2:n)
+                ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
+                do concurrent(i=1:min(r1, m), j=2:r2)
                     r(i, j) = merge(amat(i, j), zero, i <= j)
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
-                call  ungqr   &
-                    (q1,q2,k,amat,lda,tau,work,lwork,info)
-                call handle_orgqr_info(this,info,m,n,k,lwork,err0)      
+                call ungqr(q1, q2, k, amat, lda, tau, work, lwork, info)
+                print *, "ORGQR INFO FLAG :", info
+                call handle_orgqr_info(this, info, m, n, k, lwork, err0)
                   
                 ! Copy result back to Q
-                if (.not.use_q_matrix) q = amat(:q1,:q2) 
+                if (.not.use_q_matrix) q = amat(1:q1, 1:q2) 
+                print *, "DOT PRODUCTS :"
+                print *, "    q(1) . q(1) ", dot_product(q(:, 1), q(:, 1))
+                print *, "    q(1) . q(2) ", dot_product(q(:, 1), q(:, 2))
+                print *, "    q(2) . q(2) ", dot_product(q(:, 2), q(:, 2))
              
                 ! Copy first column of R
                 r(1,1)  = r11
