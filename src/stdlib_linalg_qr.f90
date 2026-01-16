@@ -891,8 +891,17 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 print *
                 r11 = amat(1, 1)
                 ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                do concurrent(i=1:min(r1, m), j=2:r2)
-                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! do concurrent(i=1:min(r1, m), j=2:r2)
+                !     r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! enddo
+                do j = 2, r2
+                    do i = 1, min(r1, m)
+                        if (i <= j) then
+                            r(i, j) = amat(i, j)
+                        else
+                            r(i, j) = zero
+                        endif
+                    enddo
                 enddo
                 print *, "TAU AFTER UPDATING R", tau(1:k)
                 print *, "AMAT AFTER UPDATING R", amat(:, 1)
@@ -1080,8 +1089,17 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 print *
                 r11 = amat(1, 1)
                 ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                do concurrent(i=1:min(r1, m), j=2:r2)
-                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! do concurrent(i=1:min(r1, m), j=2:r2)
+                !     r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! enddo
+                do j = 2, r2
+                    do i = 1, min(r1, m)
+                        if (i <= j) then
+                            r(i, j) = amat(i, j)
+                        else
+                            r(i, j) = zero
+                        endif
+                    enddo
                 enddo
                 print *, "TAU AFTER UPDATING R", tau(1:k)
                 print *, "AMAT AFTER UPDATING R", amat(:, 1)
@@ -1270,8 +1288,17 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 print *
                 r11 = amat(1, 1)
                 ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                do concurrent(i=1:min(r1, m), j=2:r2)
-                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! do concurrent(i=1:min(r1, m), j=2:r2)
+                !     r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! enddo
+                do j = 2, r2
+                    do i = 1, min(r1, m)
+                        if (i <= j) then
+                            r(i, j) = amat(i, j)
+                        else
+                            r(i, j) = zero
+                        endif
+                    enddo
                 enddo
                 print *, "TAU AFTER UPDATING R", tau(1:k)
                 print *, "AMAT AFTER UPDATING R", amat(:, 1)
@@ -1460,8 +1487,17 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 print *
                 r11 = amat(1, 1)
                 ! forall(i=1:min(r1,m),j=2:n) r(i,j) = merge(amat(i,j),zero,i<=j)
-                do concurrent(i=1:min(r1, m), j=2:r2)
-                    r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! do concurrent(i=1:min(r1, m), j=2:r2)
+                !     r(i, j) = merge(amat(i, j), zero, i <= j)
+                ! enddo
+                do j = 2, r2
+                    do i = 1, min(r1, m)
+                        if (i <= j) then
+                            r(i, j) = amat(i, j)
+                        else
+                            r(i, j) = zero
+                        endif
+                    enddo
                 enddo
                 print *, "TAU AFTER UPDATING R", tau(1:k)
                 print *, "AMAT AFTER UPDATING R", amat(:, 1)
