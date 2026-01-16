@@ -811,7 +811,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         !> Local variables.
         type(linalg_state_type) :: err0
-        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info
+        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info, imax
         logical(lk) :: overwrite_a_, use_q_matrix, reduced
         real(sp) :: r11
         real(sp), parameter :: zero = 0.0_sp
@@ -886,10 +886,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do j = 2, r2
-                    do i = 1, min(r1, m)
+                imax = min(r1, m) ! Simple fix for do concurrent loop with intel.
+                do concurrent(i=1:imax, j = 2:r2)
                         r(i, j) = merge(amat(i, j), zero, i <= j)
-                    enddo
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
@@ -990,7 +989,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         !> Local variables.
         type(linalg_state_type) :: err0
-        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info
+        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info, imax
         logical(lk) :: overwrite_a_, use_q_matrix, reduced
         real(dp) :: r11
         real(dp), parameter :: zero = 0.0_dp
@@ -1065,10 +1064,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do j = 2, r2
-                    do i = 1, min(r1, m)
+                imax = min(r1, m) ! Simple fix for do concurrent loop with intel.
+                do concurrent(i=1:imax, j = 2:r2)
                         r(i, j) = merge(amat(i, j), zero, i <= j)
-                    enddo
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
@@ -1169,7 +1167,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         !> Local variables.
         type(linalg_state_type) :: err0
-        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info
+        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info, imax
         logical(lk) :: overwrite_a_, use_q_matrix, reduced
         complex(sp) :: r11
         complex(sp), parameter :: zero = 0.0_sp
@@ -1245,10 +1243,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do j = 2, r2
-                    do i = 1, min(r1, m)
+                imax = min(r1, m) ! Simple fix for do concurrent loop with intel.
+                do concurrent(i=1:imax, j = 2:r2)
                         r(i, j) = merge(amat(i, j), zero, i <= j)
-                    enddo
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
@@ -1349,7 +1346,7 @@ submodule (stdlib_linalg) stdlib_linalg_qr
 
         !> Local variables.
         type(linalg_state_type) :: err0
-        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info
+        integer(ilp) :: i, j, m, n, k, q1, q2, r1, r2, lda, lwork, info, imax
         logical(lk) :: overwrite_a_, use_q_matrix, reduced
         complex(dp) :: r11
         complex(dp), parameter :: zero = 0.0_dp
@@ -1425,10 +1422,9 @@ submodule (stdlib_linalg) stdlib_linalg_qr
                 ! Get R matrix out before overwritten.
                 ! Do not copy the first column at this stage: it may be used by `tau`
                 r11 = amat(1, 1)
-                do j = 2, r2
-                    do i = 1, min(r1, m)
+                imax = min(r1, m) ! Simple fix for do concurrent loop with intel.
+                do concurrent(i=1:imax, j = 2:r2)
                         r(i, j) = merge(amat(i, j), zero, i <= j)
-                    enddo
                 enddo
 
                 ! Convert K elementary reflectors tau(1:k) -> orthogonal matrix Q
