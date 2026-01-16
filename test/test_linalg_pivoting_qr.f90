@@ -35,6 +35,7 @@ module test_linalg_pivoting_qr
 
     !> QR factorization of a random matrix
     subroutine test_pivoting_qr_random_tall_matrix_s(error)
+        use stdlib_linalg, only: hermitian
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -46,6 +47,8 @@ module test_linalg_pivoting_qr
         integer(ilp) :: lwork
         real(sp), allocatable :: work(:)
         type(linalg_state_type) :: state
+
+        real(sp), allocatable :: G(:, :)
         
         call random_number(rea)
         a = rea
@@ -62,6 +65,16 @@ module test_linalg_pivoting_qr
         
         ! Check solution
         print *, "Maximum pointwise error :", maxval(abs(a(:, pivots) - matmul(q, r)))
+        G = matmul(hermitian(q), q)
+        print *, "Gram matrix :"
+        do i = 1, size(G, 1)
+            print *, G(i, :)
+        enddo
+        print *
+        print*, "R matrix :"
+        do i = 1, size(R, 1)
+            print *, R(i, :)
+        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -259,6 +272,7 @@ module test_linalg_pivoting_qr
      end subroutine test_pivoting_qr_random_wide_matrix_s
 
     subroutine test_pivoting_qr_random_tall_matrix_d(error)
+        use stdlib_linalg, only: hermitian
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -270,6 +284,8 @@ module test_linalg_pivoting_qr
         integer(ilp) :: lwork
         real(dp), allocatable :: work(:)
         type(linalg_state_type) :: state
+
+        real(dp), allocatable :: G(:, :)
         
         call random_number(rea)
         a = rea
@@ -286,6 +302,16 @@ module test_linalg_pivoting_qr
         
         ! Check solution
         print *, "Maximum pointwise error :", maxval(abs(a(:, pivots) - matmul(q, r)))
+        G = matmul(hermitian(q), q)
+        print *, "Gram matrix :"
+        do i = 1, size(G, 1)
+            print *, G(i, :)
+        enddo
+        print *
+        print*, "R matrix :"
+        do i = 1, size(R, 1)
+            print *, R(i, :)
+        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -483,6 +509,7 @@ module test_linalg_pivoting_qr
      end subroutine test_pivoting_qr_random_wide_matrix_d
 
     subroutine test_pivoting_qr_random_tall_matrix_c(error)
+        use stdlib_linalg, only: hermitian
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -494,6 +521,8 @@ module test_linalg_pivoting_qr
         integer(ilp) :: lwork
         complex(sp), allocatable :: work(:)
         type(linalg_state_type) :: state
+
+        complex(sp), allocatable :: G(:, :)
         
         call random_number(rea)
         call random_number(ima)
@@ -511,6 +540,16 @@ module test_linalg_pivoting_qr
         
         ! Check solution
         print *, "Maximum pointwise error :", maxval(abs(a(:, pivots) - matmul(q, r)))
+        G = matmul(hermitian(q), q)
+        print *, "Gram matrix :"
+        do i = 1, size(G, 1)
+            print *, G(i, :)
+        enddo
+        print *
+        print*, "R matrix :"
+        do i = 1, size(R, 1)
+            print *, R(i, :)
+        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
@@ -710,6 +749,7 @@ module test_linalg_pivoting_qr
      end subroutine test_pivoting_qr_random_wide_matrix_c
 
     subroutine test_pivoting_qr_random_tall_matrix_z(error)
+        use stdlib_linalg, only: hermitian
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -721,6 +761,8 @@ module test_linalg_pivoting_qr
         integer(ilp) :: lwork
         complex(dp), allocatable :: work(:)
         type(linalg_state_type) :: state
+
+        complex(dp), allocatable :: G(:, :)
         
         call random_number(rea)
         call random_number(ima)
@@ -738,6 +780,16 @@ module test_linalg_pivoting_qr
         
         ! Check solution
         print *, "Maximum pointwise error :", maxval(abs(a(:, pivots) - matmul(q, r)))
+        G = matmul(hermitian(q), q)
+        print *, "Gram matrix :"
+        do i = 1, size(G, 1)
+            print *, G(i, :)
+        enddo
+        print *
+        print*, "R matrix :"
+        do i = 1, size(R, 1)
+            print *, R(i, :)
+        enddo
         call check(error, all(abs(a(:, pivots)-matmul(q,r))<tol), 'converged solution (full)')
         if (allocated(error)) return        
 
