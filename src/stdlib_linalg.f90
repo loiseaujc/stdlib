@@ -55,6 +55,8 @@ module stdlib_linalg
   public :: is_hermitian
   public :: is_triangular
   public :: is_hessenberg
+  ! Derived-types for matrix factorizations.
+  public :: qrfact
   
   ! Export linalg error handling
   public :: linalg_state_type, linalg_error_handling
@@ -6083,6 +6085,167 @@ module stdlib_linalg
         type(linalg_state_type), optional, intent(out) :: err
     end subroutine stdlib_linalg_z_expm
   end interface matrix_exp
+
+    !----------------------------------------------
+    !-----     DISCIPLINED LINEAR ALGEBRA     -----
+    !----------------------------------------------
+
+    type, public :: qr_rsp_type
+        private
+        integer(ilp) :: m, n
+        !> Matrix dimensions.
+        real(sp), allocatable :: data(:, :)
+        !> Compact WY representation of the QR factorization.
+        integer(ilp) :: nb, ldt
+        !> Block size and leading dimension of the array T.
+        real(sp), allocatable :: t(:, :)
+        !> Upper triangular block reflectors stored in compact format.
+        contains
+            private
+            procedure, pass(self) :: get_qfactor_rsp 
+            generic, public :: Q => get_qfactor_rsp
+            !> Construct the Q matrix from the compact representation.
+            procedure, pass(self) :: get_rfactor_rsp
+            generic, public :: R => get_rfactor_rsp
+            !> Extract upper triangular R matrix from the compact representation.
+    end type
+
+    interface
+        pure module function get_qfactor_rsp(self) result(Q)
+            class(qr_rsp_type), intent(in) :: self
+            real(sp), allocatable :: Q(:, :)
+        end function get_qfactor_rsp
+
+        pure module function get_rfactor_rsp(self) result(R)
+            class(qr_rsp_type), intent(in) :: self
+            real(sp), allocatable :: R(:, :)
+        end function get_rfactor_rsp
+    end interface
+
+    type, public :: qr_rdp_type
+        private
+        integer(ilp) :: m, n
+        !> Matrix dimensions.
+        real(dp), allocatable :: data(:, :)
+        !> Compact WY representation of the QR factorization.
+        integer(ilp) :: nb, ldt
+        !> Block size and leading dimension of the array T.
+        real(dp), allocatable :: t(:, :)
+        !> Upper triangular block reflectors stored in compact format.
+        contains
+            private
+            procedure, pass(self) :: get_qfactor_rdp 
+            generic, public :: Q => get_qfactor_rdp
+            !> Construct the Q matrix from the compact representation.
+            procedure, pass(self) :: get_rfactor_rdp
+            generic, public :: R => get_rfactor_rdp
+            !> Extract upper triangular R matrix from the compact representation.
+    end type
+
+    interface
+        pure module function get_qfactor_rdp(self) result(Q)
+            class(qr_rdp_type), intent(in) :: self
+            real(dp), allocatable :: Q(:, :)
+        end function get_qfactor_rdp
+
+        pure module function get_rfactor_rdp(self) result(R)
+            class(qr_rdp_type), intent(in) :: self
+            real(dp), allocatable :: R(:, :)
+        end function get_rfactor_rdp
+    end interface
+
+    type, public :: qr_csp_type
+        private
+        integer(ilp) :: m, n
+        !> Matrix dimensions.
+        complex(sp), allocatable :: data(:, :)
+        !> Compact WY representation of the QR factorization.
+        integer(ilp) :: nb, ldt
+        !> Block size and leading dimension of the array T.
+        complex(sp), allocatable :: t(:, :)
+        !> Upper triangular block reflectors stored in compact format.
+        contains
+            private
+            procedure, pass(self) :: get_qfactor_csp 
+            generic, public :: Q => get_qfactor_csp
+            !> Construct the Q matrix from the compact representation.
+            procedure, pass(self) :: get_rfactor_csp
+            generic, public :: R => get_rfactor_csp
+            !> Extract upper triangular R matrix from the compact representation.
+    end type
+
+    interface
+        pure module function get_qfactor_csp(self) result(Q)
+            class(qr_csp_type), intent(in) :: self
+            complex(sp), allocatable :: Q(:, :)
+        end function get_qfactor_csp
+
+        pure module function get_rfactor_csp(self) result(R)
+            class(qr_csp_type), intent(in) :: self
+            complex(sp), allocatable :: R(:, :)
+        end function get_rfactor_csp
+    end interface
+
+    type, public :: qr_cdp_type
+        private
+        integer(ilp) :: m, n
+        !> Matrix dimensions.
+        complex(dp), allocatable :: data(:, :)
+        !> Compact WY representation of the QR factorization.
+        integer(ilp) :: nb, ldt
+        !> Block size and leading dimension of the array T.
+        complex(dp), allocatable :: t(:, :)
+        !> Upper triangular block reflectors stored in compact format.
+        contains
+            private
+            procedure, pass(self) :: get_qfactor_cdp 
+            generic, public :: Q => get_qfactor_cdp
+            !> Construct the Q matrix from the compact representation.
+            procedure, pass(self) :: get_rfactor_cdp
+            generic, public :: R => get_rfactor_cdp
+            !> Extract upper triangular R matrix from the compact representation.
+    end type
+
+    interface
+        pure module function get_qfactor_cdp(self) result(Q)
+            class(qr_cdp_type), intent(in) :: self
+            complex(dp), allocatable :: Q(:, :)
+        end function get_qfactor_cdp
+
+        pure module function get_rfactor_cdp(self) result(R)
+            class(qr_cdp_type), intent(in) :: self
+            complex(dp), allocatable :: R(:, :)
+        end function get_rfactor_cdp
+    end interface
+
+
+    interface qrfact
+        module function stdlib_qrfact_s(A) result(F)
+            real(sp), intent(in) :: A(:, :)
+            !> Matrix to be factorized.
+            type(qr_rsp_type) :: F
+            !> Derived-type for the QR factorization of A.
+        end function stdlib_qrfact_s
+        module function stdlib_qrfact_d(A) result(F)
+            real(dp), intent(in) :: A(:, :)
+            !> Matrix to be factorized.
+            type(qr_rdp_type) :: F
+            !> Derived-type for the QR factorization of A.
+        end function stdlib_qrfact_d
+        module function stdlib_qrfact_c(A) result(F)
+            complex(sp), intent(in) :: A(:, :)
+            !> Matrix to be factorized.
+            type(qr_csp_type) :: F
+            !> Derived-type for the QR factorization of A.
+        end function stdlib_qrfact_c
+        module function stdlib_qrfact_z(A) result(F)
+            complex(dp), intent(in) :: A(:, :)
+            !> Matrix to be factorized.
+            type(qr_cdp_type) :: F
+            !> Derived-type for the QR factorization of A.
+        end function stdlib_qrfact_z
+    end interface
+
 contains
 
 
