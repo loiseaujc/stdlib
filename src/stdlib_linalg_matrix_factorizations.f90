@@ -46,7 +46,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
-        character(len=1), parameter :: side='L', trans='n'
+        character(len=1), parameter :: side='L', trans='N'
         real(sp), allocatable :: work(:)
         real(sp), parameter :: zero =  0.0_sp
         
@@ -63,7 +63,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !> Compute the Q matrix.
         allocate(work(n*self%ldt), source=zero)
-        call gemqrt(side, trans, m, n, k, &
+        call gemqrt(side, trans, m, k, k, &
                     self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
     end function get_qfactor_rsp
 
@@ -128,7 +128,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
-        character(len=1), parameter :: side='L', trans='n'
+        character(len=1), parameter :: side='L', trans='N'
         real(dp), allocatable :: work(:)
         real(dp), parameter :: zero =  0.0_dp
         
@@ -145,7 +145,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !> Compute the Q matrix.
         allocate(work(n*self%ldt), source=zero)
-        call gemqrt(side, trans, m, n, k, &
+        call gemqrt(side, trans, m, k, k, &
                     self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
     end function get_qfactor_rdp
 
@@ -210,7 +210,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
-        character(len=1), parameter :: side='L', trans='n'
+        character(len=1), parameter :: side='L', trans='N'
         complex(sp), allocatable :: work(:)
         complex(sp), parameter :: zero = cmplx(0.0_sp, 0.0_sp, kind=sp) 
         
@@ -227,7 +227,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !> Compute the Q matrix.
         allocate(work(n*self%ldt), source=zero)
-        call gemqrt(side, trans, m, n, k, &
+        call gemqrt(side, trans, m, k, k, &
                     self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
     end function get_qfactor_csp
 
@@ -292,7 +292,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
-        character(len=1), parameter :: side='L', trans='n'
+        character(len=1), parameter :: side='L', trans='N'
         complex(dp), allocatable :: work(:)
         complex(dp), parameter :: zero = cmplx(0.0_dp, 0.0_dp, kind=dp) 
         
@@ -309,7 +309,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
         !> Compute the Q matrix.
         allocate(work(n*self%ldt), source=zero)
-        call gemqrt(side, trans, m, n, k, &
+        call gemqrt(side, trans, m, k, k, &
                     self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
     end function get_qfactor_cdp
 
