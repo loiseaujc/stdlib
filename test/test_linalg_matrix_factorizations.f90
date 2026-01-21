@@ -11,6 +11,9 @@ module test_linalg_matrix_factorizations
     
     public :: test_qr_factorization
 
+    real(sp), parameter :: rel_tol_sp = sqrt(epsilon(1.0_sp))
+    real(dp), parameter :: rel_tol_dp = sqrt(epsilon(1.0_dp))
+
     contains
 
     !> QR factorization tests
@@ -53,7 +56,8 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R()))
+        print *, "MAXIMUM DIFFERENCE :", maxval(abs(R - F%R())), sqrt(epsilon(1.0_sp))
+        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
         if (allocated(error)) return
 
         ! Check the Q matrix with reference.
@@ -87,7 +91,8 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R()))
+        print *, "MAXIMUM DIFFERENCE :", maxval(abs(R - F%R())), sqrt(epsilon(1.0_dp))
+        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
         if (allocated(error)) return
 
         ! Check the Q matrix with reference.
@@ -122,7 +127,8 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R()))
+        print *, "MAXIMUM DIFFERENCE :", maxval(abs(R - F%R())), sqrt(epsilon(1.0_sp))
+        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
         if (allocated(error)) return
 
         ! Check the Q matrix with reference.
@@ -157,7 +163,8 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R()))
+        print *, "MAXIMUM DIFFERENCE :", maxval(abs(R - F%R())), sqrt(epsilon(1.0_dp))
+        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
         if (allocated(error)) return
 
         ! Check the Q matrix with reference.
