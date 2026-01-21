@@ -8,7 +8,11 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
 
     contains
 
-    module function stdlib_qrfact_s(A) result(F)
+    !-----------------------------------------------------
+    !-----     DERIVED-TYPE FOR QR FACTORIZATION     -----
+    !-----------------------------------------------------
+
+    pure module function stdlib_qrfact_s(A) result(F)
         real(sp), intent(in) :: A(:, :)
         !> Matrix to be factorized.
         type(qr_rsp_type) :: F
@@ -29,17 +33,16 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         F%ldt = nb
 
         !> Allocate data.
-        allocate(F%t(F%ldt, min(m, n)))
-        allocate(work(nb*n))
+        allocate(F%t(F%ldt, min(m, n)), F%work(nb*max(m, n)))
 
         !> QR factorization.
-        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, work, info)
+        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, F%work, info)
         call handle_geqrt_info(this, info, m, n, nb, F%ldt, err)
         call linalg_error_handling(err)
     end function stdlib_qrfact_s
 
-    pure module function get_qfactor_rsp(self) result(Q)
-        class(qr_rsp_type), intent(in) :: self
+    module function get_qfactor_rsp(self) result(Q)
+        class(qr_rsp_type), intent(inout) :: self
         !> Compact representation of the QR factorization.
         real(sp), allocatable :: Q(:, :)
         !> Orthogonal matrix.
@@ -47,7 +50,6 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
         character(len=1), parameter :: side='L', trans='N'
-        real(sp), allocatable :: work(:)
         real(sp), parameter :: zero =  0.0_sp
         
         !> Matrix size.
@@ -55,16 +57,10 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         n = size(self%data, 2)
         k = min(m, n)
 
-        !> Allocate matrix.
-        allocate(Q(m, k), source=zero)
-        do concurrent(i=1:k)
-            Q(i, i) = 1.0_sp
-        enddo
-
         !> Compute the Q matrix.
-        allocate(work(n*self%ldt), source=zero)
+        Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
+                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
     end function get_qfactor_rsp
 
     pure module function get_rfactor_rsp(self) result(R)
@@ -90,7 +86,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
             R(i, j) = self%data(i, j)
         enddo
     end function get_rfactor_rsp
-    module function stdlib_qrfact_d(A) result(F)
+    pure module function stdlib_qrfact_d(A) result(F)
         real(dp), intent(in) :: A(:, :)
         !> Matrix to be factorized.
         type(qr_rdp_type) :: F
@@ -111,17 +107,16 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         F%ldt = nb
 
         !> Allocate data.
-        allocate(F%t(F%ldt, min(m, n)))
-        allocate(work(nb*n))
+        allocate(F%t(F%ldt, min(m, n)), F%work(nb*max(m, n)))
 
         !> QR factorization.
-        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, work, info)
+        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, F%work, info)
         call handle_geqrt_info(this, info, m, n, nb, F%ldt, err)
         call linalg_error_handling(err)
     end function stdlib_qrfact_d
 
-    pure module function get_qfactor_rdp(self) result(Q)
-        class(qr_rdp_type), intent(in) :: self
+    module function get_qfactor_rdp(self) result(Q)
+        class(qr_rdp_type), intent(inout) :: self
         !> Compact representation of the QR factorization.
         real(dp), allocatable :: Q(:, :)
         !> Orthogonal matrix.
@@ -129,7 +124,6 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
         character(len=1), parameter :: side='L', trans='N'
-        real(dp), allocatable :: work(:)
         real(dp), parameter :: zero =  0.0_dp
         
         !> Matrix size.
@@ -137,16 +131,10 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         n = size(self%data, 2)
         k = min(m, n)
 
-        !> Allocate matrix.
-        allocate(Q(m, k), source=zero)
-        do concurrent(i=1:k)
-            Q(i, i) = 1.0_dp
-        enddo
-
         !> Compute the Q matrix.
-        allocate(work(n*self%ldt), source=zero)
+        Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
+                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
     end function get_qfactor_rdp
 
     pure module function get_rfactor_rdp(self) result(R)
@@ -172,7 +160,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
             R(i, j) = self%data(i, j)
         enddo
     end function get_rfactor_rdp
-    module function stdlib_qrfact_c(A) result(F)
+    pure module function stdlib_qrfact_c(A) result(F)
         complex(sp), intent(in) :: A(:, :)
         !> Matrix to be factorized.
         type(qr_csp_type) :: F
@@ -193,17 +181,16 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         F%ldt = nb
 
         !> Allocate data.
-        allocate(F%t(F%ldt, min(m, n)))
-        allocate(work(nb*n))
+        allocate(F%t(F%ldt, min(m, n)), F%work(nb*max(m, n)))
 
         !> QR factorization.
-        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, work, info)
+        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, F%work, info)
         call handle_geqrt_info(this, info, m, n, nb, F%ldt, err)
         call linalg_error_handling(err)
     end function stdlib_qrfact_c
 
-    pure module function get_qfactor_csp(self) result(Q)
-        class(qr_csp_type), intent(in) :: self
+    module function get_qfactor_csp(self) result(Q)
+        class(qr_csp_type), intent(inout) :: self
         !> Compact representation of the QR factorization.
         complex(sp), allocatable :: Q(:, :)
         !> Orthogonal matrix.
@@ -211,7 +198,6 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
         character(len=1), parameter :: side='L', trans='N'
-        complex(sp), allocatable :: work(:)
         complex(sp), parameter :: zero = cmplx(0.0_sp, 0.0_sp, kind=sp) 
         
         !> Matrix size.
@@ -219,16 +205,10 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         n = size(self%data, 2)
         k = min(m, n)
 
-        !> Allocate matrix.
-        allocate(Q(m, k), source=zero)
-        do concurrent(i=1:k)
-            Q(i, i) = 1.0_sp
-        enddo
-
         !> Compute the Q matrix.
-        allocate(work(n*self%ldt), source=zero)
+        Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
+                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
     end function get_qfactor_csp
 
     pure module function get_rfactor_csp(self) result(R)
@@ -254,7 +234,7 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
             R(i, j) = self%data(i, j)
         enddo
     end function get_rfactor_csp
-    module function stdlib_qrfact_z(A) result(F)
+    pure module function stdlib_qrfact_z(A) result(F)
         complex(dp), intent(in) :: A(:, :)
         !> Matrix to be factorized.
         type(qr_cdp_type) :: F
@@ -275,17 +255,16 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         F%ldt = nb
 
         !> Allocate data.
-        allocate(F%t(F%ldt, min(m, n)))
-        allocate(work(nb*n))
+        allocate(F%t(F%ldt, min(m, n)), F%work(nb*max(m, n)))
 
         !> QR factorization.
-        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, work, info)
+        call geqrt(m, n, nb, F%data, m, F%t, F%ldt, F%work, info)
         call handle_geqrt_info(this, info, m, n, nb, F%ldt, err)
         call linalg_error_handling(err)
     end function stdlib_qrfact_z
 
-    pure module function get_qfactor_cdp(self) result(Q)
-        class(qr_cdp_type), intent(in) :: self
+    module function get_qfactor_cdp(self) result(Q)
+        class(qr_cdp_type), intent(inout) :: self
         !> Compact representation of the QR factorization.
         complex(dp), allocatable :: Q(:, :)
         !> Orthogonal matrix.
@@ -293,7 +272,6 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !----- Internal variables -----
         integer(ilp) :: i, j, k, m, n, info
         character(len=1), parameter :: side='L', trans='N'
-        complex(dp), allocatable :: work(:)
         complex(dp), parameter :: zero = cmplx(0.0_dp, 0.0_dp, kind=dp) 
         
         !> Matrix size.
@@ -301,16 +279,10 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         n = size(self%data, 2)
         k = min(m, n)
 
-        !> Allocate matrix.
-        allocate(Q(m, k), source=zero)
-        do concurrent(i=1:k)
-            Q(i, i) = 1.0_dp
-        enddo
-
         !> Compute the Q matrix.
-        allocate(work(n*self%ldt), source=zero)
+        Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, work, info)
+                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
     end function get_qfactor_cdp
 
     pure module function get_rfactor_cdp(self) result(R)

@@ -6100,6 +6100,8 @@ module stdlib_linalg
         !> Block size and leading dimension of the array T.
         real(sp), allocatable :: t(:, :)
         !> Upper triangular block reflectors stored in compact format.
+        real(sp), allocatable :: work(:)
+        !> Allocatable workspace.
         contains
             private
             procedure, pass(self) :: get_qfactor_rsp 
@@ -6111,8 +6113,8 @@ module stdlib_linalg
     end type
 
     interface
-        pure module function get_qfactor_rsp(self) result(Q)
-            class(qr_rsp_type), intent(in) :: self
+        module function get_qfactor_rsp(self) result(Q)
+            class(qr_rsp_type), intent(inout) :: self
             real(sp), allocatable :: Q(:, :)
         end function get_qfactor_rsp
 
@@ -6132,6 +6134,8 @@ module stdlib_linalg
         !> Block size and leading dimension of the array T.
         real(dp), allocatable :: t(:, :)
         !> Upper triangular block reflectors stored in compact format.
+        real(dp), allocatable :: work(:)
+        !> Allocatable workspace.
         contains
             private
             procedure, pass(self) :: get_qfactor_rdp 
@@ -6143,8 +6147,8 @@ module stdlib_linalg
     end type
 
     interface
-        pure module function get_qfactor_rdp(self) result(Q)
-            class(qr_rdp_type), intent(in) :: self
+        module function get_qfactor_rdp(self) result(Q)
+            class(qr_rdp_type), intent(inout) :: self
             real(dp), allocatable :: Q(:, :)
         end function get_qfactor_rdp
 
@@ -6164,6 +6168,8 @@ module stdlib_linalg
         !> Block size and leading dimension of the array T.
         complex(sp), allocatable :: t(:, :)
         !> Upper triangular block reflectors stored in compact format.
+        complex(sp), allocatable :: work(:)
+        !> Allocatable workspace.
         contains
             private
             procedure, pass(self) :: get_qfactor_csp 
@@ -6175,8 +6181,8 @@ module stdlib_linalg
     end type
 
     interface
-        pure module function get_qfactor_csp(self) result(Q)
-            class(qr_csp_type), intent(in) :: self
+        module function get_qfactor_csp(self) result(Q)
+            class(qr_csp_type), intent(inout) :: self
             complex(sp), allocatable :: Q(:, :)
         end function get_qfactor_csp
 
@@ -6196,6 +6202,8 @@ module stdlib_linalg
         !> Block size and leading dimension of the array T.
         complex(dp), allocatable :: t(:, :)
         !> Upper triangular block reflectors stored in compact format.
+        complex(dp), allocatable :: work(:)
+        !> Allocatable workspace.
         contains
             private
             procedure, pass(self) :: get_qfactor_cdp 
@@ -6207,8 +6215,8 @@ module stdlib_linalg
     end type
 
     interface
-        pure module function get_qfactor_cdp(self) result(Q)
-            class(qr_cdp_type), intent(in) :: self
+        module function get_qfactor_cdp(self) result(Q)
+            class(qr_cdp_type), intent(inout) :: self
             complex(dp), allocatable :: Q(:, :)
         end function get_qfactor_cdp
 
@@ -6220,25 +6228,25 @@ module stdlib_linalg
 
 
     interface qrfact
-        module function stdlib_qrfact_s(A) result(F)
+        pure module function stdlib_qrfact_s(A) result(F)
             real(sp), intent(in) :: A(:, :)
             !> Matrix to be factorized.
             type(qr_rsp_type) :: F
             !> Derived-type for the QR factorization of A.
         end function stdlib_qrfact_s
-        module function stdlib_qrfact_d(A) result(F)
+        pure module function stdlib_qrfact_d(A) result(F)
             real(dp), intent(in) :: A(:, :)
             !> Matrix to be factorized.
             type(qr_rdp_type) :: F
             !> Derived-type for the QR factorization of A.
         end function stdlib_qrfact_d
-        module function stdlib_qrfact_c(A) result(F)
+        pure module function stdlib_qrfact_c(A) result(F)
             complex(sp), intent(in) :: A(:, :)
             !> Matrix to be factorized.
             type(qr_csp_type) :: F
             !> Derived-type for the QR factorization of A.
         end function stdlib_qrfact_c
-        module function stdlib_qrfact_z(A) result(F)
+        pure module function stdlib_qrfact_z(A) result(F)
             complex(dp), intent(in) :: A(:, :)
             !> Matrix to be factorized.
             type(qr_cdp_type) :: F
