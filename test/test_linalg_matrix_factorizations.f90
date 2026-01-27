@@ -59,7 +59,7 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(R - F%R()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -85,7 +85,7 @@ module test_linalg_matrix_factorizations
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -137,52 +137,52 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(R - F%R()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             real(sp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             real(sp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -214,7 +214,7 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(R - F%R()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -240,7 +240,7 @@ module test_linalg_matrix_factorizations
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -292,52 +292,52 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(R - F%R()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             real(dp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             real(dp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -370,7 +370,7 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(R - F%R()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -396,7 +396,7 @@ module test_linalg_matrix_factorizations
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -449,52 +449,52 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(R - F%R()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             complex(sp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_sp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_sp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             complex(sp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -527,7 +527,7 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(R - F%R()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -553,7 +553,7 @@ module test_linalg_matrix_factorizations
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
@@ -606,52 +606,52 @@ module test_linalg_matrix_factorizations
         F = qrfact(A)
 
         ! Check the R matrix with reference.
-        call check(error, all_close(R, F%R(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(R - F%R()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             complex(dp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
         endif
 
         ! Check the Q matrix with reference.
-        call check(error, all_close(Q, F%Q(), rel_tol=rel_tol_dp))
+        call check(error, all(abs(Q - F%Q()) < rel_tol_dp))
         if (allocated(error)) then
             block
             integer(ilp) :: i, j
             complex(dp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
