@@ -65,20 +65,20 @@ module test_linalg_matrix_factorizations
             integer(ilp) :: i, j
             real(sp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
@@ -92,19 +92,19 @@ module test_linalg_matrix_factorizations
             real(sp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -220,20 +220,20 @@ module test_linalg_matrix_factorizations
             integer(ilp) :: i, j
             real(dp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
@@ -247,19 +247,19 @@ module test_linalg_matrix_factorizations
             real(dp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -376,20 +376,20 @@ module test_linalg_matrix_factorizations
             integer(ilp) :: i, j
             complex(sp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
@@ -403,19 +403,19 @@ module test_linalg_matrix_factorizations
             complex(sp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
@@ -533,20 +533,20 @@ module test_linalg_matrix_factorizations
             integer(ilp) :: i, j
             complex(dp), allocatable :: rnew(:, :)
             print *, "Reference R matrix. shape(R) =", shape(R)
-            do i = 1, m
+            do i = 1, k
                 print *, (R(i, j), j = 1, n)
             enddo
             print *
             print *, "New R matrix. shape(R) =", shape(F%R())
             rnew = F%R()
-            do i = 1, m
+            do i = 1, k
                 print *, (rnew(i, j), j = 1, n)
             enddo
             print *
             print *, "Difference between the two."
             rnew = rnew - r
-            do i = 1, m
-                print *, (rnew(i, j), j=1, n)
+            do i = 1, k
+                print *, (abs(rnew(i, j)), j=1, n)
             enddo
             end block
             return
@@ -560,19 +560,19 @@ module test_linalg_matrix_factorizations
             complex(dp), allocatable :: qnew(:, :)
             print *, "Reference Q matrix. shape(Q) =", shape(Q)
             do i = 1, m
-                print *, (Q(i, j), j = 1, m)
+                print *, (Q(i, j), j = 1, k)
             enddo
             print *
             print *, "New Q matrix. shape(Q) =", shape(F%Q())
             qnew = F%Q()
             do i = 1, m
-                print *, (qnew(i, j), j = 1, m)
+                print *, (qnew(i, j), j = 1, k)
             enddo
             print *
             print *, "Difference between the two."
             qnew = qnew - q
             do i = 1, m
-                print *, (qnew(i, j), j=1, m)
+                print *, (abs(qnew(i, j)), j=1, k)
             enddo
             end block
             return
