@@ -1,7 +1,7 @@
 ! Cholesky factorization of a matrix, based on LAPACK *POTRF functions
 submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
     use stdlib_linalg_lapack, only: geqrt, gemqrt
-    use stdlib_linalg_lapack_aux, only: handle_geqrt_info
+    use stdlib_linalg_lapack_aux, only: handle_geqrt_info, handle_gemqrt_info
     implicit none
 
     character(len=*), parameter :: this = 'matrix_factorizations'
@@ -48,19 +48,21 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !> Orthogonal matrix.
 
         !----- Internal variables -----
-        integer(ilp) :: i, j, k, m, n, info
+        integer(ilp) :: i, j, k, info
         character(len=1), parameter :: side='L', trans='N'
-        real(sp), parameter :: zero =  0.0_sp
+        real(sp), parameter :: zero = 0.0_sp
+        type(linalg_state_type) :: err
         
-        !> Matrix size.
-        m = size(self%data, 1)
-        n = size(self%data, 2)
-        k = min(m, n)
-
+        associate( m => size(self%data, 1), n => size(self%data, 2), &
+                   nb => self%ldt, ldv => size(self%data, 1), ldt => self%ldt, ldc => size(self%data, 1))
         !> Compute the Q matrix.
+        k = min(m, n)
         Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
+                    nb, self%data(:, :k), ldv, self%t, ldt, Q, ldc, self%work, info)
+        call handle_gemqrt_info(this, info, side, trans, m, n, k, nb, ldv, ldt, ldc, err)
+        call linalg_error_handling(err)
+        end associate
     end function get_qfactor_rsp
 
     pure module function get_rfactor_rsp(self) result(R)
@@ -122,19 +124,21 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !> Orthogonal matrix.
 
         !----- Internal variables -----
-        integer(ilp) :: i, j, k, m, n, info
+        integer(ilp) :: i, j, k, info
         character(len=1), parameter :: side='L', trans='N'
-        real(dp), parameter :: zero =  0.0_dp
+        real(dp), parameter :: zero = 0.0_dp
+        type(linalg_state_type) :: err
         
-        !> Matrix size.
-        m = size(self%data, 1)
-        n = size(self%data, 2)
-        k = min(m, n)
-
+        associate( m => size(self%data, 1), n => size(self%data, 2), &
+                   nb => self%ldt, ldv => size(self%data, 1), ldt => self%ldt, ldc => size(self%data, 1))
         !> Compute the Q matrix.
+        k = min(m, n)
         Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
+                    nb, self%data(:, :k), ldv, self%t, ldt, Q, ldc, self%work, info)
+        call handle_gemqrt_info(this, info, side, trans, m, n, k, nb, ldv, ldt, ldc, err)
+        call linalg_error_handling(err)
+        end associate
     end function get_qfactor_rdp
 
     pure module function get_rfactor_rdp(self) result(R)
@@ -196,19 +200,21 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !> Orthogonal matrix.
 
         !----- Internal variables -----
-        integer(ilp) :: i, j, k, m, n, info
+        integer(ilp) :: i, j, k, info
         character(len=1), parameter :: side='L', trans='N'
-        complex(sp), parameter :: zero = cmplx(0.0_sp, 0.0_sp, kind=sp) 
+        complex(sp), parameter :: zero = cmplx(0.0_sp, 0.0_sp, kind=sp)
+        type(linalg_state_type) :: err
         
-        !> Matrix size.
-        m = size(self%data, 1)
-        n = size(self%data, 2)
-        k = min(m, n)
-
+        associate( m => size(self%data, 1), n => size(self%data, 2), &
+                   nb => self%ldt, ldv => size(self%data, 1), ldt => self%ldt, ldc => size(self%data, 1))
         !> Compute the Q matrix.
+        k = min(m, n)
         Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
+                    nb, self%data(:, :k), ldv, self%t, ldt, Q, ldc, self%work, info)
+        call handle_gemqrt_info(this, info, side, trans, m, n, k, nb, ldv, ldt, ldc, err)
+        call linalg_error_handling(err)
+        end associate
     end function get_qfactor_csp
 
     pure module function get_rfactor_csp(self) result(R)
@@ -270,19 +276,21 @@ submodule (stdlib_linalg) stdlib_linalg_matrix_factorizations
         !> Orthogonal matrix.
 
         !----- Internal variables -----
-        integer(ilp) :: i, j, k, m, n, info
+        integer(ilp) :: i, j, k, info
         character(len=1), parameter :: side='L', trans='N'
-        complex(dp), parameter :: zero = cmplx(0.0_dp, 0.0_dp, kind=dp) 
+        complex(dp), parameter :: zero = cmplx(0.0_dp, 0.0_dp, kind=dp)
+        type(linalg_state_type) :: err
         
-        !> Matrix size.
-        m = size(self%data, 1)
-        n = size(self%data, 2)
-        k = min(m, n)
-
+        associate( m => size(self%data, 1), n => size(self%data, 2), &
+                   nb => self%ldt, ldv => size(self%data, 1), ldt => self%ldt, ldc => size(self%data, 1))
         !> Compute the Q matrix.
+        k = min(m, n)
         Q = eye(m, k, mold=zero)
         call gemqrt(side, trans, m, k, k, &
-                    self%ldt, self%data(:, :k), m, self%t, self%ldt, Q, m, self%work, info)
+                    nb, self%data(:, :k), ldv, self%t, ldt, Q, ldc, self%work, info)
+        call handle_gemqrt_info(this, info, side, trans, m, n, k, nb, ldv, ldt, ldc, err)
+        call linalg_error_handling(err)
+        end associate
     end function get_qfactor_cdp
 
     pure module function get_rfactor_cdp(self) result(R)
