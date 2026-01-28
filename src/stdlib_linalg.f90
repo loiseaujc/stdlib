@@ -6254,6 +6254,144 @@ module stdlib_linalg
         end function stdlib_qrfact_z
     end interface
 
+    interface qrmv
+        module subroutine stdlib_qrmv_s(A, x, y, side, op, err)
+            type(qr_rsp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            real(sp), intent(inout) :: x(:)
+            !> Vector to be multiplied with (either from left or right).
+            !> If y is not passed, the matrix-vector product is performed in-place.
+            real(sp), optional, intent(out) :: y(:, :)
+            !> [optional] Resulting vector for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+            !> 
+        end subroutine stdlib_qrmv_s
+        module subroutine stdlib_qrmv_d(A, x, y, side, op, err)
+            type(qr_rdp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            real(dp), intent(inout) :: x(:)
+            !> Vector to be multiplied with (either from left or right).
+            !> If y is not passed, the matrix-vector product is performed in-place.
+            real(dp), optional, intent(out) :: y(:, :)
+            !> [optional] Resulting vector for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+            !> 
+        end subroutine stdlib_qrmv_d
+        module subroutine stdlib_qrmv_c(A, x, y, side, op, err)
+            type(qr_csp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            complex(sp), intent(inout) :: x(:)
+            !> Vector to be multiplied with (either from left or right).
+            !> If y is not passed, the matrix-vector product is performed in-place.
+            complex(sp), optional, intent(out) :: y(:, :)
+            !> [optional] Resulting vector for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+            !> 
+        end subroutine stdlib_qrmv_c
+        module subroutine stdlib_qrmv_z(A, x, y, side, op, err)
+            type(qr_cdp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            complex(dp), intent(inout) :: x(:)
+            !> Vector to be multiplied with (either from left or right).
+            !> If y is not passed, the matrix-vector product is performed in-place.
+            complex(dp), optional, intent(out) :: y(:, :)
+            !> [optional] Resulting vector for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+            !> 
+        end subroutine stdlib_qrmv_z
+    end interface qrmv
+
+    interface qrmm
+        module subroutine stdlib_qrmm_s(A, X, Y, side, op, err)
+            type(qr_rsp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            real(sp), intent(inout) :: X(:, :)
+            !> Matrix to be multiplied with (either from left or right).
+            !> If Y is not passed, the matrix-matrix product is performed in-place.
+            real(sp), optional, intent(out) :: Y(:, :)
+            !> [optional] Resulting matrix for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+        end subroutine stdlib_qrmm_s
+        module subroutine stdlib_qrmm_d(A, X, Y, side, op, err)
+            type(qr_rdp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            real(dp), intent(inout) :: X(:, :)
+            !> Matrix to be multiplied with (either from left or right).
+            !> If Y is not passed, the matrix-matrix product is performed in-place.
+            real(dp), optional, intent(out) :: Y(:, :)
+            !> [optional] Resulting matrix for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+        end subroutine stdlib_qrmm_d
+        module subroutine stdlib_qrmm_c(A, X, Y, side, op, err)
+            type(qr_csp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            complex(sp), intent(inout) :: X(:, :)
+            !> Matrix to be multiplied with (either from left or right).
+            !> If Y is not passed, the matrix-matrix product is performed in-place.
+            complex(sp), optional, intent(out) :: Y(:, :)
+            !> [optional] Resulting matrix for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+        end subroutine stdlib_qrmm_c
+        module subroutine stdlib_qrmm_z(A, X, Y, side, op, err)
+            type(qr_cdp_type), intent(in) :: A
+            !> QR-factorized matrix.
+            complex(dp), intent(inout) :: X(:, :)
+            !> Matrix to be multiplied with (either from left or right).
+            !> If Y is not passed, the matrix-matrix product is performed in-place.
+            complex(dp), optional, intent(out) :: Y(:, :)
+            !> [optional] Resulting matrix for out-of-place computations.
+            character(len=*), intent(in) :: side
+            !> From which side to multiply (side = "L" or "R", "L" being the default).
+            character(len=*), intent(in) :: op
+            !> Whether we multiply by A or A.T (A.H for complex matrices).
+            !> Choose from op = "N", op = "T" (real matrices) or op = "H" (complex matrices).
+            !> Default is op = "N".
+            type(linalg_state_type), optional, intent(out) :: err
+        end subroutine stdlib_qrmm_z
+    end interface qrmm
+
 contains
 
 
