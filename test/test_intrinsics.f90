@@ -457,14 +457,14 @@ subroutine test_matmul(error)
         call random_number(z)
 
         ! Normalize matrices.
-        x = x / mnorm(x, "fro")
-        y = y / mnorm(y, "fro")
-        z = z / mnorm(z, "fro")
+        x = x / mnorm(x, 1)
+        y = y / mnorm(y, 1)
+        z = z / mnorm(z, 1)
 
         r = stdlib_matmul(x, y, z) ! the optimal ordering would be (x(yz))
         r1 = matmul(matmul(x, y), z) ! the opposite order to induce a difference
 
-        call check(error, mnorm(r-r1, "fro") <= n*epsilon(0._sp), "real, sp, 3 args: error too large")
+        call check(error, mnorm(r-r1, 1) <= n*epsilon(0._sp), "real, sp, 3 args: error too large")
         if (allocated(error)) return
     end block
 
@@ -477,15 +477,15 @@ subroutine test_matmul(error)
         call random_number(w)
 
         ! Normalize matrices.
-        x = x / mnorm(x, "fro")
-        y = y / mnorm(y, "fro")
-        z = z / mnorm(z, "fro")
-        w = w / mnorm(w, "fro")
+        x = x / mnorm(x, 1)
+        y = y / mnorm(y, 1)
+        z = z / mnorm(z, 1)
+        w = w / mnorm(w, 1)
 
         r = stdlib_matmul(x, y, z, w) ! the optimal order would be ((x(yz))w)
         r1 = matmul(matmul(x, y), matmul(z, w))
 
-        call check(error, mnorm(r-r1, "fro") <= n*epsilon(0._sp), "real, sp, 4 args: error too large")
+        call check(error, mnorm(r-r1, 1) <= n*epsilon(0._sp), "real, sp, 4 args: error too large")
         if (allocated(error)) return
     end block
     block
@@ -496,14 +496,14 @@ subroutine test_matmul(error)
         call random_number(z)
 
         ! Normalize matrices.
-        x = x / mnorm(x, "fro")
-        y = y / mnorm(y, "fro")
-        z = z / mnorm(z, "fro")
+        x = x / mnorm(x, 1)
+        y = y / mnorm(y, 1)
+        z = z / mnorm(z, 1)
 
         r = stdlib_matmul(x, y, z) ! the optimal ordering would be (x(yz))
         r1 = matmul(matmul(x, y), z) ! the opposite order to induce a difference
 
-        call check(error, mnorm(r-r1, "fro") <= n*epsilon(0._dp), "real, dp, 3 args: error too large")
+        call check(error, mnorm(r-r1, 1) <= n*epsilon(0._dp), "real, dp, 3 args: error too large")
         if (allocated(error)) return
     end block
 
@@ -516,15 +516,15 @@ subroutine test_matmul(error)
         call random_number(w)
 
         ! Normalize matrices.
-        x = x / mnorm(x, "fro")
-        y = y / mnorm(y, "fro")
-        z = z / mnorm(z, "fro")
-        w = w / mnorm(w, "fro")
+        x = x / mnorm(x, 1)
+        y = y / mnorm(y, 1)
+        z = z / mnorm(z, 1)
+        w = w / mnorm(w, 1)
 
         r = stdlib_matmul(x, y, z, w) ! the optimal order would be ((x(yz))w)
         r1 = matmul(matmul(x, y), matmul(z, w))
 
-        call check(error, mnorm(r-r1, "fro") <= n*epsilon(0._dp), "real, dp, 4 args: error too large")
+        call check(error, mnorm(r-r1, 1) <= n*epsilon(0._dp), "real, dp, 4 args: error too large")
         if (allocated(error)) return
     end block
 end subroutine test_matmul
