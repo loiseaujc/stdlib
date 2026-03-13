@@ -97,6 +97,8 @@ module test_linalg_pseudoinverse
         call random_number(a)
         #:endif
 
+        a = a / mnorm(a, "fro")
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (square): '//state%print())
         if (allocated(error)) return
@@ -130,6 +132,8 @@ module test_linalg_pseudoinverse
 
         call random_number(a)
         #:endif
+
+        a = a / mnorm(a, "fro")
 
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (tall): '//state%print())
@@ -165,6 +169,8 @@ module test_linalg_pseudoinverse
         call random_number(a)
         #:endif
 
+        a = a / mnorm(a, "fro")
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (wide): '//state%print())
         if (allocated(error)) return
@@ -198,6 +204,8 @@ module test_linalg_pseudoinverse
 
         call random_number(a)
         #:endif
+
+        a = a / mnorm(a, "fro")
 
         ! Make the matrix singular
         a(:, 1) = a(:, 2)
