@@ -8,7 +8,7 @@ module test_linalg_pseudoinverse
 
     implicit none (type,external)
     private
-    
+
     public :: test_pseudoinverse_matrix
 
     contains
@@ -17,11 +17,11 @@ module test_linalg_pseudoinverse
     subroutine test_pseudoinverse_matrix(tests)
         !> Collertion of tests
         type(unittest_type), allocatable, intent(out) :: tests(:)
-        
+
         allocate(tests(0))
 
         #:for rk,rt,ri in REAL_KINDS_TYPES
-        call add_test(tests,new_unittest("${ri}$_eye_pseudoinverse",test_${ri}$_eye_pseudoinverse))       
+        call add_test(tests,new_unittest("${ri}$_eye_pseudoinverse",test_${ri}$_eye_pseudoinverse))
         #:endfor
         #:for rk,rt,ri in RC_KINDS_TYPES
         call add_test(tests,new_unittest("${ri}$_square_pseudoinverse",test_${ri}$_square_pseudoinverse))
@@ -51,25 +51,25 @@ module test_linalg_pseudoinverse
 
         !> Invert funrtion
         inva = pinv(a,err=state)
-        
+
         call check(error,state%ok(),'${ri}$ pseudoinverse (eye, function): '//state%print())
-        if (allocated(error)) return        
+        if (allocated(error)) return
         call check(error,all(abs(a-inva)<tol),'${ri}$ pseudoinverse (eye, function): data convergence')
-        if (allocated(error)) return          
-        
+        if (allocated(error)) return
+
         !> Inverse subroutine
         call pseudoinvert(a,inva,err=state)
-        
+
         call check(error,state%ok(),'${ri}$ pseudoinverse (eye, subroutine): '//state%print())
-        if (allocated(error)) return        
+        if (allocated(error)) return
         call check(error,all(abs(a-inva)<tol),'${ri}$ pseudoinverse (eye, subroutine): data convergence')
-        if (allocated(error)) return                  
-        
+        if (allocated(error)) return
+
         !> Operator 
         inva = .pinv.a
-        
+
         call check(error,all(abs(a-inva)<tol),'${ri}$ pseudoinverse (eye, operator): data convergence')
-        if (allocated(error)) return                  
+        if (allocated(error)) return
 
     end subroutine test_${ri}$_eye_pseudoinverse
 
@@ -89,25 +89,25 @@ module test_linalg_pseudoinverse
         ${rt}$ :: a(n, n), inva(n, n)
         #:if rt.startswith('complex')
         real(${rk}$) :: rea(n, n, 2)
-        
+
         call random_number(rea)
         a = cmplx(rea(:, :, 1), rea(:, :, 2), kind=${rk}$)
         #:else
-        
+
         call random_number(a)
         #:endif
-        
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (square): '//state%print())
-        if (allocated(error)) return       
-        
+        if (allocated(error)) return
+
         failed = count(abs(a - matmul(a, matmul(inva, a))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (square, convergence): '//state%print())
-        if (allocated(error)) return               
-        
+        if (allocated(error)) return
+
         failed = count(abs(inva - matmul(inva, matmul(a, inva))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (square, convergence): '//state%print())
-        if (allocated(error)) return               
+        if (allocated(error)) return
 
     end subroutine test_${ri}$_square_pseudoinverse
 
@@ -123,22 +123,22 @@ module test_linalg_pseudoinverse
         ${rt}$ :: a(m, n), inva(n, m)
         #:if rt.startswith('complex')
         real(${rk}$) :: rea(m, n, 2)
-        
+
         call random_number(rea)
         a = cmplx(rea(:, :, 1), rea(:, :, 2), kind=${rk}$)
         #:else
-        
+
         call random_number(a)
         #:endif
-        
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (tall): '//state%print())
-        if (allocated(error)) return       
-        
+        if (allocated(error)) return
+
         failed = count(abs(a - matmul(a, matmul(inva, a))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (tall, convergence): '//state%print())
-        if (allocated(error)) return               
-        
+        if (allocated(error)) return
+
         failed = count(abs(inva - matmul(inva, matmul(a, inva))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (tall, convergence): '//state%print())
         if (allocated(error)) return  
@@ -157,25 +157,25 @@ module test_linalg_pseudoinverse
         ${rt}$ :: a(m, n), inva(n, m)
         #:if rt.startswith('complex')
         real(${rk}$) :: rea(m, n, 2)
-        
+
         call random_number(rea)
         a = cmplx(rea(:, :, 1), rea(:, :, 2), kind=${rk}$)
         #:else
-        
+
         call random_number(a)
         #:endif
-        
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (wide): '//state%print())
-        if (allocated(error)) return       
-        
+        if (allocated(error)) return
+
         failed = count(abs(a - matmul(a, matmul(inva, a))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (wide, convergence): '//state%print())
-        if (allocated(error)) return               
-        
+        if (allocated(error)) return
+
         failed = count(abs(inva - matmul(inva, matmul(a, inva))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (wide, convergence): '//state%print())
-        if (allocated(error)) return  
+        if (allocated(error)) return
 
     end subroutine test_${ri}$_wide_pseudoinverse
 
@@ -191,28 +191,28 @@ module test_linalg_pseudoinverse
         ${rt}$ :: a(n, n), inva(n, n)
         #:if rt.startswith('complex')
         real(${rk}$) :: rea(n, n, 2)
-        
+
         call random_number(rea)
         a = cmplx(rea(:, :, 1), rea(:, :, 2), kind=${rk}$)
         #:else
-        
+
         call random_number(a)
         #:endif
-        
+
         ! Make the matrix singular
         a(:, 1) = a(:, 2)
-        
+
         inva = pinv(a, err=state)
         call check(error,state%ok(),'${ri}$ pseudoinverse (singular): '//state%print())
-        if (allocated(error)) return       
-        
+        if (allocated(error)) return
+
         failed = count(abs(a - matmul(a, matmul(inva, a))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (singular, convergence): '//state%print())
-        if (allocated(error)) return               
-        
+        if (allocated(error)) return
+
         failed = count(abs(inva - matmul(inva, matmul(a, inva))) > tol)
         call check(error,failed==0,'${ri}$ pseudoinverse (singular, convergence): '//state%print())
-        if (allocated(error)) return  
+        if (allocated(error)) return
 
     end subroutine test_${ri}$_singular_pseudoinverse
 
@@ -220,23 +220,23 @@ module test_linalg_pseudoinverse
 
     ! gcc-15 bugfix utility
     subroutine add_test(tests,new_test)
-        type(unittest_type), allocatable, intent(inout) :: tests(:)    
+        type(unittest_type), allocatable, intent(inout) :: tests(:)
         type(unittest_type), intent(in) :: new_test
-        
+
         integer :: n
         type(unittest_type), allocatable :: new_tests(:)
-        
-        if (allocated(tests)) then 
+
+        if (allocated(tests)) then
             n = size(tests)
         else
             n = 0
         end if
-        
+
         allocate(new_tests(n+1))
         if (n>0) new_tests(1:n) = tests(1:n)
                  new_tests(1+n) = new_test
-        call move_alloc(from=new_tests,to=tests)        
-        
+        call move_alloc(from=new_tests,to=tests)
+
     end subroutine add_test
 
 end module test_linalg_pseudoinverse
