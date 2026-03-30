@@ -24,17 +24,21 @@ module test_linalg_matrix_factorizations
         allocate(tests(0))
         call add_test(tests,new_unittest("qr_random_tall_matrix_s",test_qr_random_tall_matrix_s))
         call add_test(tests,new_unittest("qr_random_wide_matrix_s",test_qr_random_wide_matrix_s))
+        call add_test(tests,new_unittest("qr_random_tall_rank_deficient_matrix_s",test_qr_random_tall_rank_deficient_matrix_s))
         call add_test(tests,new_unittest("qr_random_tall_matrix_d",test_qr_random_tall_matrix_d))
         call add_test(tests,new_unittest("qr_random_wide_matrix_d",test_qr_random_wide_matrix_d))
+        call add_test(tests,new_unittest("qr_random_tall_rank_deficient_matrix_d",test_qr_random_tall_rank_deficient_matrix_d))
         call add_test(tests,new_unittest("qr_random_tall_matrix_c",test_qr_random_tall_matrix_c))
         call add_test(tests,new_unittest("qr_random_wide_matrix_c",test_qr_random_wide_matrix_c))
+        call add_test(tests,new_unittest("qr_random_tall_rank_deficient_matrix_c",test_qr_random_tall_rank_deficient_matrix_c))
         call add_test(tests,new_unittest("qr_random_tall_matrix_z",test_qr_random_tall_matrix_z))
         call add_test(tests,new_unittest("qr_random_wide_matrix_z",test_qr_random_wide_matrix_z))
+        call add_test(tests,new_unittest("qr_random_tall_rank_deficient_matrix_z",test_qr_random_tall_rank_deficient_matrix_z))
     end subroutine test_qr_factorization
 
     !> QR factorization of a random matrix
     subroutine test_qr_random_tall_matrix_s(error)
-        use stdlib_linalg, only: hermitian, qr_rsp_type
+        use stdlib_linalg, only: qr_rsp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -44,8 +48,10 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_rsp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         a = rea
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_sp,ieee_quiet_nan)
@@ -111,7 +117,7 @@ module test_linalg_matrix_factorizations
     end subroutine test_qr_random_tall_matrix_s
 
     subroutine test_qr_random_wide_matrix_s(error)
-        use stdlib_linalg, only: hermitian, qr_rsp_type
+        use stdlib_linalg, only: qr_rsp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 4_ilp
         integer(ilp), parameter :: n   = 15_ilp
@@ -121,8 +127,10 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_rsp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         a = rea
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_sp,ieee_quiet_nan)
@@ -187,7 +195,7 @@ module test_linalg_matrix_factorizations
         endif
     end subroutine test_qr_random_wide_matrix_s
     subroutine test_qr_random_tall_matrix_d(error)
-        use stdlib_linalg, only: hermitian, qr_rdp_type
+        use stdlib_linalg, only: qr_rdp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -197,8 +205,10 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_rdp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         a = rea
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_dp,ieee_quiet_nan)
@@ -264,7 +274,7 @@ module test_linalg_matrix_factorizations
     end subroutine test_qr_random_tall_matrix_d
 
     subroutine test_qr_random_wide_matrix_d(error)
-        use stdlib_linalg, only: hermitian, qr_rdp_type
+        use stdlib_linalg, only: qr_rdp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 4_ilp
         integer(ilp), parameter :: n   = 15_ilp
@@ -274,8 +284,10 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_rdp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         a = rea
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_dp,ieee_quiet_nan)
@@ -340,7 +352,7 @@ module test_linalg_matrix_factorizations
         endif
     end subroutine test_qr_random_wide_matrix_d
     subroutine test_qr_random_tall_matrix_c(error)
-        use stdlib_linalg, only: hermitian, qr_csp_type
+        use stdlib_linalg, only: qr_csp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -350,9 +362,11 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_csp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         call random_number(ima)
         a = cmplx(rea,ima,kind=sp)
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_sp,ieee_quiet_nan)
@@ -418,7 +432,7 @@ module test_linalg_matrix_factorizations
     end subroutine test_qr_random_tall_matrix_c
 
     subroutine test_qr_random_wide_matrix_c(error)
-        use stdlib_linalg, only: hermitian, qr_csp_type
+        use stdlib_linalg, only: qr_csp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 4_ilp
         integer(ilp), parameter :: n   = 15_ilp
@@ -428,9 +442,11 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_csp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         call random_number(ima)
         a = cmplx(rea,ima,kind=sp)
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_sp,ieee_quiet_nan)
@@ -495,7 +511,7 @@ module test_linalg_matrix_factorizations
         endif
     end subroutine test_qr_random_wide_matrix_c
     subroutine test_qr_random_tall_matrix_z(error)
-        use stdlib_linalg, only: hermitian, qr_cdp_type
+        use stdlib_linalg, only: qr_cdp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 15_ilp
         integer(ilp), parameter :: n   =  4_ilp
@@ -505,9 +521,11 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_cdp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         call random_number(ima)
         a = cmplx(rea,ima,kind=dp)
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_dp,ieee_quiet_nan)
@@ -573,7 +591,7 @@ module test_linalg_matrix_factorizations
     end subroutine test_qr_random_tall_matrix_z
 
     subroutine test_qr_random_wide_matrix_z(error)
-        use stdlib_linalg, only: hermitian, qr_cdp_type
+        use stdlib_linalg, only: qr_cdp_type
         type(error_type), allocatable, intent(out) :: error
         integer(ilp), parameter :: m   = 4_ilp
         integer(ilp), parameter :: n   = 15_ilp
@@ -583,9 +601,11 @@ module test_linalg_matrix_factorizations
         type(linalg_state_type) :: state
         type(qr_cdp_type) :: F
 
+        ! Random matrix with unit 2-norm.
         call random_number(rea)
         call random_number(ima)
         a = cmplx(rea,ima,kind=dp)
+        a = a / mnorm(a, 2)
 
         ! Reference QR decomposition.
         q = ieee_value(0.0_dp,ieee_quiet_nan)
@@ -649,6 +669,151 @@ module test_linalg_matrix_factorizations
             return
         endif
     end subroutine test_qr_random_wide_matrix_z
+
+    !> QR factorization of a tall random rank-deficient matrix
+    subroutine test_qr_random_tall_rank_deficient_matrix_s(error)
+        use stdlib_linalg, only: qr_rsp_type
+        type(error_type), allocatable, intent(out) :: error
+        integer(ilp), parameter :: m   = 15_ilp
+        integer(ilp), parameter :: n   =  4_ilp
+        integer(ilp), parameter :: k   = min(m,n)
+        real(sp) :: a(m,n), q(m, k), r(k, n)
+        real(sp) :: rea(m,n),ima(m,n)
+        type(linalg_state_type) :: state
+        type(qr_rsp_type) :: F
+
+        ! Random matrix with unit 2-norm and redundant column.
+        call random_number(rea)
+        a = rea
+        a(:, 3) = a(:, 2)
+        a = a / mnorm(a, 2)
+
+        ! Instantiate derived-type for the QR.
+        F = qrfact(A)
+
+        ! Check the factorized matrix.
+        call check(error, mnorm(A - matmul(F%Q(), F%R()), 2) < rel_tol_sp)
+        if (allocated(error)) then
+            block
+            integer(ilp) :: i, j
+            real(sp), allocatable :: anew(:, :)
+            anew = matmul(F%q(), F%r())
+            anew = anew - a
+            do i = 1, m
+                print *, (abs(anew(i, j)), j=1, k)
+            enddo
+            end block
+            return
+        endif
+    end subroutine test_qr_random_tall_rank_deficient_matrix_s
+    subroutine test_qr_random_tall_rank_deficient_matrix_d(error)
+        use stdlib_linalg, only: qr_rdp_type
+        type(error_type), allocatable, intent(out) :: error
+        integer(ilp), parameter :: m   = 15_ilp
+        integer(ilp), parameter :: n   =  4_ilp
+        integer(ilp), parameter :: k   = min(m,n)
+        real(dp) :: a(m,n), q(m, k), r(k, n)
+        real(dp) :: rea(m,n),ima(m,n)
+        type(linalg_state_type) :: state
+        type(qr_rdp_type) :: F
+
+        ! Random matrix with unit 2-norm and redundant column.
+        call random_number(rea)
+        a = rea
+        a(:, 3) = a(:, 2)
+        a = a / mnorm(a, 2)
+
+        ! Instantiate derived-type for the QR.
+        F = qrfact(A)
+
+        ! Check the factorized matrix.
+        call check(error, mnorm(A - matmul(F%Q(), F%R()), 2) < rel_tol_dp)
+        if (allocated(error)) then
+            block
+            integer(ilp) :: i, j
+            real(dp), allocatable :: anew(:, :)
+            anew = matmul(F%q(), F%r())
+            anew = anew - a
+            do i = 1, m
+                print *, (abs(anew(i, j)), j=1, k)
+            enddo
+            end block
+            return
+        endif
+    end subroutine test_qr_random_tall_rank_deficient_matrix_d
+    subroutine test_qr_random_tall_rank_deficient_matrix_c(error)
+        use stdlib_linalg, only: qr_csp_type
+        type(error_type), allocatable, intent(out) :: error
+        integer(ilp), parameter :: m   = 15_ilp
+        integer(ilp), parameter :: n   =  4_ilp
+        integer(ilp), parameter :: k   = min(m,n)
+        complex(sp) :: a(m,n), q(m, k), r(k, n)
+        real(sp) :: rea(m,n),ima(m,n)
+        type(linalg_state_type) :: state
+        type(qr_csp_type) :: F
+
+        ! Random matrix with unit 2-norm and redundant column.
+        call random_number(rea)
+        call random_number(ima)
+        a = cmplx(rea,ima,kind=sp)
+        a(:, 3) = a(:, 2)
+        a = a / mnorm(a, 2)
+
+        ! Instantiate derived-type for the QR.
+        F = qrfact(A)
+
+        ! Check the factorized matrix.
+        call check(error, mnorm(A - matmul(F%Q(), F%R()), 2) < rel_tol_sp)
+        if (allocated(error)) then
+            block
+            integer(ilp) :: i, j
+            complex(sp), allocatable :: anew(:, :)
+            anew = matmul(F%q(), F%r())
+            anew = anew - a
+            do i = 1, m
+                print *, (abs(anew(i, j)), j=1, k)
+            enddo
+            end block
+            return
+        endif
+    end subroutine test_qr_random_tall_rank_deficient_matrix_c
+    subroutine test_qr_random_tall_rank_deficient_matrix_z(error)
+        use stdlib_linalg, only: qr_cdp_type
+        type(error_type), allocatable, intent(out) :: error
+        integer(ilp), parameter :: m   = 15_ilp
+        integer(ilp), parameter :: n   =  4_ilp
+        integer(ilp), parameter :: k   = min(m,n)
+        complex(dp) :: a(m,n), q(m, k), r(k, n)
+        real(dp) :: rea(m,n),ima(m,n)
+        type(linalg_state_type) :: state
+        type(qr_cdp_type) :: F
+
+        ! Random matrix with unit 2-norm and redundant column.
+        call random_number(rea)
+        call random_number(ima)
+        a = cmplx(rea,ima,kind=dp)
+        a(:, 3) = a(:, 2)
+        a = a / mnorm(a, 2)
+
+        ! Instantiate derived-type for the QR.
+        F = qrfact(A)
+
+        ! Check the factorized matrix.
+        call check(error, mnorm(A - matmul(F%Q(), F%R()), 2) < rel_tol_dp)
+        if (allocated(error)) then
+            block
+            integer(ilp) :: i, j
+            complex(dp), allocatable :: anew(:, :)
+            anew = matmul(F%q(), F%r())
+            anew = anew - a
+            do i = 1, m
+                print *, (abs(anew(i, j)), j=1, k)
+            enddo
+            end block
+            return
+        endif
+    end subroutine test_qr_random_tall_rank_deficient_matrix_z
+
 
     ! gcc-15 bugfix utility
     subroutine add_test(tests,new_test)
