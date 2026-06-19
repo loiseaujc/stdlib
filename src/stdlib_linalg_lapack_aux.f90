@@ -68,6 +68,8 @@ module stdlib_linalg_lapack_aux
      public :: stdlib_select_z
      public :: stdlib_selctg_z     
      public :: handle_potrf_info
+     public :: handle_potrs_info
+     public :: handle_posv_info
      public :: handle_getri_info
      public :: handle_gesdd_info
      public :: handle_gesv_info
@@ -80,8 +82,6 @@ module stdlib_linalg_lapack_aux
      public :: handle_ggev_info
      public :: handle_heev_info
      public :: handle_gglse_info
-     public :: handle_geqrt_info
-     public :: handle_gemqrt_info
      
      ! SELCTG is a LOGICAL FUNCTION of three DOUBLE PRECISION arguments 
      ! used to select eigenvalues to sort to the top left of the Schur form. 
@@ -3089,6 +3089,65 @@ module stdlib_linalg_lapack_aux
 
    end subroutine handle_potrf_info
 
+   ! Cholesky solve (triangular solve with pre-computed factors)
+   elemental subroutine handle_potrs_info(this,info,triangle,n,nrhs,lda,ldb,err)
+      character(len=*), intent(in) :: this
+      character, intent(in) :: triangle
+      integer(ilp), intent(in) :: info,n,nrhs,lda,ldb
+      type(linalg_state_type), intent(out) :: err
+
+      ! Process output
+      select case (info)
+      case (0)
+         err%state = LINALG_SUCCESS
+      case (-1)
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'invalid triangle selection: ', &
+                  triangle,'. should be U/L')
+      case (-2)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid matrix size n=',n)
+      case (-3)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid rhs size nrhs=',nrhs)
+      case (-5)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid lda=',lda,': should be >=',n)
+      case (-7)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid ldb=',ldb,': should be >=',n)
+      case default
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'catastrophic error')
+      end select
+
+   end subroutine handle_potrs_info
+
+   ! Cholesky factorization and solve (combined)
+   elemental subroutine handle_posv_info(this,info,triangle,n,nrhs,lda,ldb,err)
+      character(len=*), intent(in) :: this
+      character, intent(in) :: triangle
+      integer(ilp), intent(in) :: info,n,nrhs,lda,ldb
+      type(linalg_state_type), intent(out) :: err
+
+      ! Process output
+      select case (info)
+      case (0)
+         err%state = LINALG_SUCCESS
+      case (-1)
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'invalid triangle selection: ', &
+                  triangle,'. should be U/L')
+      case (-2)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid matrix size n=',n)
+      case (-3)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid rhs size nrhs=',nrhs)
+      case (-5)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid lda=',lda,': should be >=',n)
+      case (-7)
+         err = linalg_state_type(this,LINALG_VALUE_ERROR,'invalid ldb=',ldb,': should be >=',n)
+      case (1:)
+         err = linalg_state_type(this,LINALG_ERROR,'matrix is not positive definite: ', &
+               'leading minor of order',info,' is not positive definite')
+      case default
+         err = linalg_state_type(this,LINALG_INTERNAL_ERROR,'catastrophic error')
+      end select
+
+   end subroutine handle_posv_info
+
    elemental subroutine handle_getri_info(this,info,lda,n,err)
       character(len=*), intent(in) :: this
       integer(ilp), intent(in) :: info,lda,n
@@ -3419,59 +3478,5 @@ module stdlib_linalg_lapack_aux
                 err = linalg_state_type(this, LINALG_INTERNAL_ERROR, 'catastrophic error.')
         end select
     end subroutine handle_gglse_info
-
-    elemental subroutine handle_geqrt_info(this, info, m, n, nb, ldt, err)
-        character(len=*), intent(in) :: this
-        integer(ilp), intent(in) :: info, m, n, nb, ldt
-        type(linalg_state_type), intent(out) :: err
-        select case (info)
-            case(0)
-                err%state = LINALG_SUCCESS
-            case(-1, -2)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'invalid matrix size a=', [m, n])
-            case(-3)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'invalid block size nb=', nb)
-            case(-5)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'invalid lda=', m)
-            case(-7)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'invalid ldt=', ldt)
-            case default
-                err = linalg_state_type(this, LINALG_INTERNAL_ERROR, 'catastrophic error.')
-        end select
-    end subroutine handle_geqrt_info
-
-    elemental subroutine handle_gemqrt_info(this, info, side, trans, m, n, k, nb, ldv, ldt, ldc, err)
-        character(len=*), intent(in) :: this, side, trans
-        integer(ilp), intent(in) :: info, m, n, k, nb, ldv, ldt, ldc
-        type(linalg_state_type), intent(out) :: err
-        select case (info)
-            case(0)
-                err%state = LINALG_SUCCESS
-            case(-1)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid side argument side=", side)
-            case(-2)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid operation trans=", trans)
-            case(-3, -4)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid matrix size c=", [m, n])
-            case(-5)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid number of elementary reflector k=", k)
-            case(-6)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid number of blocks nb=", nb)
-            case(-7)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid matrix size v=", [ldv, k])
-            case(-8)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid leading dimension for v, ldv=", ldv)
-            case(-9)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid matrix size t=", [ldt, k])
-            case(-10)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid leading dimension for t, ldt=", ldc)
-            case(-11)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid matrix c=", [ldc, n])
-            case(-12)
-                err = linalg_state_type(this, LINALG_VALUE_ERROR, "invalid leading dimension for c, ldc=", ldc)
-            case default
-                err = linalg_state_type(this, LINALG_INTERNAL_ERROR, "catastrophic error.")
-        end select
-    end subroutine handle_gemqrt_info
 
 end module stdlib_linalg_lapack_aux
