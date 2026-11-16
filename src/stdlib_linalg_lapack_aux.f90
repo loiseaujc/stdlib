@@ -56,9 +56,10 @@ module stdlib_linalg_lapack_aux
      public :: handle_geev_info
      public :: handle_ggev_info
      public :: handle_heev_info
-     public :: handle_gglse_info
-     
-     ! SELCTG is a LOGICAL FUNCTION of three DOUBLE PRECISION arguments 
+    public :: handle_gglse_info
+    public :: handle_ggglm_info
+    
+    ! SELCTG is a LOGICAL FUNCTION of three DOUBLE PRECISION arguments 
      ! used to select eigenvalues to sort to the top left of the Schur form. 
      ! An eigenvalue (ALPHAR(j)+ALPHAI(j))/BETA(j) is selected if SELCTG is true, i.e., 
      abstract interface 
@@ -502,7 +503,7 @@ module stdlib_linalg_lapack_aux
      
 
      pure integer(ilp) function stdlib_ilaslc( m, n, a, lda )
-     !! ILADLC: scans A for its last non-zero column.
+   !! Scan A for its last non-zero column.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -534,7 +535,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_ilaslc
      
      pure integer(ilp) function stdlib_ilaslr( m, n, a, lda )
-     !! ILADLR: scans A for its last non-zero row.
+     !! Scan A for its last non-zero row.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -569,7 +570,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_ilaslr     
      
      pure integer(ilp) function stdlib_iladlc( m, n, a, lda )
-     !! ILADLC: scans A for its last non-zero column.
+   !! Scan A for its last non-zero column.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -601,7 +602,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_iladlc
      
      pure integer(ilp) function stdlib_iladlr( m, n, a, lda )
-     !! ILADLR: scans A for its last non-zero row.
+     !! Scan A for its last non-zero row.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -636,7 +637,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_iladlr     
      
      pure integer(ilp) function stdlib_ilaclc( m, n, a, lda )
-     !! ILADLC: scans A for its last non-zero column.
+   !! Scan A for its last non-zero column.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -668,7 +669,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_ilaclc
      
      pure integer(ilp) function stdlib_ilaclr( m, n, a, lda )
-     !! ILADLR: scans A for its last non-zero row.
+     !! Scan A for its last non-zero row.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -703,7 +704,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_ilaclr     
      
      pure integer(ilp) function stdlib_ilazlc( m, n, a, lda )
-     !! ILADLC: scans A for its last non-zero column.
+   !! Scan A for its last non-zero column.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -735,7 +736,7 @@ module stdlib_linalg_lapack_aux
      end function stdlib_ilazlc
      
      pure integer(ilp) function stdlib_ilazlr( m, n, a, lda )
-     !! ILADLR: scans A for its last non-zero row.
+     !! Scan A for its last non-zero row.
         ! -- lapack auxiliary routine --
         ! -- lapack is a software package provided by univ. of tennessee,    --
         ! -- univ. of california berkeley, univ. of colorado denver and nag ltd..--
@@ -1991,5 +1992,37 @@ module stdlib_linalg_lapack_aux
                 err = linalg_state_type(this, LINALG_INTERNAL_ERROR, 'catastrophic error.')
         end select
     end subroutine handle_gglse_info
+
+   elemental subroutine handle_ggglm_info(this, info, m, n, p, lda, ldb, err)
+        character(len=*), intent(in) :: this
+        integer(ilp), intent(in) :: info, m, n, p, lda, ldb
+        type(linalg_state_type), intent(out) :: err
+        ! Process output.
+        select case (info)
+            case (0)
+                ! Success.
+                err%state = LINALG_SUCCESS
+            case (-1)
+                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid number of rows for A and B, m=', m)
+            case (-2)
+                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid number of columns for A, n=', n)
+            case (-3)
+                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid number of columns for B, p=', p)
+            case (-5)
+                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid leading dimension for A, lda=', lda, &
+                      ' is < m=', m)
+            case (-7)
+                err = linalg_state_type(this, LINALG_VALUE_ERROR, 'Invalid leading dimension for B, ldb=', ldb, &
+                      ' is < m=', m)
+            case (-12)
+                err = linalg_state_type(this, LINALG_INTERNAL_ERROR, 'Insufficient workspace size.')
+            case (1:)
+                ! From LAPACK: the upper triangular factor R of A does not have full rank
+                err = linalg_state_type(this, LINALG_ERROR, &
+                      'Design matrix A does not have full column rank (rank-deficient)')
+            case default
+                err = linalg_state_type(this, LINALG_INTERNAL_ERROR, 'catastrophic error.')
+        end select
+   end subroutine handle_ggglm_info
 
 end module stdlib_linalg_lapack_aux
